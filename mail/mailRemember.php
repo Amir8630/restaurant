@@ -53,7 +53,7 @@
             <li><strong>Время прибытия:</strong> <?=$booking_time_start?></li>
             <li><strong>Время отбытия:</strong> <?=$booking_time_end?></li>
             <li><strong>Количество гостей:</strong> <?=$count_guest?></li>
-            <li><strong>Количество гостей:</strong> <?=$id?></li>
+            <li><strong>token:</strong> <?=$token?></li>
 
         </ul>
         <p>Мы будем рады видеть вас! Если у вас изменились планы, вы можете отменить бронь.</p>

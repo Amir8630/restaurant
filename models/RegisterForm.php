@@ -30,7 +30,6 @@ class RegisterForm extends Model
         ];
     }
 
-
     public function attributeLabels()
     {
         return [

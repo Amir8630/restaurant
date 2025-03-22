@@ -66,31 +66,13 @@ class BookingController extends Controller
         ]);
     }
 
-    public function actionMailView($id)
+    public function actionMailView($token)
     {
-        $secretKey = 'secret_key'; 
-
-        $decoded = base64_decode($id);
-        if (!$decoded) {
-            throw new \yii\web\ForbiddenHttpException('Неверный токен');
+        if($model = Booking::findOne(['token' => $token])) {
+            return $this->render('view', ['model' => $model]);
+        } else {
+            echo 'error'; die;
         }
-
-        // Разбираем ID и хеш
-        [$id, $hash] = explode(':', $decoded, 2);
-
-        // Проверяем хеш
-        if (hash_hmac('sha256', $id, $secretKey) !== $hash) {
-            throw new \yii\web\ForbiddenHttpException('Ошибка аутентификации');
-        }
-
-        // Ищем бронь по ID
-        $booking = Booking::findOne($id);
-        if (!$booking) {
-            throw new \yii\web\NotFoundHttpException('Бронь не найдена');
-        }
-
-        // Показываем страницу с бронью
-        return $this->render('view', ['model' => $booking]);
     }
 
     /**
@@ -101,30 +83,30 @@ class BookingController extends Controller
     
 
      public function actionMail(
-        $fio_guest,
-        $booking_date,
-        $booking_time_start,
-        $booking_time_end,
-        $count_guest,
-        $IdTables,
-        $email
+            $fio_guest,
+            $booking_date,
+            $booking_time_start,
+            $booking_time_end,
+            $count_guest,
+            $IdTables,
+            $email
         )
      {
          Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
          if(Yii::$app->mailer
              ->compose('mail', [
-                 'fio_guest' => $fio_guest,
-                 'booking_date' => $booking_date,
-                 'booking_time_start' => $booking_time_start,
-                 'booking_time_end' => $booking_time_end,
-                 'count_guest' => $count_guest,
-                 'IdTables' => $IdTables,
-                 'email' => $email,
-                 'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
+                'fio_guest' => $fio_guest,
+                'booking_date' => $booking_date,
+                'booking_time_start' => $booking_time_start,
+                'booking_time_end' => $booking_time_end,
+                'count_guest' => $count_guest,
+                'IdTables' => $IdTables,
+                'email' => $email,
+                'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
              ])
              ->setFrom('restaurant.project@mail.ru')
              ->setTo($email)
-             ->setSubject('test')
+             ->setSubject('Подтверждение бронирования')
              ->send()
          ) {
              Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
@@ -138,8 +120,7 @@ class BookingController extends Controller
     {
         $model = new Booking();
         $model->user_id = Yii::$app->user->id;
-        $model->status_id = Status::getStatusId('Забронировано');
-        
+        $model->status_id = Status::getStatusId('Забронировано');   
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
@@ -147,9 +128,18 @@ class BookingController extends Controller
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     return ActiveForm::validate($model);
                 }
+
+                //ген уникальный токен
+                while(true) {
+                    $token = bin2hex(random_bytes(32));
+                    if (!Booking::findOne(['token' => $token])) {
+                        break;
+                    } 
+                }
+                $model->token = $token; 
+                
                 if($model->save()) {
                     $IdTables = explode(',', $model->selected_tables);
-                    // VarDumper::dump($model->selected_tables, 10, true); die;
                     $this->runAction('mail', [
                         'fio_guest' => $model->fio_guest,
                         'booking_date' => $model->booking_date,
@@ -236,34 +226,18 @@ public function actionGetBookedTables()
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionCancelBooking($id)
+    public function actionCancel($id)
     {
-        $model = $this->findModel($id);
-                            VarDumper::dump($bookingTables, 10, true); die;
-
-        $bookedTables = [];
-        $bookings = Booking::findOne(['id' => $model->id]);
-        $bookings = Status::getStatusId('Отменено');
-
-    
-
-        if ($bookings) {
-                // $bookingTables = BookingTable::find()->where(['booking_id' => $bookings->id])->all();
-                $bookingTables = BookingTable::findAll(['booking_id' => $bookings->id]);
-                // VarDumper::dump($bookingTables, 10, true); die;
-                foreach ($bookingTables as $bookingTable) {
-                    $bookedTables[] = $bookingTable->table_id;
-                }
-                // VarDumper::dump($bookedTables, 10, true); die;
+        if($model = $this->findModel($id)) {
+            $model->status_id = Status::getStatusId('Отменено');
+            if(!$model->save(false)) {
+                VarDumper::dump($model->errors, 10, true); die;
+            }
+            Yii::$app->session->setFlash('success', 'Вы успешно отменили бронь');
+            return $this->render('view', [
+                'model' => $model,
+            ]);
         }
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'selected_tables' => $model->selected_tables]);
-        }
-
-        return $this->render('cancel', [
-            'model' => $model,
-        ]);
     }
 
 

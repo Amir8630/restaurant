@@ -159,34 +159,6 @@ class SiteController extends Controller
     {
         return $this->render('test');
     }
-
-    public function actionMail()
-    {
-        Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
-        if(Yii::$app->mailer
-            ->compose('mail', [
-                'fio_guest' => 'Amir',
-                'booking_date' => '02.05.2025',
-                'booking_time_start' => '12:00',
-                'booking_time_end' => 3,
-                'count_guest' => '2,4,5',
-                'IdTables' => '2,4,5',
-                'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
-            ])
-            ->setFrom('restaurant.project@mail.ru')
-            // ->setTo('restaurant.project@mail.ru')
-            ->setTo('barakatamir2005@gmail.com')
-            ->setSubject('test')
-            ->send()
-        ) {
-            Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
-        } else {
-            Yii::$app->session->setFlash('warning', 'Ошибка!');
-        }
-        
-        return $this->render('index');
-    }
-
   
     public function actionRegister()
     {

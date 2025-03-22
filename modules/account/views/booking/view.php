@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Назад', ['index'], ['class' => 'btn btn-outline-primary']) ?>
-        <?= $model->status_id == Status::getStatusId('Забронировано') ? Html::a('Отменить', ['cancel-booking', 'id' => $model->id], [
+        <?= $model->status_id == Status::getStatusId('Забронировано') ? Html::a('Отменить', ['cancel', 'id' => $model->id], [
             'class' => 'btn btn-outline-danger',
             'data' => [
                 'confirm' => 'Вы уверены?',

@@ -45,7 +45,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'книга3', 'url' => ['/menu/index3']],
             ['label' => 'книга2', 'url' => ['/menu/index2']],
             ['label' => 'книга', 'url' => ['/menu/index']],
-            ['label' => 'email', 'url' => ['/site/mail']],
             
             ! Yii::$app->user->isGuest && Yii::$app->user->identity->userRole == 'user'
             ? ['label' => 'Забронировать столик', 'url' => ['/account/booking']]

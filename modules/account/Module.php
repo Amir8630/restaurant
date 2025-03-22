@@ -25,8 +25,7 @@ class Module extends \yii\base\Module
                     [ 
                         'allow' => true, 
                         'controllers' => ['account/booking'],
-                        'actions' => ['mail-view'], 
-                        'roles' => ['@'], 
+                        'actions' => ['mail-view', 'toggle-delete', 'return-table', 'cancel'], 
                         'matchCallback' => fn() => Yii::$app->user->isGuest || Yii::$app->user->identity->userRole == 'user', 
                     ],
                     [ 
