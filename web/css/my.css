@@ -1,0 +1,167 @@
+/* .res {
+    background-color: rgb(9, 177, 177);
+
+    width: 100%;
+    height: 400px;
+    z-index: 0;
+}
+
+
+ #hall-container {
+    padding-right: 50px;
+    width: 100%;
+    height: 100vh;
+    background-image: url('/img/test.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+} 
+
+#hall-container {
+    width: 100%;
+    height: 100vh;
+     background-image: url('/img/test.svg'); 
+    background-size: calc(100% - 40px) calc(100% - 40px); /* Уменьшаем фон на 40px (по 20px с каждой стороны) 
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+} */
+
+#hall-container {
+    width: 40vw;
+    height: 40vh;
+    /* position: relative; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    border: #605c62 solid 2px;
+    /* background-color: ;  */
+}
+
+/* #hall-svg {
+    max-width: 50%; 
+    max-height: 50%;
+} */
+.success{
+    fill: #d26907 !important;
+}
+
+
+/* #table1{
+    cursor: pointer;
+}
+#table2{
+    cursor: pointer;
+}
+#table3{
+    cursor: pointer;
+} */
+
+.available {
+    fill: green !important;
+}
+
+.booked {
+    fill: red !important;
+}
+
+.selected {
+    fill: #d26907 !important;
+   /* stroke: blue !important;  например, выделяем рамкой выбранные пользователем столы */
+   /* stroke-width: 2px; */
+}
+
+/* .divTable {
+    position: relative;
+    cursor: pointer;
+  }
+
+.selectedDiv {
+    background-color: #d26907;
+}
+  
+  .selectedDiv.pendingDelete::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background-color: red;
+    animation: fillRed 5s linear forwards;
+    mix-blend-mode: multiply;
+  }
+
+.pendingDelete.complete {
+    border: 3px solid blue;
+}
+  
+  @keyframes fillRed {
+    from {
+      height: 0%;
+    }
+    to {
+      height: 100%;
+    }
+  } */
+
+/* .selectedDiv {
+    background-color: #d26907;
+} */
+
+/* .divTable {
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+} */
+
+.divTable {
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    overflow: hidden;
+    box-sizing: border-box; 
+}
+
+.red-filler {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: red;
+    z-index: -1;
+}
+
+.selectedDiv.pendingDelete::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background-color: red;
+    z-index: -1;
+    animation: fillRed 10s linear forwards;
+}
+
+@keyframes fillRed {
+    from {
+        height: 0%;
+    }
+    to {
+        height: 100%;
+    }
+}
+
+.disabledTable {
+    pointer-events: none !important; 
+    background-color: red;
+    opacity: 0.5 !important;
+}
+
+@keyframes fillRedAnimation {
+    to {
+      height: 100%;
+    }
+}

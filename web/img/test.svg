@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="99.478539"
+   height="46.500004"
+   viewBox="0 0 99.478539 46.500004"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="swatch3">
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="0"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="swatch2">
+      <stop
+         style="stop-color:#98f6a9;stop-opacity:1;"
+         offset="0"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#swatch2"
+       id="linearGradient3"
+       x1="105.7362"
+       y1="97.453995"
+       x2="133.34357"
+       y2="97.453995"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#swatch2"
+       id="linearGradient6"
+       gradientUnits="userSpaceOnUse"
+       x1="105.7362"
+       y1="97.453995"
+       x2="133.34357"
+       y2="97.453995"
+       gradientTransform="matrix(0.35729076,0,0,0.10830216,139.60852,76.856577)" />
+  </defs>
+  <g
+     id="g1"
+     transform="translate(-88.067482,-71.226997)">
+    <rect
+       style="fill:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1"
+       width="35.337421"
+       height="26.226994"
+       x="88.067482"
+       y="71.226997" />
+    <rect
+       style="fill:#00ff0f;fill-opacity:1;stroke:url(#linearGradient3);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
+       id="table1"
+       width="27.607359"
+       height="37.546017"
+       x="105.7362"
+       y="78.680984" />
+    <rect
+       style="fill:#ff0000;stroke:url(#linearGradient6);stroke-width:0.590137;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
+       id="table2"
+       width="9.8638544"
+       height="4.0663147"
+       x="177.3871"
+       y="85.377899">
+      <desc
+         id="desc6">qqqq</desc>
+    </rect>
+    <ellipse
+       style="fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
+       id="path3"
+       cx="136.41487"
+       cy="90.793709"
+       rx="4.5897241"
+       ry="6.3151841" />
+    <ellipse
+       style="fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
+       id="path4"
+       cx="153.22086"
+       cy="89.896469"
+       rx="4.3481593"
+       ry="2.1740797" />
+    <ellipse
+       style="fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
+       id="path5"
+       cx="147.07822"
+       cy="98.075157"
+       rx="2.0015337"
+       ry="3.5199387" />
+  </g>
+</svg>
