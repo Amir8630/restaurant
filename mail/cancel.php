@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Напоминание о брони</title>
+    <title>Отмена бронирования</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,6 +25,15 @@
             font-size: 16px;
             color: #555;
         }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 5px;
+        }
         .footer {
             margin-top: 20px;
             font-size: 14px;
@@ -45,18 +54,16 @@
 </head>
 <body>
     <div class="container">
-        <h2>Напоминание о вашей брони</h2>
+        <h2>Бронь успешно отменена</h2>
         <p>Уважаемый(ая) <?=$fio_guest?>,</p>
-        <p>Напоминаем, что у вас забронирован(ы) столик(и) №<?=$IdTables?> в нашем ресторане.</p>
+        <p>Мы подтверждаем, что ваша бронь на столик(и) №<?=$IdTables?> успешно отменена.</p>
         <ul>
-            <li><strong>Дата:</strong> <?=$booking_date?></li>
+            <li><strong>Дата бронирования:</strong> <?=$booking_date?></li>
             <li><strong>Время прибытия:</strong> <?=$booking_time_start?></li>
             <li><strong>Время отбытия:</strong> <?=$booking_time_end?></li>
             <li><strong>Количество гостей:</strong> <?=$count_guest?></li>
-
         </ul>
-        <p>Мы будем рады видеть вас! Если у вас изменились планы, вы можете отменить бронь.</p>
-        <a href="<?=$restaurant_link?>" class="btn">Отменить бронирование</a>
+        <a href="<?=$restaurant_link?>" class="btn">Вернуться на сайт</a>
         <div class="footer">
             <p>С уважением, команда ресторана</p>
         </div>

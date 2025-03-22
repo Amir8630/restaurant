@@ -4,6 +4,7 @@ namespace app\commands;
 
 use app\models\Booking;
 use app\models\BookingTable;
+use app\models\Status;
 use yii\console\Controller;
 use yii\db\Expression;
 use app\models\User;
@@ -29,14 +30,12 @@ class MailController extends Controller
         Yii::$app->urlManager->hostInfo = '';
 
         $tomorrow = date('Y-m-d', strtotime('+1 day'));
-        $reservations = Booking::findAll(['booking_date' => $tomorrow]);
+        $reservations = Booking::findAll(['booking_date' => $tomorrow, 'status_id' => Status::getStatusId('Забронировано')]);
 
         foreach ($reservations as $reservation) {
 
             $tabels = BookingTable::findAll(['booking_id' => $reservation]);
             $tabels = implode(',', array_map(fn($t) => $t->table_id, $tabels));
-
-            $token = $reservation->token;        
 
             // $restaurant_link = 'http://'
             // . pathinfo($_SERVER['PWD'])['filename'] 
@@ -54,7 +53,6 @@ class MailController extends Controller
                     'count_guest' => $reservation->count_guest,
                     'IdTables' => $tabels,
                     'email' => $reservation->email,
-                    'token' => $token,
                     // 'restaurant_link' => 'http://' . pathinfo($_SERVER['PWD'])['filename'] . '.wsr.ru/account/booking/view?id='. $id .'',
                     'restaurant_link' => $restaurant_link,
                 ])

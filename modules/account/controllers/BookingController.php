@@ -92,27 +92,27 @@ class BookingController extends Controller
             $email
         )
      {
-         Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
-         if(Yii::$app->mailer
-             ->compose('mail', [
-                'fio_guest' => $fio_guest,
-                'booking_date' => $booking_date,
-                'booking_time_start' => $booking_time_start,
-                'booking_time_end' => $booking_time_end,
-                'count_guest' => $count_guest,
-                'IdTables' => $IdTables,
-                'email' => $email,
-                'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
-             ])
-             ->setFrom('restaurant.project@mail.ru')
-             ->setTo($email)
-             ->setSubject('Подтверждение бронирования')
-             ->send()
-         ) {
-             Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
-         } else {
-             Yii::$app->session->setFlash('warning', 'Ошибка!');
-         }
+        Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
+        if(Yii::$app->mailer
+            ->compose('mail', [
+            'fio_guest' => $fio_guest,
+            'booking_date' => $booking_date,
+            'booking_time_start' => $booking_time_start,
+            'booking_time_end' => $booking_time_end,
+            'count_guest' => $count_guest,
+            'IdTables' => $IdTables,
+            'email' => $email,
+            'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
+            ])
+            ->setFrom('restaurant.project@mail.ru')
+            ->setTo($email)
+            ->setSubject('Подтверждение бронирования')
+            ->send()
+        ) {
+            Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
+        } else {
+            Yii::$app->session->setFlash('warning', 'Ошибка!');
+        }
          
      }
 
@@ -234,6 +234,27 @@ public function actionGetBookedTables()
                 VarDumper::dump($model->errors, 10, true); die;
             }
             Yii::$app->session->setFlash('success', 'Вы успешно отменили бронь');
+
+            $tabels = BookingTable::findAll(['booking_id' => $model->id]);
+            $tabels = implode(',', array_map(fn($t) => $t->table_id, $tabels));
+
+            Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
+            Yii::$app->mailer
+                ->compose('cancel', [
+                'fio_guest' => $model->fio_guest,
+                'booking_date' => $model->booking_date,
+                'booking_time_start' => $model->booking_time_start,
+                'booking_time_end' => $model->booking_time_end,
+                'count_guest' => $model->count_guest,
+                'IdTables' => $tabels,
+                'email' => $model->email,
+                'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
+                ])
+                ->setFrom('restaurant.project@mail.ru')
+                ->setTo($model->email)
+                ->setSubject('Отмена бронирования')
+                ->send();
+
             return $this->render('view', [
                 'model' => $model,
             ]);
