@@ -89,9 +89,15 @@ class BookingController extends Controller
             $booking_time_end,
             $count_guest,
             $IdTables,
-            $email
+            $email,
+            $token
         )
      {
+        Yii::$app->urlManager->baseUrl = '';
+        Yii::$app->urlManager->scriptUrl = '';
+        Yii::$app->urlManager->hostInfo = '';
+        $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $token;
+
         Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
         if(Yii::$app->mailer
             ->compose('mail', [
@@ -102,7 +108,9 @@ class BookingController extends Controller
             'count_guest' => $count_guest,
             'IdTables' => $IdTables,
             'email' => $email,
-            'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
+            'restaurant_link' => $restaurant_link,
+            // 'restaurant_link' => 'http://' . pathinfo($_SERVER['PWD'])['filename'] . '.wsr.ru/account/booking/view?id='. $id .'',
+
             ])
             ->setFrom('restaurant.project@mail.ru')
             ->setTo($email)
@@ -148,6 +156,7 @@ class BookingController extends Controller
                         'count_guest' => $model->count_guest,
                         'email' => $model->email,
                         'IdTables' => $model->selected_tables,
+                        'token' => $model->token,
                     ]);
                     foreach ($IdTables as $key => $IdTable) {
 
@@ -233,6 +242,12 @@ public function actionGetBookedTables()
             if(!$model->save(false)) {
                 VarDumper::dump($model->errors, 10, true); die;
             }
+
+            BookingTable::updateAll(
+                ['delete_started_at' => date('Y-m-d H:i:s', time() - 50)],
+                ['booking_id' => $model->id]
+            );
+
             Yii::$app->session->setFlash('success', 'Вы успешно отменили бронь');
 
             $tabels = BookingTable::findAll(['booking_id' => $model->id]);
@@ -261,58 +276,74 @@ public function actionGetBookedTables()
         }
     }
 
+    // отмена стола
+    // public function actionToggleDelete()
+    // {
+    //     Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    //     $tableId = Yii::$app->request->post('table_id');
+    //     $bookingId = Yii::$app->request->post('booking_id');
 
-public function actionToggleDelete()
-{
-    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    $tableId = Yii::$app->request->post('table_id');
-    $bookingId = Yii::$app->request->post('booking_id');
-    // $pending = filter_var(Yii::$app->request->post('pending'), FILTER_VALIDATE_BOOLEAN);
+    //     if ($bookingTable = BookingTable::findOne(['table_id' => $tableId, 'booking_id' => $bookingId])) {
+    //         $bookingTable->status_id = Status::getStatusId('Свободно');
+    //         $bookingTable->delete_started_at = date('Y-m-d H:i:s');
+    //         $bookingTable->save(false);
+    //         return ['success' => true];
+    //     }     
 
-    if ($bookingTable = BookingTable::findOne(['table_id' => $tableId, 'booking_id' => $bookingId])) {
-        $bookingTable->status_id = Status::getStatusId('Свободно');
-        $bookingTable->delete_started_at = date('Y-m-d H:i:s');
-        // $bookingTable->is_blocked = 1;
-        $bookingTable->save(false);
-        return ['success' => true];
-    }     
-
-    return ['success' => false, 'message' => 'Стол не найден'];
-
-    // if ($pending) {
-    //     // Стол отмечаем как ожидающий удаления
-    //     // $bookingTable->is_pending_delete = 1;
-    //     $bookingTable->delete_started_at = date('Y-m-d H:i:s');
-    // } else {
-    //     // Если отменяем удаление
-    //     $bookingTable->is_pending_delete = 0;
-    //     $bookingTable->delete_started_at = null;
+    //     return ['success' => false, 'message' => 'Стол не найден'];
     // }
 
-    // $bookingTable->save(false);
-    // return ['success' => true, 'pending' => $pending];
-}
+    // отмена стола
+    public function actionToggleDelete()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $tableId = Yii::$app->request->post('table_id');
+        $bookingId = Yii::$app->request->post('booking_id');
 
-// отмена отмены стола
-public function actionReturnTable()
-{
-    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    $tableId   = Yii::$app->request->post('table_id');
-    $bookingId = Yii::$app->request->post('booking_id');
+        if ($bookingTable = BookingTable::findOne(['table_id' => $tableId, 'booking_id' => $bookingId])) {
+            $bookingTable->status_id = Status::getStatusId('Свободно');
+            $bookingTable->delete_started_at = date('Y-m-d H:i:s');
+            $bookingTable->save(false);
 
-    if($bookingTable = BookingTable::findOne(['table_id' => $tableId, 'booking_id' => $bookingId])) {
-        $bookingTable->status_id = Status::getStatusId('Забронировано');
-        $bookingTable->delete_started_at = null;
-        if(! $bookingTable->save(false)) {
-            VarDumper::dump($bookingTable->errors, 10, true); die;
-        }
-        // $bookingTable->save(false);
+            // Проверяем, остались ли столы в брони
+            // $remainingTables = BookingTable::findOne(
+            //     [
+            //         'booking_id' => $bookingId,
+            //         'delete_started_at' => null,
+            //         'status_id' => 'Забронировано'
+            //     ]);
 
-        return ['success' => true];
+            // if (! $remainingTables) {
+            //     // Вызываем метод отмены брони
+            //     $this->runAction('cancel', ['id' => $bookingId]);
+            // }
+
+            return ['success' => true];
+        }     
+
+        return ['success' => false, 'message' => 'Стол не найден'];
     }
 
-    return ['success' => false, 'message' => 'Стол не найден'];
-}
+    // отмена отмены стола
+    public function actionReturnTable()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $tableId   = Yii::$app->request->post('table_id');
+        $bookingId = Yii::$app->request->post('booking_id');
+
+        if($bookingTable = BookingTable::findOne(['table_id' => $tableId, 'booking_id' => $bookingId])) {
+            $bookingTable->status_id = Status::getStatusId('Забронировано');
+            $bookingTable->delete_started_at = null;
+            if(! $bookingTable->save(false)) {
+                VarDumper::dump($bookingTable->errors, 10, true); die;
+            }
+            // $bookingTable->save(false);
+
+            return ['success' => true];
+        }
+
+        return ['success' => false, 'message' => 'Стол не найден'];
+    }
 
 public function actionUpdate($id)
 {
