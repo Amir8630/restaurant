@@ -87,57 +87,99 @@ $this->params['breadcrumbs'][] = $this->title;
             //     'format' => 'raw' // Убедитесь, что формат установлен на 'raw', чтобы HTML-код отображался правильно
             // ],
 
+            // [
+            //     'attribute' => 'номер столика',
+            //     'value' => function ($model) {
+            //         $tables = BookingTable::findAll(['booking_id' => $model->id]);
+            //         $divsHtml = '<div style="display: flex; justify-content: center; flex-wrap: wrap;">';
+            //         $totalTime = 50; // время в секундах
+
+            //         foreach ($tables as $table) {
+            //             $classes = 'btn btn-outline-info m-2 selectedDiv divTable';
+            //             $inlineFiller = '';
+
+            //             if ($table->delete_started_at) {
+            //                 $classes .= ' disabledTable';
+            //                 $startTime = strtotime($table->delete_started_at);
+            //                 $now = time();
+            //                 $elapsed = $now - $startTime;
+
+            //                 // var_dump($table->delete_started_at);
+            //                 // var_dump($startTime);
+            //                 // var_dump($elapsed);
+            //                 // var_dump($elapsed >= $totalTime);
+            //                 // die;
+
+            //                 if ($elapsed >= $totalTime) {
+
+            //                     // Фикс: обновляем is_deleted = 1 в БД, если время истекло
+            //                     // $table->is_deleted = 1;
+            //                     $table->save(false);
+            //                     $classes .= ' disabledTable';
+            //                     $inlineFiller = '<div class="red-filler" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background-color: red; z-index: -1;"></div>';
+            //                 } else {
+
+            //                     $classes .= ' pendingDelete';
+            //                     $currentPercent = ($elapsed / $totalTime) * 100;
+            //                     $remainingTime = $totalTime - $elapsed;
+
+            //                     $animationStyle = $remainingTime > 0
+            //                         ? "animation: fillRedAnimation {$remainingTime}s linear forwards;"
+            //                         : '';
+
+            //                     $inlineFiller = '<div class="red-filler" style="position: absolute; bottom: 0; left: 0; width: 100%; height: '
+            //                         . $currentPercent . '%; background-color: red; z-index: -1; ' . $animationStyle . '"></div>';
+            //                 }
+            //             }
+
+            //             $divsHtml .= '<div id="table' . $table->table_id . '" class="' . $classes . '" 
+            //                           style="width: 38%; height: 60px; border: 1px solid #ccc; display: inline-block; margin: 5px; text-align: center; line-height: 60px; position: relative;">'
+            //                 . $inlineFiller
+            //                 . 'стол ' . $table->table_id . '</div>';
+            //         }
+
+            //         return $divsHtml . '</div>';
+            //     },
+            //     'format' => 'raw'
+            // ],
             [
                 'attribute' => 'номер столика',
                 'value' => function ($model) {
                     $tables = BookingTable::findAll(['booking_id' => $model->id]);
                     $divsHtml = '<div style="display: flex; justify-content: center; flex-wrap: wrap;">';
-                    $totalTime = 10; // время в секундах
-
+                    $totalTime = 50; // время в секундах
+            
                     foreach ($tables as $table) {
                         $classes = 'btn btn-outline-info m-2 selectedDiv divTable';
                         $inlineFiller = '';
-
+            
                         if ($table->delete_started_at) {
-                            $classes .= ' disabledTable';
                             $startTime = strtotime($table->delete_started_at);
                             $now = time();
                             $elapsed = $now - $startTime;
-
-                            // var_dump($table->delete_started_at);
-                            // var_dump($startTime);
-                            // var_dump($elapsed);
-                            // var_dump($elapsed >= $totalTime);
-                            // die;
-
+            
                             if ($elapsed >= $totalTime) {
-
-                                // Фикс: обновляем is_deleted = 1 в БД, если время истекло
-                                // $table->is_deleted = 1;
-                                $table->save(false);
+                                // Если прошло 50 секунд или более – сразу добавляем класс disabledTable
                                 $classes .= ' disabledTable';
                                 $inlineFiller = '<div class="red-filler" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background-color: red; z-index: -1;"></div>';
                             } else {
-
+                                // Если прошло меньше 50 секунд – добавляем pendingDelete и анимируем заполнение
                                 $classes .= ' pendingDelete';
                                 $currentPercent = ($elapsed / $totalTime) * 100;
                                 $remainingTime = $totalTime - $elapsed;
-
-                                $animationStyle = $remainingTime > 0
-                                    ? "animation: fillRedAnimation {$remainingTime}s linear forwards;"
-                                    : '';
-
+                                $animationStyle = "animation: fillRedAnimation {$remainingTime}s linear forwards;";
+                                // onanimationend добавит класс disabledTable родительскому элементу (т.е. самому диву столика)
                                 $inlineFiller = '<div class="red-filler" style="position: absolute; bottom: 0; left: 0; width: 100%; height: '
-                                    . $currentPercent . '%; background-color: red; z-index: -1; ' . $animationStyle . '"></div>';
+                                    . $currentPercent . '%; background-color: red; z-index: -1; ' . $animationStyle . '" onanimationend="this.parentNode.classList.add(\'disabledTable\');"></div>';
                             }
                         }
-
+            
                         $divsHtml .= '<div id="table' . $table->table_id . '" class="' . $classes . '" 
                                       style="width: 38%; height: 60px; border: 1px solid #ccc; display: inline-block; margin: 5px; text-align: center; line-height: 60px; position: relative;">'
                             . $inlineFiller
                             . 'стол ' . $table->table_id . '</div>';
                     }
-
+            
                     return $divsHtml . '</div>';
                 },
                 'format' => 'raw'

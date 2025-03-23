@@ -1,44 +1,3 @@
-// $('#main').on('click', '[id^="table"]', function(e) {
-//     e.preventDefault();
-//     let booking_id = $('.booking-view').data('booking-id');
-//     let table = $(this);
-//     let number = table.attr('id').replace(/^\D+/, '');
-    
-//     if (!table.hasClass('pendingDelete')) {
-//         if (confirm(`Вы точно хотите удалить ${number} стол из брони?`)) {
-//             table.addClass('pendingDelete');
-
-//             $.post('toggle-delete', { table_id: number, booking_id: booking_id, pending: true });
-
-//             let timerId = setTimeout(function() {
-//                 $.ajax({
-//                     url: 'deleted-table',
-//                     method: 'POST',
-//                     data: { table_id: number, booking_id: booking_id, pending: true  },
-//                     success: function(response) {
-//                         console.log('Столик удалён из брони окончательно.');
-//                         table.addClass('disabledTable');
-//                     },
-//                     error: function() {
-//                         console.error('Ошибка при удалении брони.');
-//                     }
-//                 });
-//             }, 10000); // например, 10 сек. для тестирования
-//             table.data('deleteTimeout', timerId);
-//         }
-//     } else {
-//         if (confirm("Отменить удаление этого стола из брони?")) {
-//             // Если таймер уже не сохранён (страница перезагружена), clearTimeout ничего не сделает,
-//             // поэтому дополнительно удаляем инлайновый элемент красного заполнения.
-//             clearTimeout(table.data('deleteTimeout'));
-//             table.removeClass('pendingDelete complete');
-//             table.find('.red-filler').remove();
-//             $.post('toggle-delete', { table_id: number, booking_id: booking_id, pending: false });
-//         }
-//     }
-// });
-
-
 $('#main').on('click', '[id^="table"]', function(e) {
     e.preventDefault();
     let booking_id = $('.booking-view').data('booking-id');
@@ -49,6 +8,7 @@ $('#main').on('click', '[id^="table"]', function(e) {
         if (confirm(`Вы точно хотите удалить ${number} стол из брони?`)) {
             table.addClass('pendingDelete');
 
+          
             $.post('toggle-delete', { table_id: number, booking_id: booking_id, pending: true });
 
             let timerId = setTimeout(function() {
@@ -64,7 +24,7 @@ $('#main').on('click', '[id^="table"]', function(e) {
                     //     console.error('Ошибка при удалении брони.');
                     // }
                 // });
-            }, 10000); // например, 10 сек. для тестирования
+            }, 50000); // например, 50 сек. для тестирования
             table.data('deleteTimeout', timerId);
         }
     } else {

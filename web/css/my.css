@@ -142,7 +142,7 @@
     height: 0%;
     background-color: red;
     z-index: -1;
-    animation: fillRed 10s linear forwards;
+    animation: fillRed 50s linear forwards;
 }
 
 @keyframes fillRed {
