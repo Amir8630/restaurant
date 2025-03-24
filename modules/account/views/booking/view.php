@@ -48,14 +48,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'booking_date',
                 'format' => ['datetime', 'php:d.m.Y'],
             ],
-            [
-                'attribute' => 'booking_time_start',
-                'format' => ['datetime', 'php:H:i:s'],
-            ],
-            [
-                'attribute' => 'booking_time_end',
-                'format' => ['datetime', 'php:H:i:s'],
-            ],
+            'booking_time_start',
+
+            //В таком формат вреия не праильное оно посто другое надо проверить часовой пояс 
+            // [
+            //     'attribute' => 'booking_time_start',
+            //     'format' => ['datetime', 'php:H:i:s'],
+            // ],
+            'booking_time_end',
+
+            // [
+            //     'attribute' => 'booking_time_end',
+            //     'format' => ['datetime', 'php:H:i:s'],
+            // ],
             [
                 'attribute' => 'status_id',
                 'value' => $model->status->title,
@@ -63,85 +68,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'count_guest',
             'phone',
             'email:email',
-
-            //нужно сделать проверку статуса, видны столы только со статусом актив
-            //в идеале сделать чтобы поля обновлялис как в корзине с + и -
-            // [
-            //     'attribute' => 'номер столика',
-            //     'value' => function ($model) {
-            //         $tables = BookingTable::findAll(['booking_id' => $model->id]);                    
-
-            //         $idTables = array_map(function($table) {
-            //             return $table->table_id;
-            //         }, $tables);
-
-            //         // Генерируем HTML-код для div-элементов
-            //         $divsHtml = '<div style="display: flex; justify-content: center; flex-wrap: wrap;">'; 
-
-            //         foreach ($idTables as $idTable) {
-            //             // Создаем div для каждого столика
-            //             $divsHtml .= '<div id = "table'. $idTable .'"class="btn btn-outline-info m-2 selectedDiv divTable" style="width: 38%; height: 10%;border: 1px solid #ccc; display: inline-block; margin-right: 5px; text-align: center; line-height: 50px;">стол ' . $idTable . '</div>';
-            //         }
-            //         return $divsHtml .= '</div>';
-            //     },
-            //     'format' => 'raw' // Убедитесь, что формат установлен на 'raw', чтобы HTML-код отображался правильно
-            // ],
-
-            // [
-            //     'attribute' => 'номер столика',
-            //     'value' => function ($model) {
-            //         $tables = BookingTable::findAll(['booking_id' => $model->id]);
-            //         $divsHtml = '<div style="display: flex; justify-content: center; flex-wrap: wrap;">';
-            //         $totalTime = 50; // время в секундах
-
-            //         foreach ($tables as $table) {
-            //             $classes = 'btn btn-outline-info m-2 selectedDiv divTable';
-            //             $inlineFiller = '';
-
-            //             if ($table->delete_started_at) {
-            //                 $classes .= ' disabledTable';
-            //                 $startTime = strtotime($table->delete_started_at);
-            //                 $now = time();
-            //                 $elapsed = $now - $startTime;
-
-            //                 // var_dump($table->delete_started_at);
-            //                 // var_dump($startTime);
-            //                 // var_dump($elapsed);
-            //                 // var_dump($elapsed >= $totalTime);
-            //                 // die;
-
-            //                 if ($elapsed >= $totalTime) {
-
-            //                     // Фикс: обновляем is_deleted = 1 в БД, если время истекло
-            //                     // $table->is_deleted = 1;
-            //                     $table->save(false);
-            //                     $classes .= ' disabledTable';
-            //                     $inlineFiller = '<div class="red-filler" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background-color: red; z-index: -1;"></div>';
-            //                 } else {
-
-            //                     $classes .= ' pendingDelete';
-            //                     $currentPercent = ($elapsed / $totalTime) * 100;
-            //                     $remainingTime = $totalTime - $elapsed;
-
-            //                     $animationStyle = $remainingTime > 0
-            //                         ? "animation: fillRedAnimation {$remainingTime}s linear forwards;"
-            //                         : '';
-
-            //                     $inlineFiller = '<div class="red-filler" style="position: absolute; bottom: 0; left: 0; width: 100%; height: '
-            //                         . $currentPercent . '%; background-color: red; z-index: -1; ' . $animationStyle . '"></div>';
-            //                 }
-            //             }
-
-            //             $divsHtml .= '<div id="table' . $table->table_id . '" class="' . $classes . '" 
-            //                           style="width: 38%; height: 60px; border: 1px solid #ccc; display: inline-block; margin: 5px; text-align: center; line-height: 60px; position: relative;">'
-            //                 . $inlineFiller
-            //                 . 'стол ' . $table->table_id . '</div>';
-            //         }
-
-            //         return $divsHtml . '</div>';
-            //     },
-            //     'format' => 'raw'
-            // ],
             [
                 'attribute' => 'номер столика',
                 'value' => function ($model) {

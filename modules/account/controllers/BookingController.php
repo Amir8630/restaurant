@@ -244,7 +244,10 @@ public function actionGetBookedTables()
             }
 
             BookingTable::updateAll(
-                ['delete_started_at' => date('Y-m-d H:i:s', time() - 50)],
+                [
+                    'delete_started_at' => date('Y-m-d H:i:s', time() - 50),
+                    'status_id' => Status::getStatusId('Свободно')
+                ],
                 ['booking_id' => $model->id]
             );
 
@@ -304,19 +307,6 @@ public function actionGetBookedTables()
             $bookingTable->status_id = Status::getStatusId('Свободно');
             $bookingTable->delete_started_at = date('Y-m-d H:i:s');
             $bookingTable->save(false);
-
-            // Проверяем, остались ли столы в брони
-            // $remainingTables = BookingTable::findOne(
-            //     [
-            //         'booking_id' => $bookingId,
-            //         'delete_started_at' => null,
-            //         'status_id' => 'Забронировано'
-            //     ]);
-
-            // if (! $remainingTables) {
-            //     // Вызываем метод отмены брони
-            //     $this->runAction('cancel', ['id' => $bookingId]);
-            // }
 
             return ['success' => true];
         }     
