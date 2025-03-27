@@ -29,11 +29,10 @@ function validateAndFetchBookedTables() {
     let startTime = $('#booking-booking_time_start').val();
     let endTime = $('#booking-booking_time_end').val();
 
-    // Проверяем, заполнены ли все три поля
     if (bookingDate && startTime && endTime) {
         console.log('data success');
         $.ajax({
-            url: 'get-booked-tables', // '/account/booking/get-booked-tables'
+            url: 'get-booked-tables',
             type: 'POST',
             data: {
                 booking_date: bookingDate,
@@ -55,7 +54,14 @@ function validateAndFetchBookedTables() {
     }
 }
 
-// Обработчик изменения времени начала
+// Автоматическое обновление забронированных столов после загрузки страницы
+$(document).ready(function() {
+    validateAndFetchBookedTables();
+    // $('#selected-tables').val('');
+
+});
+
+// Автоматическое заполнение времени окончания (+2 часа)
 $('#booking-booking_time_start').on('change', function() {
     let timeStart = $(this).val();
     if (timeStart) {

@@ -15,22 +15,22 @@ class Module extends \yii\base\Module
      */
     public $controllerNamespace = 'app\modules\admin\controllers';
 
-    // public function behaviors()
-    // {
-    //     return [
-    //         'access' => [
-    //             'class' => AccessControl::class,
-    //             'denyCallback' => fn() => Yii::$app->response->redirect('/'),
-    //             'rules' => [
-    //                 [
-    //                     'allow' => true,
-    //                     'roles' => ['@'],
-    //                     'matchCallback' => fn() => Yii::$app->user->identity->userRole == 'user',
-    //                 ],
-    //             ],
-    //         ],
-    //     ];
-    // }
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'denyCallback' => fn() => Yii::$app->response->redirect('/'),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => fn() => Yii::$app->user->identity->userRole == 'admin',
+                    ],
+                ],
+            ],
+        ];
+    }
 
     /**
      * {@inheritdoc}

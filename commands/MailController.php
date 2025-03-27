@@ -37,11 +37,13 @@ class MailController extends Controller
             $tabels = BookingTable::findAll(['booking_id' => $reservation]);
             $tabels = implode(',', array_map(fn($t) => $t->table_id, $tabels));
 
-            // $restaurant_link = 'http://'
-            // . pathinfo($_SERVER['PWD'])['filename'] 
-            // . '.wsr.ru/account/booking/mail-view?id=' . $reservation->token;
+            // для сервера
+            $restaurant_link = 'http://'
+            . pathinfo($_SERVER['PWD'])['filename'] 
+            . '.wsr.ru/account/booking/mail-view?token=' . $reservation->token;
 
-            $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $reservation->token;
+            // для localhost
+            // $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $reservation->token; 
 
             Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
             if (Yii::$app->mailer
@@ -53,7 +55,6 @@ class MailController extends Controller
                     'count_guest' => $reservation->count_guest,
                     'IdTables' => $tabels,
                     'email' => $reservation->email,
-                    // 'restaurant_link' => 'http://' . pathinfo($_SERVER['PWD'])['filename'] . '.wsr.ru/account/booking/view?id='. $id .'',
                     'restaurant_link' => $restaurant_link,
                 ])
                 ->setFrom('restaurant.project@mail.ru')

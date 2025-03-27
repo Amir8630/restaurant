@@ -73,6 +73,7 @@ $config = [
         ],
         'account' => [
             'class' => 'app\modules\account\Module',
+            'defaultRoute' => 'booking/index',
         ],
         'waiter' => [
             'class' => 'app\modules\waiter\Module',

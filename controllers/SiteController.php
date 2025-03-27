@@ -72,6 +72,7 @@ class SiteController extends Controller
         // var_dump(date('H:i:s')); 
         // var_dump(date('H:i:s') - '20'); die;
 
+
         return $this->render('index');
     }
 
@@ -96,7 +97,7 @@ class SiteController extends Controller
                     return $this->redirect('/admin');
                     break;
                 case 'user':
-                    return $this->redirect('/admin');
+                    return $this->redirect('/account');
                     break;
                 case 'manager':
                     return $this->redirect('/manager');
