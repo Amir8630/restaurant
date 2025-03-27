@@ -24,7 +24,6 @@ $(() => {
                     $('#cancel-modal').modal('hide')
                 }
             }
-
         })
         return false;
     })
