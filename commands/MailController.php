@@ -36,14 +36,15 @@ class MailController extends Controller
 
             $tabels = BookingTable::findAll(['booking_id' => $reservation]);
             $tabels = implode(',', array_map(fn($t) => $t->table_id, $tabels));
+            
+            // для localhost
+            $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $reservation->token; 
 
             // для сервера
-            $restaurant_link = 'http://'
-            . pathinfo($_SERVER['PWD'])['filename'] 
-            . '.wsr.ru/account/booking/mail-view?token=' . $reservation->token;
+            // $restaurant_link = 'http://'
+            // . pathinfo($_SERVER['PWD'])['filename'] 
+            // . '.wsr.ru/account/booking/mail-view?token=' . $reservation->token;
 
-            // для localhost
-            // $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $reservation->token; 
 
             Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
             if (Yii::$app->mailer
@@ -74,44 +75,3 @@ class MailController extends Controller
         return ExitCode::OK;
     }
 }
-
-// base64_decode($str);
-// base64_encode($str);
-
-// Генерация токена
-// $secretKey = 'your_secret_key'; // Задай секретный ключ
-// $id = $reservation->id;
-// $hash = hash_hmac('sha256', $id, $secretKey); // Хешируем ID с ключом
-// $token = base64_encode($id . ':' . $hash);
-
-// // Формируем ссылку с токеном
-// $restaurant_link = 'http://' . pathinfo($_SERVER['PWD'])['filename'] . 
-//     '.wsr.ru/account/booking/view?token=' . urlencode($token);
-
-// public function actionView($token)
-// {
-//     $secretKey = 'your_secret_key'; // Должен совпадать с тем, что в MailController
-
-//     // Декодируем токен
-//     $decoded = base64_decode($token);
-//     if (!$decoded) {
-//         throw new \yii\web\ForbiddenHttpException('Неверный токен');
-//     }
-
-//     // Разбираем ID и хеш
-//     [$id, $hash] = explode(':', $decoded, 2);
-
-//     // Проверяем хеш
-//     if (hash_hmac('sha256', $id, $secretKey) !== $hash) {
-//         throw new \yii\web\ForbiddenHttpException('Ошибка аутентификации');
-//     }
-
-//     // Ищем бронь по ID
-//     $booking = Booking::findOne($id);
-//     if (!$booking) {
-//         throw new \yii\web\NotFoundHttpException('Бронь не найдена');
-//     }
-
-//     // Показываем страницу с бронью
-//     return $this->render('view', ['model' => $booking]);
-// }

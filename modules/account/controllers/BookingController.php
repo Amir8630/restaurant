@@ -99,10 +99,10 @@ class BookingController extends Controller
         Yii::$app->urlManager->hostInfo = '';
         
         // для localhost
-        // $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $token; 
+        $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $token; 
 
         // для сервера
-        $restaurant_link = 'http://avcsvty-m2.wsr.ru/account/booking/mail-view?token=' . $token;
+        // $restaurant_link = 'http://avcsvty-m2.wsr.ru/account/booking/mail-view?token=' . $token;
 
         Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
         if(Yii::$app->mailer
@@ -275,13 +275,6 @@ class BookingController extends Controller
         return $bookedTables;
     }
 
-    /**
-     * Updates an existing Booking model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id Бронь №
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionCancel($id)
     {
         if($model = $this->findModel($id)) {
@@ -320,11 +313,99 @@ class BookingController extends Controller
                 ->setSubject('Отмена бронирования')
                 ->send();
 
-            return $this->render('view', [
-                'model' => $model,
-            ]);
+                // return $this->redirect(['index']);
+                return $this->render('view', [
+                    'model' => $model,
+                ]);
         }
     }
+    public function actionCancelModal($id)
+    {
+        if($model = $this->findModel($id)) {
+            $model->status_id = Status::getStatusId('Отменено');
+            if(!$model->save(false)) {
+                VarDumper::dump($model->errors, 10, true); die;
+            }
+
+            BookingTable::updateAll(
+                [
+                    'delete_started_at' => date('Y-m-d H:i:s', time() - 50),
+                    'status_id' => Status::getStatusId('Свободно')
+                ],
+                ['booking_id' => $model->id]
+            );
+
+            Yii::$app->session->setFlash('success', 'Вы успешно отменили бронь');
+
+            $tabels = BookingTable::findAll(['booking_id' => $model->id]);
+            $tabels = implode(',', array_map(fn($t) => $t->table_id, $tabels));
+
+            Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
+            Yii::$app->mailer
+                ->compose('cancel', [
+                'fio_guest' => $model->fio_guest,
+                'booking_date' => $model->booking_date,
+                'booking_time_start' => $model->booking_time_start,
+                'booking_time_end' => $model->booking_time_end,
+                'count_guest' => $model->count_guest,
+                'IdTables' => $tabels,
+                'email' => $model->email,
+                'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
+                ])
+                ->setFrom('restaurant.project@mail.ru')
+                ->setTo($model->email)
+                ->setSubject('Отмена бронирования')
+                ->send();
+
+                return $this->asJson(true);
+                            // ждеть dataProvider   а что если не деоатьб ренлер а промто через джс сделать  reload
+        }
+    }
+
+
+    // public function actionCancel($id)
+    // {
+    //     if($model = $this->findModel($id)) {
+    //         $model->status_id = Status::getStatusId('Отменено');
+    //         if(!$model->save(false)) {
+    //             VarDumper::dump($model->errors, 10, true); die;
+    //         }
+
+    //         BookingTable::updateAll(
+    //             [
+    //                 'delete_started_at' => date('Y-m-d H:i:s', time() - 50),
+    //                 'status_id' => Status::getStatusId('Свободно')
+    //             ],
+    //             ['booking_id' => $model->id]
+    //         );
+
+    //         Yii::$app->session->setFlash('success', 'Вы успешно отменили бронь');
+
+    //         $tabels = BookingTable::findAll(['booking_id' => $model->id]);
+    //         $tabels = implode(',', array_map(fn($t) => $t->table_id, $tabels));
+
+    //         Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
+    //         Yii::$app->mailer
+    //             ->compose('cancel', [
+    //             'fio_guest' => $model->fio_guest,
+    //             'booking_date' => $model->booking_date,
+    //             'booking_time_start' => $model->booking_time_start,
+    //             'booking_time_end' => $model->booking_time_end,
+    //             'count_guest' => $model->count_guest,
+    //             'IdTables' => $tabels,
+    //             'email' => $model->email,
+    //             'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
+    //             ])
+    //             ->setFrom('restaurant.project@mail.ru')
+    //             ->setTo($model->email)
+    //             ->setSubject('Отмена бронирования')
+    //             ->send();
+
+    //         return $this->render('view', [
+    //             'model' => $model,
+    //         ]);
+    //     }
+    // }
 
     // отмена стола
     public function actionToggleDelete()

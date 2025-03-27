@@ -1,10 +1,13 @@
 <?php
 
 use app\models\Booking;
+use app\widgets\Alert;
 use yii\bootstrap5\LinkPager;
+use yii\bootstrap5\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
+use yii\web\YiiAsset;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
@@ -22,7 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Забронировать', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin(['id' => 'pjax-booking-index']); ?> 
+    
+    <?= Alert::widget() ?>
+
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= ListView::widget([
@@ -36,3 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::end(); ?>
 
 </div>
+
+<?= $this->render('modal', ['pjax' => '#pjax-booking-index']) ?>
+

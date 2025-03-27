@@ -3,6 +3,7 @@
 use app\models\BookingTable;
 use app\models\Status;
 use yii\bootstrap5\Html;
+use yii\bootstrap5\Modal;
 use yii\helpers\VarDumper;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
@@ -19,15 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h3><?= Html::encode('Бронь №' . $this->title) ?></h3>
 
-    <p>
+    <p id="booking-view">
         <?= Html::a('Назад', ['index'], ['class' => 'btn btn-outline-primary']) ?>
-        <?= $model->status_id == Status::getStatusId('Забронировано') ? Html::a('Отменить', ['cancel', 'id' => $model->id], [
-            'class' => 'btn btn-outline-danger',
-            'data' => [
-                'confirm' => 'Вы уверены?',
-                'method' => 'post',
-            ],
-        ])
+        <?= $model->status_id == Status::getStatusId('Забронировано') ? Html::a('Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal'])
         :'' ?>
     </p>
 
@@ -118,3 +113,5 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?= $this->registerJsFile('/js/cancelTable.js', ['depends' => YiiAsset::class]); ?>
+
+<?= $this->render('modal') ?>
