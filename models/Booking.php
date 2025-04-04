@@ -89,12 +89,12 @@ class Booking extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Бронь №',
-            'fio_guest' => 'На какое имя бронируем?',
+            'fio_guest' => 'На кого бронируем?',
             'user_id' => 'Заказчик',
             'created_at' => 'Дата и время создания брони',
             'booking_date' => 'Дата брони',
-            'booking_time_start' => 'Время прибытия',
-            'booking_time_end' => 'Время отбытия (*необходимо указать если вы планируете остоваться больше 2 часов)',
+            'booking_time_start' => 'Начало',
+            'booking_time_end' => 'Окончание (*необходимо указать если больше 2 часов)',
             'status_id' => 'Статус',
             'count_guest' => 'Количество персон',
             'phone' => 'Номер телефона',

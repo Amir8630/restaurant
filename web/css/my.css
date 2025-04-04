@@ -28,15 +28,25 @@
     position: relative;
 } */
 
-#hall-container {
-    width: 40vw;
-    height: 40vh;
+/* #hall-container { */
+    /* width: 40vw; */
+    /* height: 40vh; */
     /* position: relative; */
     /* display: flex;
     justify-content: center;
     align-items: center; */
-    border: #605c62 solid 2px;
+    /* border: #605c62 solid 2px; */
     /* background-color: ;  */
+/* } */
+
+#hall-container {
+    width: 100%;
+    max-width: 800px; /* или другой подходящий размер */
+    margin: 0 auto;
+}
+#hall-container svg {
+    width: 100%;
+    /* height: auto; */
 }
 
 /* #hall-svg {

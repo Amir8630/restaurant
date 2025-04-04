@@ -31,7 +31,7 @@ use yii\bootstrap5\ActiveForm;
     <?= $form->field($model, 'selected_tables')->hiddenInput(['id' => 'selected-tables'])->label(false) ?>
 
     <div id="hall-container">
-        <?= file_get_contents(Yii::getAlias('@webroot/img/test_tabels.svg')) ?>
+        <?= file_get_contents(Yii::getAlias('img/test_tabels.svg')) ?>
     </div>
 
     <?= $this->registerJsFile('/js/booking.js', ['depends' => YiiAsset::class]); ?>
