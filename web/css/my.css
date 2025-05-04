@@ -68,12 +68,48 @@
     cursor: pointer;
 } */
 
+/* .available {
+    fill: #29C770 !important;
+} */
+
+/* Классы, которые _начинаются_ с "table" */
 .available {
-    fill: green !important;
+    fill: #29C770 !important;
+   /* stroke: blue !important;  например, выделяем рамкой выбранные пользователем столы */
+   /* stroke-width: 2px; */
+}
+
+.available rect,
+.available path {
+    fill: #29C770 !important;
+    /*  Ренген */
+    /* fill-opacity: 0.8 !important; */
+    stroke: #29C770 !important;
+    opacity: 0.8 !important;
+}
+
+.available .number {
+    stroke: white !important;
+    opacity: 0.8 !important;
 }
 
 .booked {
-    fill: red !important;
+    fill: #ff284c !important;
+}
+
+.booked rect,
+.booked path {
+    fill: #ff284c !important;
+    /*  Ренген */
+    /* fill-opacity: 0.8 !important; */
+    stroke: #ff284c  !important;
+    opacity: 0.8 !important;
+
+}
+
+.booked .number {
+    stroke: white !important;
+    opacity: 0.8 !important;
 }
 
 .selected {
@@ -82,6 +118,25 @@
    /* stroke-width: 2px; */
 }
 
+.selected rect,
+.selected path {
+    fill: #d26907 !important;
+    /*  Ренген */
+    /* fill-opacity: 0.8 !important; */
+    stroke: #d26907 !important;
+    opacity: 0.8 !important;
+}
+
+/* Переопределяем для цифр */
+.selected .number {
+    stroke: white !important;
+    opacity: 0.8 !important;
+}
+
+.number {
+    stroke: white !important;
+    opacity: 0.8 !important;
+}
 /* .divTable {
     position: relative;
     cursor: pointer;

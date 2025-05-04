@@ -49,26 +49,46 @@ class Booking extends \yii\db\ActiveRecord
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             ['email', 'email'],
             // ['phone', 'match', 'pattern' => '/^\+7 \([0-9]{3}\)\-[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/', 'message' => 'Только в формате +7 (999)-999-99-99'],
-            ['selected_tables', 'validateCountGuest'],
-            ['booking_time_start', 'validateTimeStart'],
+            [['selected_tables', 'count_guest'], 'validateCountGuest'],
+            ['booking_date', 'validateBookingDate'],
+            [['booking_time_start', 'booking_time_end'], 'validateTimeStart'],
             ['booking_time_end', 'validateTimeEnd'],
         ];
     }
-
-    public function validateTimeStart($attribute, $params)
+// Мы работаем с 07:00 до 23:00 и т.к у нас есть 
+    public function validateBookingDate()
     {
-        if ($this->$attribute > '22:00') {
-            $this->addError($attribute, 'Время прибытия не может быть позже 22:00.');
+        if ($this->booking_date < date('Y-m-d')) {
+            return $this->addError('booking_date', 'Дата бронирования не может быть в прошлом.');
+        }
+
+        if ($this->booking_time_start < date('H:i') && $this->booking_date == date('Y-m-d')) {
+            return $this->addError('booking_time_start', 'Вы не можете забронировать на прошедшее время.');
+        }
+    }
+
+    public function validateTimeStart()
+    {
+        // if ($this->booking_time_start > '22:00') {
+        //     return $this->addError('booking_time_start', 'Время начала бронирования не должно превышать 22:00.');
+        // }
+
+        if ($this->booking_time_start < date('H:i') && $this->booking_date == date('Y-m-d')) {
+            return $this->addError('booking_time_start', 'Вы не можете забронировать на прошедшее время.');
+        }
+ 
+        if ($this->booking_time_start > $this->booking_time_end) {
+            return $this->addError('booking_time_start', 'Время начала не может быть позже времени окончания.');
         }
     }
     
-    public function validateTimeEnd($attribute, $params)
+    public function validateTimeEnd()
     {
-        if($this->booking_time_start >= $this->$attribute) {
-            if(! $this->booking_time_start == '22:00') {
-                $this->addError($attribute, 'минимальный интеравал 2 часа или 1 час'); // плохо работате 12:12 12:12 нет ошибок чо не правильно 
-            }
-        }
+        // if($this->booking_time_start >= $this->booking_time_end) {
+        //     if(! $this->booking_time_start == '22:00') {
+        //         return $this->addError('booking_time_end', 'минимальный интеравал 2 часа или 1 час'); // плохо работате 12:12 12:12 нет ошибок чо не правильно 
+        //     }
+        // }
     }
 
 
@@ -77,8 +97,21 @@ class Booking extends \yii\db\ActiveRecord
         $countTables = explode(',', $this->selected_tables);
         $countTables = count($countTables); 
 
-        if($this->count_guest > $countTables * 6) { 
-            $this->addError('count_guest', 'Максимальное количество гостей на такое колисество столов: ' . $countTables * 6);
+        if ($this->count_guest > $countTables * 6) { 
+            $tableWord = $countTables == 1 ? 'стол' : ($countTables > 1 && $countTables < 5 ? 'стола' : 'столов');
+            return $this->addError(
+                'count_guest', 
+                'Вы выбрали ' . $countTables . ' ' . $tableWord . ', максимальное количество гостей: ' . ($countTables * 6)
+            );
+        }
+
+        if ($this->count_guest < $countTables) {
+            $tableWord = $countTables == 1 ? 'стол' : ($countTables > 1 && $countTables < 5 ? 'стола' : 'столов');
+            $guestWord = $this->count_guest == 1 ? 'гостя' : 'гостей';
+            return $this->addError(
+                'count_guest', 
+                'Минимум 1 гость на каждый стол. Вы выбрали ' . $countTables . ' ' . $tableWord . ', но указали только ' . $this->count_guest . ' ' . $guestWord . '.'
+            );
         }
     }
 

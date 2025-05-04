@@ -93,7 +93,7 @@ class BookingController extends Controller
             $email,
             $token
         )
-     {
+    {
         Yii::$app->urlManager->baseUrl = '';
         Yii::$app->urlManager->scriptUrl = '';
         Yii::$app->urlManager->hostInfo = '';
@@ -127,7 +127,7 @@ class BookingController extends Controller
             Yii::$app->session->setFlash('warning', 'Ошибка!');
         }
          
-     }
+    }
 
     public function actionCreate()
     {
@@ -211,22 +211,20 @@ class BookingController extends Controller
                     }
 
                     // Отправка письма
-                    $this->runAction('mail', [
-                        'fio_guest' => $model->fio_guest,
-                        'booking_date' => $model->booking_date,
-                        'booking_time_start' => $model->booking_time_start,
-                        'booking_time_end' => $model->booking_time_end,
-                        'count_guest' => $model->count_guest,
-                        'email' => $model->email,
-                        'IdTables' => $model->selected_tables,
-                        'token' => $model->token,
-                    ]);
+                    // $this->runAction('mail', [
+                    //     'fio_guest' => $model->fio_guest,
+                    //     'booking_date' => $model->booking_date,
+                    //     'booking_time_start' => $model->booking_time_start,
+                    //     'booking_time_end' => $model->booking_time_end,
+                    //     'count_guest' => $model->count_guest,
+                    //     'email' => $model->email,
+                    //     'IdTables' => $model->selected_tables,
+                    //     'token' => $model->token,
+                    // ]);
 
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -313,7 +311,7 @@ class BookingController extends Controller
                 ->setSubject('Отмена бронирования')
                 ->send();
 
-                // return $this->redirect(['index']);
+                return $this->redirect(['index']);
                 return $this->render('view', [
                     'model' => $model,
                 ]);
@@ -361,51 +359,6 @@ class BookingController extends Controller
                             // ждеть dataProvider   а что если не деоатьб ренлер а промто через джс сделать  reload
         }
     }
-
-
-    // public function actionCancel($id)
-    // {
-    //     if($model = $this->findModel($id)) {
-    //         $model->status_id = Status::getStatusId('Отменено');
-    //         if(!$model->save(false)) {
-    //             VarDumper::dump($model->errors, 10, true); die;
-    //         }
-
-    //         BookingTable::updateAll(
-    //             [
-    //                 'delete_started_at' => date('Y-m-d H:i:s', time() - 50),
-    //                 'status_id' => Status::getStatusId('Свободно')
-    //             ],
-    //             ['booking_id' => $model->id]
-    //         );
-
-    //         Yii::$app->session->setFlash('success', 'Вы успешно отменили бронь');
-
-    //         $tabels = BookingTable::findAll(['booking_id' => $model->id]);
-    //         $tabels = implode(',', array_map(fn($t) => $t->table_id, $tabels));
-
-    //         Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
-    //         Yii::$app->mailer
-    //             ->compose('cancel', [
-    //             'fio_guest' => $model->fio_guest,
-    //             'booking_date' => $model->booking_date,
-    //             'booking_time_start' => $model->booking_time_start,
-    //             'booking_time_end' => $model->booking_time_end,
-    //             'count_guest' => $model->count_guest,
-    //             'IdTables' => $tabels,
-    //             'email' => $model->email,
-    //             'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
-    //             ])
-    //             ->setFrom('restaurant.project@mail.ru')
-    //             ->setTo($model->email)
-    //             ->setSubject('Отмена бронирования')
-    //             ->send();
-
-    //         return $this->render('view', [
-    //             'model' => $model,
-    //         ]);
-    //     }
-    // }
 
     // отмена стола
     public function actionToggleDelete()

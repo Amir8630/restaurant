@@ -22,7 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p id="booking-view">
         <?= Html::a('Назад', ['index'], ['class' => 'btn btn-outline-primary']) ?>
-        <?= $model->status_id == Status::getStatusId('Забронировано') ? Html::a('Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal'])
+        <?= $model->status_id == Status::getStatusId('Забронировано') 
+        ? Html::a('Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal'])
         :'' ?>
     </p>
 

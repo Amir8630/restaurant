@@ -4,9 +4,16 @@ $('#hall-container').on('click', '[id^="table"]', function(e) {
     
     if (!$(this).hasClass('booked')) {
         $(this).toggleClass('selected');
+        // $(this).toggleClass('available');
         updateSelectedTables();
     }
 });
+
+// функция для валидации столиков и количества гостей
+function validateTablesAndGuests() {
+    $('#form-create').yiiActiveForm('validateAttribute', 'booking-count_guest');
+    $('#form-create').yiiActiveForm('validateAttribute', 'booking-selected_tables');
+}
 
 // Функция обновления скрытого поля с выбранными столами
 function updateSelectedTables() {
@@ -15,7 +22,11 @@ function updateSelectedTables() {
         let tableId = $(this).attr('id').replace('table', '');
         selectedTables.push(tableId);
     });
-    $('#selected-tables').val(selectedTables.join(','));
+    $('#booking-selected_tables').val(selectedTables.join(','));
+
+    // Вызываем функцию валидации после обновления выбранных столов
+    validateTablesAndGuests();
+
 }
 
 // Обработчик изменения даты и времени бронирования
@@ -31,6 +42,7 @@ function validateAndFetchBookedTables() {
 
     if (bookingDate && startTime && endTime) {
         console.log('data success');
+
         $.ajax({
             url: 'get-booked-tables',
             type: 'POST',
@@ -46,6 +58,13 @@ function validateAndFetchBookedTables() {
                     $('#table' + tableId).removeClass('selected');
                     $('#table' + tableId).addClass('booked');
                 });
+                // удаляем забронированные столы из поля #booking-selected_tables и сохраняем только свободные
+                let selectedTables = $('#booking-selected_tables').val().split(',');
+                selectedTables = selectedTables.filter(tableId => !bookedTablesId.includes(parseInt(tableId)));
+                $('#booking-selected_tables').val(selectedTables.join(','));
+                
+                // Вызываем функцию валидации после изменения даты и времени
+                validateTablesAndGuests();
             },
             error: function() {
                 console.log('Ошибка при получении данных о забронированных столах');
@@ -57,8 +76,7 @@ function validateAndFetchBookedTables() {
 // Автоматическое обновление забронированных столов после загрузки страницы
 $(document).ready(function() {
     validateAndFetchBookedTables();
-    // $('#selected-tables').val('');
-
+    // $('#booking-selected_tables').val('');
 });
 
 // Автоматическое заполнение времени окончания (+2 часа)
@@ -83,3 +101,11 @@ $('#booking-booking_time_start').on('change', function() {
         validateAndFetchBookedTables();
     }
 });
+
+// $('#pjax-c').on('pjax:end', () => {
+//     console.log('по идее ты создал бронирование')
+
+
+
+// })
+

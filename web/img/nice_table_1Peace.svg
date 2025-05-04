@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="90"
+   height="72"
+   viewBox="0 0 90 72"
+   fill="none"
+   class="new-svg-table"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="nice_table_1Peace.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="22.097087"
+     inkscape:cy="6.4523494"
+     inkscape:window-width="2560"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6">
+    <sodipodi:guide
+       position="1.1210938,49"
+       orientation="0,-1"
+       id="guide6"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="2,50.320312"
+       orientation="1,0"
+       id="guide7"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="89,47.921875"
+       orientation="1,0"
+       id="guide8"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="85.990814,22.99971"
+       orientation="0,-1"
+       id="guide9"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <g
+     id="table1">
+    <g
+       id="g9">
+      <rect
+         x="17.5"
+         y="1.5"
+         width="25"
+         height="4"
+         rx="2"
+         fill="#29C770"
+         fill-opacity="0.6"
+         stroke="#29C770"
+         class="v-fill v-stroke"
+         id="rect1" />
+      <path
+         d="M24.4447 5.5H35.5553C37.2877 5.5 38.7595 6.76749 39.0165 8.48081L40.8165 20.4808C41.1339 22.5969 39.495 24.5 37.3553 24.5H22.6447C20.505 24.5 18.8661 22.5969 19.1835 20.4808L20.9835 8.48081C21.2405 6.76749 22.7123 5.5 24.4447 5.5Z"
+         fill="#29C770"
+         fill-opacity="0.4"
+         stroke="#29C770"
+         class="v-fill-d v-stroke"
+         id="path1" />
+    </g>
+    <g
+       id="g10">
+      <rect
+         x="48.5"
+         y="1.5"
+         width="25"
+         height="4"
+         rx="2"
+         fill="#29C770"
+         fill-opacity="0.6"
+         stroke="#29C770"
+         class="v-fill v-stroke"
+         id="rect2" />
+      <path
+         d="M55.4447 5.5H66.5553C68.2877 5.5 69.7595 6.76749 70.0165 8.48081L71.8165 20.4808C72.1339 22.5969 70.495 24.5 68.3553 24.5H53.6447C51.505 24.5 49.8661 22.5969 50.1835 20.4808L51.9835 8.48081C52.2405 6.76749 53.7123 5.5 55.4447 5.5Z"
+         fill="#29C770"
+         fill-opacity="0.4"
+         stroke="#29C770"
+         class="v-fill-d v-stroke"
+         id="path2" />
+    </g>
+    <g
+       id="g11">
+      <rect
+         x="73.5"
+         y="70.5"
+         width="25"
+         height="4"
+         rx="2"
+         transform="rotate(-180 73.5 70.5)"
+         fill="#29C770"
+         fill-opacity="0.6"
+         stroke="#29C770"
+         class="v-fill v-stroke"
+         id="rect3" />
+      <path
+         d="M66.5553 66.5L55.4447 66.5C53.7123 66.5 52.2405 65.2325 51.9835 63.5192L50.1835 51.5192C49.8661 49.4031 51.505 47.5 53.6448 47.5L68.3553 47.5C70.495 47.5 72.1339 49.4031 71.8165 51.5192L70.0165 63.5192C69.7595 65.2325 68.2877 66.5 66.5553 66.5Z"
+         fill="#29C770"
+         fill-opacity="0.4"
+         stroke="#29C770"
+         class="v-fill-d v-stroke"
+         id="path3" />
+    </g>
+    <g
+       id="g12">
+      <rect
+         x="42.5"
+         y="70.5"
+         width="25"
+         height="4"
+         rx="2"
+         transform="rotate(-180 42.5 70.5)"
+         fill="#29C770"
+         fill-opacity="0.6"
+         stroke="#29C770"
+         class="v-fill v-stroke"
+         id="rect4" />
+      <path
+         d="M35.5553 66.5L24.4447 66.5C22.7123 66.5 21.2405 65.2325 20.9835 63.5192L19.1835 51.5192C18.8661 49.4031 20.505 47.5 22.6448 47.5L37.3553 47.5C39.495 47.5 41.1339 49.4031 40.8165 51.5192L39.0165 63.5192C38.7595 65.2325 37.2877 66.5 35.5553 66.5Z"
+         fill="#29C770"
+         fill-opacity="0.4"
+         stroke="#29C770"
+         class="v-fill-d v-stroke"
+         id="path4" />
+    </g>
+    <g
+       id="g6">
+      <rect
+         x="2.5"
+         y="48.5"
+         width="25"
+         height="4"
+         rx="2"
+         transform="rotate(-90 2.5 48.5)"
+         fill="#29C770"
+         fill-opacity="0.6"
+         stroke="#29C770"
+         class="v-fill v-stroke"
+         id="rect5" />
+      <path
+         d="M6.5 41.5553L6.5 30.4447C6.5 28.7123 7.76749 27.2405 9.48081 26.9835L21.4808 25.1835C23.5969 24.8661 25.5 26.505 25.5 28.6447L25.5 43.3552C25.5 45.495 23.5969 47.1339 21.4808 46.8165L9.48081 45.0165C7.76749 44.7595 6.5 43.2877 6.5 41.5553Z"
+         fill="#29C770"
+         fill-opacity="0.4"
+         stroke="#29C770"
+         class="v-fill-d v-stroke"
+         id="path5" />
+    </g>
+    <g
+       id="g6-0"
+       transform="matrix(-1,0,0,1,91.000028,0.00371957)">
+      <rect
+         x="2.5"
+         y="48.5"
+         width="25"
+         height="4"
+         rx="2"
+         transform="rotate(-90,2.5,48.5)"
+         fill="#29c770"
+         fill-opacity="0.6"
+         stroke="#29c770"
+         class="v-fill v-stroke"
+         id="rect5-9" />
+      <path
+         d="M 6.5,41.5553 V 30.4447 c 0,-1.7324 1.26749,-3.2042 2.98081,-3.4612 l 11.99999,-1.8 C 23.5969,24.8661 25.5,26.505 25.5,28.6447 v 14.7105 c 0,2.1398 -1.9031,3.7787 -4.0192,3.4613 l -11.99999,-1.8 C 7.76749,44.7595 6.5,43.2877 6.5,41.5553 Z"
+         fill="#29c770"
+         fill-opacity="0.4"
+         stroke="#29c770"
+         class="v-fill-d v-stroke"
+         id="path5-4" />
+    </g>
+    <rect
+       x="10"
+       y="61"
+       width="54"
+       height="71"
+       rx="4"
+       transform="rotate(-90 11 62)"
+       fill="#29C770"
+       class="desk-one__svg-stroke"
+       id="rect6" />
+  </g>
+</svg>

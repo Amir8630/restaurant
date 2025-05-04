@@ -41,7 +41,9 @@ class BookingSearch extends Booking
      */
     public function search($params)
     {
-        $query = Booking::find()->where(['user_id' => Yii::$app->user->id]);
+        $query = Booking::find()->where(['user_id' => Yii::$app->user->id])
+        // ->with(['bookingTables.table.orders'])
+        ;
 
         // add conditions that should always apply here
 
