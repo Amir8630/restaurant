@@ -98,6 +98,8 @@ class BookingController extends Controller
         Yii::$app->urlManager->scriptUrl = '';
         Yii::$app->urlManager->hostInfo = '';
         
+        // вроде можно использовать url to для создания ссылки, надо будеть попробовать
+        // $restaurant_link = Yii::$app->urlManager->createAbsoluteUrl(['account/booking/mail-view', 'token' => $token]);
         // для localhost
         $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $token; 
 
@@ -137,92 +139,96 @@ class BookingController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
+
                 if (Yii::$app->request->isAjax) {
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     return ActiveForm::validate($model);
                 }
 
-                // Генерация уникального токена
-                while (true) {
-                    $token = bin2hex(random_bytes(32));
-                    if (!Booking::findOne(['token' => $token])) {
-                        break;
-                    }
-                }
-                $model->token = $token;
-
-                $selectedTables = explode(',', $model->selected_tables);
-
-                // Поиск существующих броней, которые пересекаются по времени
-                $bookings = Booking::find()
-                    ->where(['booking_date' => $model->booking_date, 'status_id' => Status::getStatusId('Забронировано')])
-                    ->andWhere(['<', 'booking_time_start', $model->booking_time_end])
-                    ->andWhere(['>', 'booking_time_end', $model->booking_time_start])
-                    ->all();
-
-                $bookedTables = [];
-
-                // Получение уже забронированных столов
-                if ($bookings) {
-                    foreach ($bookings as $booking) {
-                        $bookingTables = BookingTable::find()
-                            ->where(['booking_id' => $booking->id, 'status_id' => Status::getStatusId('Забронировано')])
-                            ->all();
-
-                        foreach ($bookingTables as $bookingTable) {
-                            $bookedTables[] = $bookingTable->table_id;
+                if($model->validate()) {
+                
+                    // Генерация уникального токена
+                    while (true) {
+                        $token = bin2hex(random_bytes(32));
+                        if (!Booking::findOne(['token' => $token])) {
+                            break;
                         }
                     }
-                }
+                    $model->token = $token;
 
-                // Проверка, есть ли пересечения
-                $conflictingTables = array_intersect($selectedTables, $bookedTables);
+                    $selectedTables = explode(',', $model->selected_tables);
 
-                if (!empty($conflictingTables)) {                    
-                    if(count($conflictingTables) > 1) {
-                        $tables = implode(',', $conflictingTables);
-                        $model->addError('selected_tables', "$tables столы уже забронированы.");
-                        Yii::$app->session->setFlash('error', "$tables столы уже забронированы."); 
-                    } else {
-                        $table = implode(',', $conflictingTables);
-                        $model->addError('selected_tables', "$table стол уже забронирован.");
-                        Yii::$app->session->setFlash('error', "$table стол уже забронирован."); 
+                    // Поиск существующих броней, которые пересекаются по времени
+                    $bookings = Booking::find()
+                        ->where(['booking_date' => $model->booking_date, 'status_id' => Status::getStatusId('Забронировано')])
+                        ->andWhere(['<', 'booking_time_start', $model->booking_time_end])
+                        ->andWhere(['>', 'booking_time_end', $model->booking_time_start])
+                        ->all();
+
+                    $bookedTables = [];
+
+                    // Получение уже забронированных столов
+                    if ($bookings) {
+                        foreach ($bookings as $booking) {
+                            $bookingTables = BookingTable::find()
+                                ->where(['booking_id' => $booking->id, 'status_id' => Status::getStatusId('Забронировано')])
+                                ->all();
+
+                            foreach ($bookingTables as $bookingTable) {
+                                $bookedTables[] = $bookingTable->table_id;
+                            }
+                        }
                     }
 
-                    // Удаление забронированных столов из скрытого поля
-                    $selectedTables = array_diff($selectedTables, $bookedTables);
-                    $model->selected_tables = implode(',', $selectedTables);
-                
+                    // Проверка, есть ли пересечения
+                    $conflictingTables = array_intersect($selectedTables, $bookedTables);
 
-                    return $this->render('create', [
-                        'model' => $model,
-                    ]);
+                    if (!empty($conflictingTables)) {                    
+                        if(count($conflictingTables) > 1) {
+                            $tables = implode(',', $conflictingTables);
+                            $model->addError('selected_tables', "$tables столы уже забронированы.");
+                            Yii::$app->session->setFlash('error', "$tables столы уже забронированы."); 
+                        } else {
+                            $table = implode(',', $conflictingTables);
+                            $model->addError('selected_tables', "$table стол уже забронирован.");
+                            Yii::$app->session->setFlash('error', "$table стол уже забронирован."); 
+                        }
 
-                }
+                        // Удаление забронированных столов из скрытого поля
+                        $selectedTables = array_diff($selectedTables, $bookedTables);
+                        $model->selected_tables = implode(',', $selectedTables);
+                    
 
-                // Если столы свободны, сохраняем бронь
-                if ($model->save()) {
-                    foreach ($selectedTables as $tableId) {
-                        $booking_table = new BookingTable();
-                        $booking_table->status_id = Status::getStatusId('Забронировано');
-                        $booking_table->table_id = $tableId;
-                        $booking_table->booking_id = $model->id;
-                        $booking_table->save();
+                        return $this->render('create', [
+                            'model' => $model,
+                        ]);
+
                     }
 
-                    // Отправка письма
-                    // $this->runAction('mail', [
-                    //     'fio_guest' => $model->fio_guest,
-                    //     'booking_date' => $model->booking_date,
-                    //     'booking_time_start' => $model->booking_time_start,
-                    //     'booking_time_end' => $model->booking_time_end,
-                    //     'count_guest' => $model->count_guest,
-                    //     'email' => $model->email,
-                    //     'IdTables' => $model->selected_tables,
-                    //     'token' => $model->token,
-                    // ]);
+                    // Если столы свободны, сохраняем бронь
+                    if ($model->save()) {
+                        foreach ($selectedTables as $tableId) {
+                            $booking_table = new BookingTable();
+                            $booking_table->status_id = Status::getStatusId('Забронировано');
+                            $booking_table->table_id = $tableId;
+                            $booking_table->booking_id = $model->id;
+                            $booking_table->save();
+                        }
 
-                    return $this->redirect(['view', 'id' => $model->id]);
+                        // Отправка письма
+                        // $this->runAction('mail', [
+                        //     'fio_guest' => $model->fio_guest,
+                        //     'booking_date' => $model->booking_date,
+                        //     'booking_time_start' => $model->booking_time_start,
+                        //     'booking_time_end' => $model->booking_time_end,
+                        //     'count_guest' => $model->count_guest,
+                        //     'email' => $model->email,
+                        //     'IdTables' => $model->selected_tables,
+                        //     'token' => $model->token,
+                        // ]);
+
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
                 }
             }
         }

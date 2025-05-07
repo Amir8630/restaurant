@@ -102,10 +102,28 @@ $('#booking-booking_time_start').on('change', function() {
     }
 });
 
-// $('#pjax-c').on('pjax:end', () => {
-//     console.log('по идее ты создал бронирование')
 
+// После успешного PJAX сабмита (бронь сохранена) запускаем actionMail
+$('#pjax-booking').on('pjax:end', () => {
+    let data = $('#form-create').serialize();
+    console.log('Письмо подтверждения отправлено');
+    console.log(data);
 
-
-// })
+    // $.ajax({
+    //     url:  'mail',        // при необходимости поправьте на полный URL
+    //     type: 'POST',
+    //     dataType: 'json',
+    //     data: data,
+    //     success: function(res) {
+    //         if (res.success) {
+    //             console.log('Письмо подтверждения отправлено');
+    //         } else {
+    //             console.warn('Ошибка при отправке письма');
+    //         }
+    //     },
+    //     error: function() {
+    //         console.error('Не удалось вызвать actionMail');
+    //     }
+    // });
+});
 
