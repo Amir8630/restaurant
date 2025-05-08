@@ -79,17 +79,29 @@ $(document).ready(function() {
     // $('#booking-selected_tables').val('');
 });
 
-// Автоматическое заполнение времени окончания (+2 часа)
+// Автоматическое заполнение времени окончания (+2 часа, с учетом рабочего времени ресторана)
 $('#booking-booking_time_start').on('change', function() {
     let timeStart = $(this).val();
+    let alertElement = $('.alert');
+
     if (timeStart) {
         let parts = timeStart.split(':');
         let hour = parseInt(parts[0], 10);
         let minute = parseInt(parts[1], 10);
 
+        // Проверяем, если время начала меньше 7 или больше 22
+        if (hour < 7 || hour > 22) {
+            alertElement.removeClass('d-none'); // Показываем предупреждение
+            return; // Прекращаем выполнение
+        } else {
+            alertElement.addClass('d-none'); // Скрываем предупреждение
+        }
+
+        // Добавляем 2 часа, но учитываем рабочее время ресторана (7:00 - 23:00)
         hour += 2;
-        if (hour >= 24) {
-            hour = hour - 24;
+        if (hour >= 23) {
+            hour = 23; // Время окончания не может быть позже 23:00
+            minute = 0; // Сбрасываем минуты на 00
         }
 
         let newHour = hour < 10 ? '0' + hour : hour;
@@ -103,11 +115,27 @@ $('#booking-booking_time_start').on('change', function() {
 });
 
 
+$(document).on('pjax:success', '#pjax-booking', function(event, data, status, xhr) {
+    if (status.success) {
+        $.ajax({
+            url: '/account/booking/mail',
+            type: 'POST',
+            data: $('#form-create').serialize(),
+            success: function(res) {
+                console.log('Письмо отправлено');
+            },
+            error: function() {
+                console.error('Ошибка отправки');
+            }
+        });
+    }
+});
+
 // После успешного PJAX сабмита (бронь сохранена) запускаем actionMail
-$('#pjax-booking').on('pjax:end', () => {
-    let data = $('#form-create').serialize();
-    console.log('Письмо подтверждения отправлено');
-    console.log(data);
+// $('#pjax-booking').on('pjax:end', () => {
+//     let data = $('#form-create').serialize();
+//     console.log('Письмо подтверждения отправлено');
+//     console.log(data);
 
     // $.ajax({
     //     url:  'mail',        // при необходимости поправьте на полный URL
@@ -125,5 +153,5 @@ $('#pjax-booking').on('pjax:end', () => {
     //         console.error('Не удалось вызвать actionMail');
     //     }
     // });
-});
+// });
 

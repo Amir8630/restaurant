@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "booking".
@@ -69,9 +70,13 @@ class Booking extends \yii\db\ActiveRecord
 
     public function validateTimeStart()
     {
-        // if ($this->booking_time_start > '22:00') {
-        //     return $this->addError('booking_time_start', 'Время начала бронирования не должно превышать 22:00.');
-        // }
+        if ($this->booking_time_start > '22:00') {
+            return $this->addError('booking_time_start', 'Мы работаем ежедневно с 7:00 до 23:00. ');
+        }
+
+        if ($this->booking_time_start < '07:00') {
+            return $this->addError('booking_time_start', 'Мы работаем ежедневно с 7:00 до 23:00. ');
+        }
 
         if ($this->booking_time_start < date('H:i') && $this->booking_date == date('Y-m-d')) {
             return $this->addError('booking_time_start', 'Вы не можете забронировать на прошедшее время.');
@@ -94,8 +99,11 @@ class Booking extends \yii\db\ActiveRecord
 
     public function validateCountGuest()
     {
-        $countTables = explode(',', $this->selected_tables);
-        $countTables = count($countTables); 
+        if (empty($this->selected_tables)) {
+            return $this->addError('count_guest', 'Выберите столик');
+        } else {
+            $countTables = count(explode(',', $this->selected_tables));
+        }
 
         if ($this->count_guest > $countTables * 6) { 
             $tableWord = $countTables == 1 ? 'стол' : ($countTables > 1 && $countTables < 5 ? 'стола' : 'столов');

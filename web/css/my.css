@@ -40,12 +40,12 @@
 /* } */
 
 #hall-container {
-    width: 100%;
+    /* width: 100%;
     max-width: 800px; /* или другой подходящий размер */
-    margin: 0 auto;
+    margin: 0 auto; */
 }
 #hall-container svg {
-    width: 100%;
+    /* width: 100%; */
     /* height: auto; */
 }
 

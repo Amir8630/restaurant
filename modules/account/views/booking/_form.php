@@ -74,8 +74,9 @@ CSS
 
         <!-- <php Pjax::begin([
             'id' => 'pjax-booking',
-            'timeout' => 10000,
             'enablePushState' => false,
+            'timeout' => 5000,
+            'clientOptions' => ['method' => 'POST']
         ]); ?> -->
         <!-- <php $form = Pjax::begin(['id' => 'pjax-c', 'enablePushState' => false, 'timeout' => 5000]); ?> -->
 
@@ -105,9 +106,11 @@ CSS
                 <?= $form->field($model, 'booking_time_end', ['enableAjaxValidation' => true])->textInput(['type' => 'time', 'max' => '23:00']) ?>
             </div>
         </div>
-        <div class="alert alert-primary" role="alert">
-  A simple primary alert—check it out!
-</div>
+
+        <div class="alert alert-primary d-none text-center" role="alert">
+            <strong>Обратите внимание:</strong> Мы работаем ежедневно с <strong>7:00</strong> до <strong>23:00</strong>.
+        </div>
+
         <div class="row">
             <div class="col-md-4">
                 <?= $form->field($model, 'count_guest', ['enableAjaxValidation' => true])->input('number', ['min' => 1]) ?>
@@ -125,7 +128,7 @@ CSS
 
         <h3 class="mt-4">Схема зала</h3>
         <div id="hall-container" class="w-100">
-            <?= file_get_contents(Yii::getAlias('img/Frame12.svg')) ?>
+            <?= file_get_contents(Yii::getAlias('img/Frame12_nn.svg')) ?>
         </div>
 
         <div class="form-group">
