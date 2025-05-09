@@ -52,8 +52,11 @@ class Booking extends \yii\db\ActiveRecord
             // ['phone', 'match', 'pattern' => '/^\+7 \([0-9]{3}\)\-[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/', 'message' => 'Только в формате +7 (999)-999-99-99'],
             [['selected_tables', 'count_guest'], 'validateCountGuest'],
             ['booking_date', 'validateBookingDate'],
-            [['booking_time_start', 'booking_time_end'], 'validateTimeStart'],
-            ['booking_time_end', 'validateTimeEnd'],
+            [['booking_time_start', 'booking_time_end', 'booking_date'], 'validateTimeStart'],
+            // нез насколько это плохо что всё отдаю
+            // [['booking_date', 'booking_time_start', 'booking_time_end', 'count_guest', 'selected_tables'], 'validateBookingDate'],
+            // [['booking_date', 'booking_time_start', 'booking_time_end', 'count_guest', 'selected_tables'], 'validateTimeStart'],
+            // [['booking_date', 'booking_time_start', 'booking_time_end', 'count_guest', 'selected_tables'], 'validateCountGuest'],
         ];
     }
 // Мы работаем с 07:00 до 23:00 и т.к у нас есть 
@@ -66,6 +69,7 @@ class Booking extends \yii\db\ActiveRecord
         if ($this->booking_time_start < date('H:i') && $this->booking_date == date('Y-m-d')) {
             return $this->addError('booking_time_start', 'Вы не можете забронировать на прошедшее время.');
         }
+        
     }
 
     public function validateTimeStart()
@@ -99,6 +103,11 @@ class Booking extends \yii\db\ActiveRecord
 
     public function validateCountGuest()
     {
+
+        if ($this->booking_time_start < date('H:i') && $this->booking_date == date('Y-m-d')) {
+            return $this->addError('booking_time_start', 'Вы не можете забронировать на прошедшее время.');
+        }
+        
         if (empty($this->selected_tables)) {
             return $this->addError('count_guest', 'Выберите столик');
         } else {
@@ -118,7 +127,7 @@ class Booking extends \yii\db\ActiveRecord
             $guestWord = $this->count_guest == 1 ? 'гостя' : 'гостей';
             return $this->addError(
                 'count_guest', 
-                'Минимум 1 гость на каждый стол. Вы выбрали ' . $countTables . ' ' . $tableWord . ', но указали только ' . $this->count_guest . ' ' . $guestWord . '.'
+                'Вы выбрали ' . $countTables . ' ' . $tableWord . ', минимальное количество гостей: ' . $countTables
             );
         }
     }
@@ -135,7 +144,8 @@ class Booking extends \yii\db\ActiveRecord
             'created_at' => 'Дата и время создания брони',
             'booking_date' => 'Дата брони',
             'booking_time_start' => 'Начало',
-            'booking_time_end' => 'Окончание (*необходимо указать если больше 2 часов)',
+            // 'booking_time_end' => 'Окончание (*необходимо указать если больше 2 часов)',
+            'booking_time_end' => 'Окончание',
             'status_id' => 'Статус',
             'count_guest' => 'Количество персон',
             'phone' => 'Номер телефона',

@@ -1,30 +1,43 @@
+// работает но с ошибкой в консоли
 $(() => {
     $('#pjax-booking-index, #booking-view').on('click', '.btn-cancel-modal', function(e) {
         e.preventDefault();
-        $('#cancel-modal').find('.btn-cancel').attr('href', $(this).attr('href'));
+        const bookingNumber = $(this).data('number');
+        const bookingId = $(this).attr('href').split('id=')[1]; // Получаем ID из URL
+
+        $('#cancel-modal').find('#text').text(`Отменить бронь ${bookingNumber}?`); // Обновляем текст в модалке
+        $('#cancel-modal').find('.btn-cancel')
+            .attr('href', $(this).attr('href'))
+            .attr('data-id', bookingId); // Запоминаем ID
         $('#cancel-modal').modal('show');
         return false;
-    })
+    });
 
     $('#cancel-modal').on('click', '.btn-close-modal', function(e) {
         e.preventDefault();
         $('#cancel-modal').modal('hide');
-    })
+    });
 
     $('#cancel-modal').on('click', '.btn-cancel[data-pjx^="#"]', function(e) {
         e.preventDefault();
-        const pjx = $(this).data('pjx')
+        const pjx = $(this).data('pjx');
+        const bookingId = $(this).data('id');
+        const mailUrlBase = $('#cancel-modal').data('mail-url');
 
         $.ajax({
             url: $(this).attr('href'),
             method: 'POST',
             success: function(data) {
-                if(data) {
-                    $.pjax.reload({container: pjx})
-                    $('#cancel-modal').modal('hide')
+                if (data) {
+                    $('#cancel-modal').modal('hide');
+                    $.pjax.reload({container: pjx});
+                    
+                    // fetch(`${mailUrlBase}?id=${bookingId}`)
+                    //navigator.sendBeacon(`${mailUrlBase}?id=${bookingId}`);
+                    // navigator.sendBeacon(mailUrlBase, new URLSearchParams({ id: bookingId }))
                 }
             }
-        })
+        });
         return false;
-    })
-})
+    });
+});

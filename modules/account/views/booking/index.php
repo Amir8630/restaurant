@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Забронировать', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(['id' => 'pjax-booking-index']); ?> 
+    <?php Pjax::begin(['id' => 'pjax-booking-index', 'enablePushState' => false, 'timeout' => 5000]); ?> 
     
     <?= Alert::widget() ?>
 
@@ -35,8 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'itemOptions' => ['class' => 'item'],
         'itemView' => 'item',
-        'layout' => "{pager}\n{summary}\n<div class = 'd-flex flex-wrap gap-3'>{items}</div>\n<div class = 'mt-2'></div>{pager}",
+        'layout' => "{pager}\n{summary}\n<div class = 'd-flex flex-wrap justify-content-center gap-3'>{items}</div>\n<div class = 'mt-2'></div>{pager}",
         'pager' => ['class' => LinkPager::class],
+
     ]) ?>
 
     <?php Pjax::end(); ?>

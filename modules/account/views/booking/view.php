@@ -116,9 +116,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $this->registerJsFile('/js/cancelTable.js', ['depends' => YiiAsset::class]); ?>
 
-<?= $this->render('modal') ?>
+<?= $this->render('modal', ['number' => $model->id]) ?>
 
+
+<!-- Отправка почты в фоне после actionCreate -->
 <?php if (Yii::$app->request->get('sendMail')): ?>
+    
 <script>
     // Отправка почты в фоне (не блокирует отображение страницы)
     fetch('<?= Url::to(['booking/mail', 'id' => $model->id]) ?>')
@@ -126,3 +129,5 @@ $this->params['breadcrumbs'][] = $this->title;
     // Или: navigator.sendBeacon('<= Url::to(['booking/mail', 'id' => $model->id]) ?>');
 </script>
 <?php endif; ?>
+
+
