@@ -7,6 +7,7 @@ use yii\bootstrap5\Modal;
 use yii\helpers\VarDumper;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var app\models\Booking $model */
@@ -116,3 +117,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $this->registerJsFile('/js/cancelTable.js', ['depends' => YiiAsset::class]); ?>
 
 <?= $this->render('modal') ?>
+
+<?php if (Yii::$app->request->get('sendMail')): ?>
+<script>
+    // Отправка почты в фоне (не блокирует отображение страницы)
+    fetch('<?= Url::to(['booking/mail', 'id' => $model->id]) ?>')
+      .then(res => console.log('Mail sent'));
+    // Или: navigator.sendBeacon('<= Url::to(['booking/mail', 'id' => $model->id]) ?>');
+</script>
+<?php endif; ?>

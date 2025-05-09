@@ -76,7 +76,7 @@ CSS
             'id' => 'pjax-booking',
             'enablePushState' => false,
             'timeout' => 5000,
-            'clientOptions' => ['method' => 'POST']
+            // 'clientOptions' => ['method' => 'POST']
         ]); ?> -->
         <!-- <php $form = Pjax::begin(['id' => 'pjax-c', 'enablePushState' => false, 'timeout' => 5000]); ?> -->
 

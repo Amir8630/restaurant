@@ -115,21 +115,65 @@ $('#booking-booking_time_start').on('change', function() {
 });
 
 
-$(document).on('pjax:success', '#pjax-booking', function(event, data, status, xhr) {
-    if (status.success) {
-        $.ajax({
-            url: '/account/booking/mail',
-            type: 'POST',
-            data: $('#form-create').serialize(),
-            success: function(res) {
-                console.log('Письмо отправлено');
-            },
-            error: function() {
-                console.error('Ошибка отправки');
-            }
-        });
-    }
-});
+// $('#pjax-booking').on('pjax:end', () => {
+//     console.log('Мы тут');
+//     // получаем данные полей для отправки письма из session
+//     let bookingDate = $('#booking-booking_date').val();
+//     let startTime = $('#booking-booking_time_start').val();
+//     let endTime = $('#booking-booking_time_end').val();
+//     let guestCount = $('#booking-count_guest').val();
+//     let selectedTables = $('#booking-selected_tables').val().split(',');
+ 
+    
+    
+//     if (status.success) {
+//         $.ajax({
+//             url: '/account/booking/mail',
+//             type: 'POST',
+//             data: $('#form-create').serialize(),
+//             success: function(res) {
+//                 console.log('Письмо отправлено');
+//             },
+//             error: function() {
+//                 console.error('Ошибка отправки');
+//             }
+//         });
+//     }
+// });
+
+
+// $(function() {
+//     $('#form-create').on('beforeSubmit', function() {
+//         var $form = $(this);
+//         $.ajax({
+//             url:      $form.attr('action'),
+//             type:     'post',
+//             data:     $form.serialize(),
+//             dataType: 'json'
+//         }).done(function(data) {
+//             if (data.success) {
+//                 // fire-and-forget: отправляем письмо
+//                 if (navigator.sendBeacon) {
+//                     navigator.sendBeacon(data.mailUrl);
+//                 } else {
+//                     fetch(data.mailUrl, { method: 'GET', keepalive: true });
+//                 }
+//                 // мгновенный редирект
+//                 window.location.href = data.redirectUrl;
+//             } else if (data.errors) {
+//                 // показываем ошибки ActiveForm
+//                 $form.yiiActiveForm('updateMessages', data.errors, true);
+//             } else {
+//                 alert('Не удалось сохранить бронь. Попробуйте ещё раз.');
+//             }
+//         }).fail(function() {
+//             alert('Серверная ошибка. Повторите позднее.');
+//         });
+
+//         return false; // отменяем дефолтную отправку
+//     });
+// });
+
 
 // После успешного PJAX сабмита (бронь сохранена) запускаем actionMail
 // $('#pjax-booking').on('pjax:end', () => {

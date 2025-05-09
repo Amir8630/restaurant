@@ -14,7 +14,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\VarDumper;
 use yii\web\Response;
 use yii\web\YiiAsset;
-
+use yii\helpers\Url;
 /**
  * BookingController implements the CRUD actions for Booking model.
  */
@@ -82,54 +82,118 @@ class BookingController extends Controller
      * @return string|\yii\web\Response
      */
     
+     public function actionMail3(
+        $fio_guest,
+        $booking_date,
+        $booking_time_start,
+        $booking_time_end,
+        $count_guest,
+        $IdTables,
+        $email,
+        $token
+    )
+{
+    Yii::$app->urlManager->baseUrl = '';
+    Yii::$app->urlManager->scriptUrl = '';
+    Yii::$app->urlManager->hostInfo = '';
+    
+    // вроде можно использовать url to для создания ссылки, надо будеть попробовать
+    // $restaurant_link = Yii::$app->urlManager->createAbsoluteUrl(['account/booking/mail-view', 'token' => $token]);
+    // для localhost
+    $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $token; 
 
-     public function actionMail(
-            $fio_guest,
-            $booking_date,
-            $booking_time_start,
-            $booking_time_end,
-            $count_guest,
-            $IdTables,
-            $email,
-            $token
-        )
+    // для сервера
+    // $restaurant_link = 'http://avcsvty-m2.wsr.ru/account/booking/mail-view?token=' . $token;
+
+    Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
+    if(Yii::$app->mailer
+        ->compose('mail', [
+        'fio_guest' => $fio_guest,
+        'booking_date' => $booking_date,
+        'booking_time_start' => $booking_time_start,
+        'booking_time_end' => $booking_time_end,
+        'count_guest' => $count_guest,
+        'IdTables' => $IdTables,
+        'email' => $email,
+        'restaurant_link' => $restaurant_link,
+
+        ])
+        ->setFrom('restaurant.project@mail.ru')
+        ->setTo($email)
+        ->setSubject('Подтверждение бронирования')
+        ->send()
+    ) {
+        Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
+    } else {
+        Yii::$app->session->setFlash('warning', 'Ошибка!');
+    }
+     
+}
+
+
+
+    public function actionMail2($id)
     {
-        Yii::$app->urlManager->baseUrl = '';
-        Yii::$app->urlManager->scriptUrl = '';
-        Yii::$app->urlManager->hostInfo = '';
-        
-        // вроде можно использовать url to для создания ссылки, надо будеть попробовать
-        // $restaurant_link = Yii::$app->urlManager->createAbsoluteUrl(['account/booking/mail-view', 'token' => $token]);
-        // для localhost
-        $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $token; 
+        // Загрузка модели бронирования по ID
+        $Booking = Booking::findOne($id);
+        $BookingTable = BookingTable::findOne($Booking->id);
+        if ($Booking === null) {
+            throw new NotFoundHttpException('Бронирование не найдено.');
+        }
 
-        // для сервера
-        // $restaurant_link = 'http://avcsvty-m2.wsr.ru/account/booking/mail-view?token=' . $token;
+        // Композиция и отправка письма
+        Yii::$app->mailer->compose(['html' => 'booking-confirm', 'text' => 'booking-confirm-text'], [
+                'model' => $Booking,
+            ])
+            ->setFrom(['noreply@example.com' => 'Мой Сайт'])
+            ->setTo($Booking->user->email)      // получатель
+            ->setSubject('Ваше бронирование подтверждено')
+            ->send();
+
+        // Можно вернуть JSON или пустой ответ
+        return $this->asJson(['status' => 'success']);
+    }
+
+    public function actionMail($id)
+    {
+        $Booking = Booking::findOne($id);
+        if ($Booking === null) {
+            throw new NotFoundHttpException('Бронирование не найдено.');
+        }
+
+        $BookingTable = BookingTable::find()
+            ->where(['booking_id' => $Booking->id])
+            ->all();
+
+        $tableIds = implode(',', array_map(fn($table) => $table->table_id, $BookingTable));
+
+        $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $Booking->token; 
 
         Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
-        if(Yii::$app->mailer
+        if (Yii::$app->mailer
             ->compose('mail', [
-            'fio_guest' => $fio_guest,
-            'booking_date' => $booking_date,
-            'booking_time_start' => $booking_time_start,
-            'booking_time_end' => $booking_time_end,
-            'count_guest' => $count_guest,
-            'IdTables' => $IdTables,
-            'email' => $email,
-            'restaurant_link' => $restaurant_link,
-
+                'fio_guest' => $Booking->fio_guest,
+                'booking_date' => $Booking->booking_date,
+                'booking_time_start' => $Booking->booking_time_start,
+                'booking_time_end' => $Booking->booking_time_end,
+                'count_guest' => $Booking->count_guest,
+                'IdTables' => $tableIds,
+                'email' => $Booking->email,
+                'restaurant_link' => $restaurant_link,
             ])
             ->setFrom('restaurant.project@mail.ru')
-            ->setTo($email)
+            ->setTo($Booking->email)
             ->setSubject('Подтверждение бронирования')
             ->send()
         ) {
             Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
         } else {
-            Yii::$app->session->setFlash('warning', 'Ошибка!');
+            Yii::$app->session->setFlash('warning', 'Ошибка при отправке письма!');
         }
-         
+
+        return $this->asJson(['status' => 'success']);
     }
+
 
     public function actionCreate()
     {
@@ -227,7 +291,7 @@ class BookingController extends Controller
                         //     'token' => $model->token,
                         // ]);
 
-                        return $this->redirect(['view', 'id' => $model->id]);
+                        return $this->redirect(['view', 'id' => $model->id, 'sendMail' => 1]);
                     }
                 }
             }
@@ -238,6 +302,109 @@ class BookingController extends Controller
         ]);
     }
 
+  /**
+     * AJAX-запрос на отправку письма по ID брони.
+     */
+    // public function actionMail($id)
+    // {
+    //     Yii::$app->response->format = Response::FORMAT_JSON;
+    //     $booking = Booking::findOne($id);
+    //     if (!$booking) {
+    //         Yii::$app->response->statusCode = 404;
+    //         return ['success' => false];
+    //     }
+
+    //     $link = Url::to([
+    //         'account/booking/mail-view',
+    //         'token' => $booking->token
+    //     ], true);
+
+    //     Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
+    //     $sent = Yii::$app->mailer->compose('mail', [
+    //             'fio_guest'          => $booking->fio_guest,
+    //             'booking_date'       => $booking->booking_date,
+    //             'booking_time_start' => $booking->booking_time_start,
+    //             'booking_time_end'   => $booking->booking_time_end,
+    //             'count_guest'        => $booking->count_guest,
+    //             'IdTables'           => $booking->selected_tables,
+    //             'email'              => $booking->email,
+    //             'restaurant_link'    => $link,
+    //         ])
+    //         ->setFrom('restaurant.project@mail.ru')
+    //         ->setTo($booking->email)
+    //         ->setSubject('Подтверждение бронирования')
+    //         ->send();
+
+    //     return ['success' => (bool)$sent];
+    // }
+
+    /**
+     * Создание брони — оба потока: AJAX и обычный POST.
+     */
+    // public function actionCreate()
+    // {
+    //     $model = new Booking();
+    //     $model->user_id    = Yii::$app->user->id;
+    //     $model->status_id  = Status::getStatusId('Забронировано');
+    //     $model->created_at = date('Y-m-d H:i:s');
+
+    //     // Загрузка данных и сохранение
+    //     if ($model->load(Yii::$app->request->post())) {
+    //         if (Yii::$app->request->isAjax) {
+    //             Yii::$app->response->format = Response::FORMAT_JSON;
+
+    //             // 1) AJAX-валидация
+    //             if (!$model->validate()) {
+    //                 return [
+    //                     'success' => false,
+    //                     'errors'  => ActiveForm::validate($model),
+    //                 ];
+    //             }
+
+    //             // 2) Генерация токена
+    //             $model->token = Yii::$app->security->generateRandomString(32);
+
+    //             // 3) Сохраняем саму бронь
+    //             if ($model->save()) {
+    //                 // 4) Сохраняем таблицы
+    //                 $selectedTables = explode(',', $model->selected_tables);
+    //                 foreach ($selectedTables as $tableId) {
+    //                     $bt = new BookingTable();
+    //                     $bt->booking_id = $model->id;
+    //                     $bt->table_id   = $tableId;
+    //                     $bt->status_id  = Status::getStatusId('Забронировано');
+    //                     $bt->save();
+    //                 }
+
+    //                 // 5) Формируем URL’ы
+    //                 $redirectUrl = Url::to(['booking/view', 'id' => $model->id], true);
+    //                 $mailUrl     = Url::to(['booking/mail',   'id' => $model->id], true);
+
+    //                 return [
+    //                     'success'     => true,
+    //                     'redirectUrl' => $redirectUrl,
+    //                     'mailUrl'     => $mailUrl,
+    //                 ];
+    //             }
+
+    //             // 6) Ошибка при сохранении модели
+    //             return [
+    //                 'success' => false,
+    //                 'errors'  => $model->getErrors(),
+    //             ];
+    //         }
+
+    //         // ——————— обычный POST (fallback без AJAX) ———————
+    //         if ($model->save()) {
+    //             // сохраняем таблицы точно так же, если нужно...
+    //             return $this->redirect(['view', 'id' => $model->id]);
+    //         }
+    //     }
+
+    //     return $this->render('create', [
+    //         'model' => $model,
+    //     ]);
+    // }
     //поиск забронированных столов
     public function actionGetBookedTables()
     {
