@@ -12,6 +12,8 @@ YiiAsset::register($this);
 $this->registerCss(<<<CSS
     body {
       background-color: #f7f7f7;
+          background-color:rgb(130, 133, 136);
+
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     .booking-container {
@@ -113,6 +115,16 @@ CSS
 ?>
 
 <div class="booking-container">
+
+    <?= Html::a(
+        Html::img('@web/img/arrow-left.svg', [
+            'alt' => 'Назад',
+            'style' => 'width: 20px; height: 20px; margin-right: 8px;'
+        ]),
+        ['/account/booking'],
+        ['class' => 'btn btn-link d-inline-flex align-items-center']
+    ) ?>
+    
     <h1>Бронирование</h1>
     <div class="booking-form">
 
