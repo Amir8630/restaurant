@@ -88,7 +88,7 @@ $this->registerCss(<<<CSS
     position: absolute;
     z-index: 10;
     top: 120%;
-    left: 50%;
+    left: 120%;
     transform: translateX(-50%);
     opacity: 0;
     transition: opacity 0.4s, visibility 0.4s;
@@ -222,4 +222,12 @@ CSS
     </div>
 </div>
 
-
+<?php
+$this->registerJs(<<<JS
+    $('.tooltip-custom').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+JS
+);
+?>
