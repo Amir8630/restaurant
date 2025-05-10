@@ -2,6 +2,7 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
+use yii\web\JqueryAsset;
 use yii\web\YiiAsset;
 use yii\widgets\Pjax;
 
@@ -124,7 +125,7 @@ CSS
         ['/account/booking'],
         ['class' => 'btn btn-link d-inline-flex align-items-center']
     ) ?>
-    
+
     <h1>Бронирование</h1>
     <div class="booking-form">
 
@@ -142,9 +143,8 @@ CSS
             'validateOnSubmit'     => true, // вот эта строчка отменит AJAX‑валидацию при отправке
             'validateOnChange'     => true, // оставим проверку при изменении
             'validateOnBlur'       => true,
-            'validateOnType'       => true,
+            'validateOnType'       => false,
             'options'              => [
-                'data-pjax' => true,
                 'class'     => 'booking-form',
             ],
         ]); ?>
@@ -183,7 +183,7 @@ CSS
                 <?= $form->field($model, 'count_guest', ['enableAjaxValidation' => true])->input('number', ['min' => 1]) ?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($model, 'phone', ['enableAjaxValidation' => true])->textInput(['maxlength' => true])->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7(999)-999-9999']) ?>
+                <?= $form->field($model, 'phone', ['enableAjaxValidation' => true])->textInput(['maxlength' => true])->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999)-999-9999']) ?>
             </div>
             <div class="col-md-4">
                 <?= $form->field($model, 'email', ['enableAjaxValidation' => true])->textInput(['maxlength' => true]) ?>
@@ -229,7 +229,7 @@ CSS
         }
         ?>
 
-        <?= $this->registerJsFile('/js/booking.js', ['depends' => YiiAsset::class]); ?>
+        <?= $this->registerJsFile('/js/booking.js', ['depends' => JqueryAsset::class]); ?>
 
     </div>
 </div>

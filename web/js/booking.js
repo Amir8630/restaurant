@@ -110,7 +110,8 @@ $('#booking-booking_time_start').on('change', function() {
 
         $('#booking-booking_time_end').val(newTime);
 
-        validateAndFetchBookedTables();
+        // без задержки возникает ошибка в аякс запросе
+        setTimeout(validateAndFetchBookedTables, 250);
     }
 });
 

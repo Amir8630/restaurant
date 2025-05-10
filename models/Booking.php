@@ -49,7 +49,7 @@ class Booking extends \yii\db\ActiveRecord
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             ['email', 'email'],
-            // ['phone', 'match', 'pattern' => '/^\+7 \([0-9]{3}\)\-[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/', 'message' => 'Только в формате +7 (999)-999-99-99'],
+            ['phone', 'match', 'pattern' => '/^\+7 \([0-9]{3}\)\-[0-9]{3}\-[0-9]{4}$/', 'message' => 'Только в формате +7 (999)-999-9999'],
             [['selected_tables', 'count_guest'], 'validateCountGuest'],
             ['booking_date', 'validateBookingDate'],
             [['booking_time_start', 'booking_time_end', 'booking_date'], 'validateTimeStart'],
@@ -73,7 +73,7 @@ class Booking extends \yii\db\ActiveRecord
     }
 
     public function validateTimeStart()
-    {
+    {             
         if ($this->booking_time_start > '22:00') {
             return $this->addError('booking_time_start', 'Мы работаем ежедневно с 7:00 до 23:00. ');
         }
@@ -102,12 +102,7 @@ class Booking extends \yii\db\ActiveRecord
 
 
     public function validateCountGuest()
-    {
-
-        if ($this->booking_time_start < date('H:i') && $this->booking_date == date('Y-m-d')) {
-            return $this->addError('booking_time_start', 'Вы не можете забронировать на прошедшее время.');
-        }
-        
+    {     
         if (empty($this->selected_tables)) {
             return $this->addError('count_guest', 'Выберите столик');
         } else {
