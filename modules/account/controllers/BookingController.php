@@ -114,9 +114,9 @@ class BookingController extends Controller
             ->setSubject('Подтверждение бронирования')
             ->send()
         ) {
-            Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
+            // Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
         } else {
-            Yii::$app->session->setFlash('warning', 'Ошибка при отправке письма!');
+            // Yii::$app->session->setFlash('warning', 'Ошибка при отправке письма!');
         }
 
         return $this->asJson(['status' => 'success']);
@@ -207,18 +207,6 @@ class BookingController extends Controller
                             $booking_table->save();
                         }
 
-                        // Отправка письма
-                        // $this->runAction('mail', [
-                        //     'fio_guest' => $model->fio_guest,
-                        //     'booking_date' => $model->booking_date,
-                        //     'booking_time_start' => $model->booking_time_start,
-                        //     'booking_time_end' => $model->booking_time_end,
-                        //     'count_guest' => $model->count_guest,
-                        //     'email' => $model->email,
-                        //     'IdTables' => $model->selected_tables,
-                        //     'token' => $model->token,
-                        // ]);
-
                         return $this->redirect(['view', 'id' => $model->id, 'sendMail' => 1]);
                     }
                 }
@@ -289,30 +277,9 @@ class BookingController extends Controller
 
             Yii::$app->session->setFlash('success', 'Вы успешно отменили бронь');
 
-            $tabels = BookingTable::findAll(['booking_id' => $model->id]);
-            $tabels = implode(',', array_map(fn($t) => $t->table_id, $tabels));
+            // redirect + отправка письма 
+            return $this->redirect(['view', 'id' => $model->id, 'sendMailCancel' => 1]);
 
-            Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
-            Yii::$app->mailer
-                ->compose('cancel', [
-                'fio_guest' => $model->fio_guest,
-                'booking_date' => $model->booking_date,
-                'booking_time_start' => $model->booking_time_start,
-                'booking_time_end' => $model->booking_time_end,
-                'count_guest' => $model->count_guest,
-                'IdTables' => $tabels,
-                'email' => $model->email,
-                'restaurant_link' => Yii::$app->urlManager->createAbsoluteUrl(['/site/index']),
-                ])
-                ->setFrom('restaurant.project@mail.ru')
-                ->setTo($model->email)
-                ->setSubject('Отмена бронирования')
-                ->send();
-
-                return $this->redirect(['index']);
-                return $this->render('view', [
-                    'model' => $model,
-                ]);
         }
     }
 
@@ -339,8 +306,10 @@ class BookingController extends Controller
         }
     }
 
-        public function actionMailCancel($id)
+        public function actionMailCancel($id = null)
     {
+        $id = $id ?: Yii::$app->request->post('id');
+        
         $Booking = Booking::findOne($id);
         if ($Booking === null) {
             throw new NotFoundHttpException('Бронирование не найдено.');
@@ -369,9 +338,10 @@ class BookingController extends Controller
             ->setSubject('Отмена бронирования')
             ->send()
         ) {
-            Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
+            // return $this->asJson(['status' => 'ok']);
+            // Yii::$app->session->setFlash('success', 'Вы успешно отправили письмо');
         } else {
-            Yii::$app->session->setFlash('warning', 'Ошибка при отправке письма!');
+            // Yii::$app->session->setFlash('warning', 'Ошибка при отправке письма!');
         }
 
     }

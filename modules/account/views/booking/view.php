@@ -131,3 +131,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php endif; ?>
 
 
+<!-- Отправка почты в фоне после actionCancel -->
+<?php if (Yii::$app->request->get('sendMailCancel')): ?>
+    
+<script>
+    // Отправка почты в фоне (не блокирует отображение страницы)
+    fetch('<?= Url::to(['booking/mail-cancel', 'id' => $model->id]) ?>')
+      .then(res => console.log('Mail sent'));
+    // Или: navigator.sendBeacon('<= Url::to(['booking/mail', 'id' => $model->id]) ?>');
+</script>
+<?php endif; ?>
+
+

@@ -30,8 +30,20 @@ $(() => {
             success: function(data) {
                 if (data) {
                     $('#cancel-modal').modal('hide');
-                    $.pjax.reload({container: pjx});
+                    // $.pjax.reload({container: pjx});
                     
+
+                                       $.pjax.reload({
+                        container: '#pjax-booking-index',
+                        url: '/account/booking/index?sendMailCancel=1&id=' + bookingId
+                    });
+
+                    // http://localhost/account/booking/index
+                        // $.pjax.reload({
+                        //     container: '#pjax-booking-index',
+                        //     url: window.location.pathname + '?sendMailCancel=1&id=' + bookingId
+                        // });
+
                     // fetch(`${mailUrlBase}?id=${bookingId}`)
                     //navigator.sendBeacon(`${mailUrlBase}?id=${bookingId}`);
                     // navigator.sendBeacon(mailUrlBase, new URLSearchParams({ id: bookingId }))

@@ -104,7 +104,7 @@ class Booking extends \yii\db\ActiveRecord
     public function validateCountGuest()
     {     
         if (empty($this->selected_tables)) {
-            return $this->addError('count_guest', 'Выберите столик');
+            return ;
         } else {
             $countTables = count(explode(',', $this->selected_tables));
         }

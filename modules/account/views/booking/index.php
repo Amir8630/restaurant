@@ -40,6 +40,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ]) ?>
 
+    <?php if (Yii::$app->request->get('sendMailCancel') == 1 && Yii::$app->request->get('id')): ?>
+        <script>
+            fetch('<?= Url::to(['booking/mail-cancel']) ?>?id=<?= Yii::$app->request->get('id') ?>');
+        </script>
+    <?php endif; ?>
+
     <?php Pjax::end(); ?>
 
 </div>
