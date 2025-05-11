@@ -35,7 +35,7 @@
             display: inline-block;
             padding: 10px 20px;
             background-color: #000;
-            color: #fff;
+            color: #fff !important;
             text-decoration: none;
             border-radius: 5px;
             margin-top: 20px;
@@ -49,6 +49,7 @@
         <p>Уважаемый(ая) <?=$fio_guest?>,</p>
         <p>Спасибо, что выбрали наш ресторан! Мы рады подтвердить ваше бронирование:</p>
         <ul>
+            <li><strong>Номер брони: </strong> <?=$id?> </li>
             <li><strong>Дата: </strong> <?=$booking_date?> </li>
             <li><strong>Время прибытия:</strong> <?=$booking_time_start?> </li>
             <li><strong>Время отбытия:</strong> <?=$booking_time_end?> </li>

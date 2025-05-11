@@ -100,6 +100,7 @@ class BookingController extends Controller
         Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
         if (Yii::$app->mailer
             ->compose('mail', [
+                'id' => $Booking->id,
                 'fio_guest' => $Booking->fio_guest,
                 'booking_date' => $Booking->booking_date,
                 'booking_time_start' => $Booking->booking_time_start,
@@ -324,6 +325,7 @@ class BookingController extends Controller
         Yii::$app->mailer->htmlLayout = '@app/mail/layouts/html';
         if (Yii::$app->mailer
             ->compose('cancel', [
+                'id' => $Booking->id,
                 'fio_guest' => $Booking->fio_guest,
                 'booking_date' => $Booking->booking_date,
                 'booking_time_start' => $Booking->booking_time_start,
