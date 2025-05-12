@@ -16,6 +16,90 @@ use yii\widgets\Pjax;
 
 $this->title = 'Брони';
 $this->params['breadcrumbs'][] = $this->title;
+?><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"><?php
+// ТОЛЬКО ДЛЯ ТЕСТИРОВАНИЯ были добавлены стили для отображения карточек, стили бета
+$this->registerCss(<<<CSS
+.booking-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    width: 320px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.3s ease;
+    border: 1px solid #eaeaea;
+}
+.booking-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.booking-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.booking-id {
+    font-weight: 600;
+    font-size: 1rem;
+}
+.booking-card-body p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+}
+.booking-card-body i {
+    margin-right: 6px;
+    color: #6c757d;
+}
+.booking-card-footer {
+    margin-top: 12px;
+}
+.pagination {
+    margin-top: 20px;
+    gap: 6px;
+    justify-content: center;
+    text-align: center;
+}
+
+.page-item {
+    display: inline-block;
+}
+
+.page-link {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+@media (max-width: 576px) {
+    .page-link {
+        padding: 4px 8px; /* Reduced padding for smaller screens */
+        font-size: 12px; /* Smaller font size for better fit */
+    }
+}
+
+@media (max-width: 576px) {
+    .responsive-pager {
+        text-align: center;
+    }
+
+    .responsive-pager .page-item {
+        display: none;
+    }
+
+    .responsive-pager .page-item:first-child,
+    .responsive-pager .page-item.active,
+    .responsive-pager .page-item:last-child,
+    .responsive-pager .page-item:nth-child(n+2):nth-child(-n+4),
+    .responsive-pager .page-item:nth-last-child(n+2):nth-last-child(-n+4) {
+        display: inline-block;
+    }
+}
+
+
+CSS);
+
 ?>
 <div class="booking-index">
 
