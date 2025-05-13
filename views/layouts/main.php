@@ -46,6 +46,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'книга2', 'url' => ['/menu/index2']],
             ['label' => 'книга', 'url' => ['/menu/index']],
             
+            ! Yii::$app->user->isGuest && Yii::$app->user->identity->userRole == 'manager'
+            ? ['label' => 'Панель управления менеджера', 'url' => ['/manager']]
+            : '',
+
             ! Yii::$app->user->isGuest && Yii::$app->user->identity->userRole == 'waiter'
             ? ['label' => 'ЛК официанта/Создать заказ', 'url' => ['/waiter/order']]
             : '',
@@ -55,7 +59,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             : '',
 
             ! Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
-            ? ['label' => 'Лк администратора', 'url' => ['/admin']]
+            ? ['label' => 'Панель управления администратора', 'url' => ['/admin']]
             : '',
             
             ['label' => 'test', 'url' => ['/site/test']],
