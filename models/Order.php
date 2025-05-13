@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * This is the model class for table "order".
@@ -20,6 +21,7 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
+    public $dishes = [];
     /**
      * {@inheritdoc}
      */
@@ -48,12 +50,12 @@ class Order extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'table_id' => 'Table ID',
-            'created_at' => 'Created At',
-            'order_type' => 'Order Type',
-            'order_status' => 'Order Status',
-            'waiter_id' => 'Waiter ID',
+            'id' => 'Заказ №',
+            'table_id' => 'Стол №',
+            'created_at' => 'Дата и время создания заказа',
+            'order_type' => 'Тип заказа',
+            'order_status' => 'Статус',
+            'waiter_id' => 'Номер Официанта',
         ];
     }
 
@@ -85,5 +87,37 @@ class Order extends \yii\db\ActiveRecord
     public function getWaiter()
     {
         return $this->hasOne(User::class, ['id' => 'waiter_id']);
+    }
+
+    public function validateDishes($attr)
+    {
+        foreach ($this->dishes as $i => $df) {
+            if (!$df->validate()) {
+                $this->addError($attr."[$i]", 'Неверные данные в строке '.($i+1));
+            }
+        }
+    }
+
+    public function loadDishes($data)
+    {
+        $this->dishes = [];
+        foreach ($data as $i => $item) {
+            $df = new OrderDishForm();
+            $df->load($item, '');
+            $this->dishes[] = $df;
+        }
+    }
+}
+
+    class OrderDishForm extends Model
+    {
+    public $dish_id;
+    public $count;
+    public function rules()
+    {
+        return [
+            [['dish_id','count'], 'required'],
+            ['count', 'integer', 'min' => 1],
+        ];
     }
 }

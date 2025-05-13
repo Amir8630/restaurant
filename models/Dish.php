@@ -47,11 +47,11 @@ class Dish extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'price' => 'Price',
-            'weight' => 'Weight',
-            'status_id' => 'Status ID',
+            'title' => 'Наименование',
+            'description' => 'Описание/состав',
+            'price' => 'Цена',
+            'weight' => 'Весь',
+            'status_id' => 'Статус',
         ];
     }
 

@@ -45,9 +45,9 @@ class OrderDish extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'order_id' => 'Order ID',
-            'dish_id' => 'Dish ID',
-            'count' => 'Count',
+            'order_id' => 'Заказ №',
+            'dish_id' => 'Блюдо №',
+            'count' => 'Количество',
         ];
     }
 

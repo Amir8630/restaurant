@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 
-<!-- стили бета -->
+<!-- стили бета + ссылка надо убрать -->
 <?php
 $this->registerJsFile('https://code.jquery.com/jquery-3.6.0.min.js', ['position' => \yii\web\View::POS_HEAD]);
 ?>
