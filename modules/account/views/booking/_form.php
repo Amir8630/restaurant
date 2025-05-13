@@ -195,7 +195,7 @@ CSS
 
         <h3 class="mt-4">Схема зала</h3>
         <div id="hall-container" class="w-100">
-            <?= file_get_contents(Yii::getAlias('img/Frame12_nn.svg')) ?>
+            <?= file_get_contents(Yii::getAlias('img/tables.svg')) ?>
         </div>
 
         <div class="form-group">

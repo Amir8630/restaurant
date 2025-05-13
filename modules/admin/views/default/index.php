@@ -1,12 +1,13 @@
-<div class="admin-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+<?php
+
+use yii\bootstrap5\Html;
+
+?>
+
+<h3>Панель управления администратора</h3>
+
+<div>
+    <?= Html::a('Загрузить схему зала', ['/manager/svg/upload'], ['class' => 'btn btn-outline-primary']) ?>
+    <?= Html::a('Прогноз', ['/admin/booking/stats'], ['class' => 'btn btn-outline-success']) ?>  
 </div>
+

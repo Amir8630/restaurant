@@ -15,11 +15,19 @@ class MenuUploadForm extends Model
             [['file'], 'file', 'extensions' => 'json', 'checkExtensionByMimeType' => false],
         ];
     }
+    
+
+     public function attributeLabels()
+    {
+        return [
+            'file' => 'Схема зала',
+        ];
+    }
 
     public function upload()
     {
         if ($this->validate()) {
-            $filePath = \Yii::getAlias('@webroot/uploads/') . $this->file->name;
+            $filePath = \Yii::getAlias('@webroot/img/') . 'tables';
             $this->file->saveAs($filePath);
             return $filePath;
         }
