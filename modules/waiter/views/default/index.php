@@ -1,12 +1,17 @@
-<div class="waiter-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+<?php
+
+use yii\bootstrap5\Html;
+
+?>
+
+<h3>Панель управления менеджера</h3>
+
+<div>
+    <?= Html::a('Создать заказ', ['/waiter/order'], ['class' => 'btn btn-outline-primary']) ?>
+    <!-- <= Html::a('Пользователи', ['user/index'], ['class' => 'btn btn-outline-info text1 ']) ?> -->
+    <!-- <p>Мы стремимся обеспечивать Пользователи бесперебойную работу сервиса, но не несём ответственность за сбои, вызванные провайдерами связи.
+
+Полная версия условий будет опубликована после юридической проверки.</p>
+<p class="text1">Полная версия условий будет опубликована после юридической проверки.</p>
+<p class="text2">Полная версия условий будет опубликована после юридической проверки.</p> -->
 </div>

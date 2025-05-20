@@ -19,14 +19,15 @@ class RegisterForm extends Model
     public function rules()
     {
         return [
-            [['fio', 'email', 'gender', 'phone', 'password', 'rules'], 'required'],
-            ['fio', 'match', 'pattern' => '/^[а-яё\s]+$/ui', 'message' => 'Только кирилица и пробелы'],
+            [['fio', 'email', 'phone', 'password', 'rules'], 'required'],
+            ['fio', 'match', 'pattern' => '/^[а-яёa-z\s\-]+$/ui', 'message' => 'ФИО должно содержать только кириллические или латинские буквы, пробелы и дефисы.'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => User::class],
-            ['phone', 'match', 'pattern' => '/^\+7 \([0-9]{3}\)\-[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/', 'message' => 'Только в формате +7 (999)-999-99-99'],
-            ['password', 'match', 'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/', 'message' => 'Минимум 6 символов из которых 1 число 1 буква маленького регистра и 1 большого регистра'],
+            ['email', 'unique', 'targetClass' => User::class, 'message' => 'Этот Email уже зарегистрирован.'],
+            ['gender', 'required', 'message' => 'Пожалуйста, выберите пол.'],
+            ['gender', 'string', 'max' => 255],
+            ['phone', 'match', 'pattern' => '/^\+7 \([0-9]{3}\)\-[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/', 'message' => 'Телефон должен быть в формате +7 (999)-999-99-99.'],
+            ['password', 'match', 'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/', 'message' => 'Только латиница и цифры, Минимум 6 символов, одну цифру, одну строчную и одну заглавную букву'],
             ['rules', 'required', 'requiredValue' => 1, 'message' => 'Необходимо согласиться с правилами регистации']
-
         ];
     }
 
@@ -52,7 +53,7 @@ class RegisterForm extends Model
             $user->auth_key = Yii::$app->security->generateRandomString();
             $user->role_id = Role::getRoleId('user');
 
-            if(! $user->save()) {
+            if(! $user->save(false)) {
                 VarDumper::dump($user->errors, 10, true); die;
             }
 

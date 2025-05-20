@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/my.css',
+        'css/Bicons.css',
     ];
     public $js = [
     ];

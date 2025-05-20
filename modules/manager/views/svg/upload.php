@@ -1,11 +1,21 @@
 <?php
+
+use app\models\Role;
 use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Html;
 use yii\web\YiiAsset;
 use yii\widgets\Pjax;
 
 /** @var \app\modules\manager\models\ModelsSvgUploadForm $model */
 ?>
-
+    <?= Html::a(
+        Html::img('@web/img/arrow-left.svg', [
+            'alt' => 'Назад',
+            'style' => 'width: 20px; height: 20px; margin-right: 8px;'
+        ]),
+        Yii::$app->user->identity->role_id == Role::getRoleId('admin') ? ['/admin'] : ['/manager'],
+        ['class' => 'btn btn-link d-inline-flex align-items-center']
+    ) ?>
 <?php Pjax::begin(['id' => 'scheme', 'enablePushState' => false, 'timeout' => 5000]); ?>
 <div class="scheme-container position-relative mx-auto" style="justify-content: center;">
 

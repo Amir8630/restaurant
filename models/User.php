@@ -38,10 +38,16 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['fio', 'email', 'gender', 'phone', 'password', 'role_id', 'auth_key'], 'required'],
+            [['fio', 'gender', 'password', 'role_id', 'auth_key', 'email', 'phone'], 'required'],
             [['role_id'], 'integer'],
-            [['fio', 'email', 'phone', 'password', 'auth_key', 'gender'], 'string', 'max' => 255],
+            [['fio', 'email', 'phone', 'password', 'auth_key'], 'string', 'max' => 255],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
+            ['fio', 'match', 'pattern' => '/^[а-яёa-z\s\-]+$/ui', 'message' => 'ФИО должно содержать только кириллические или латинские буквы, пробелы и дефисы.'],
+            ['email', 'email'],
+            ['email', 'unique', 'targetClass' => User::class, 'message' => 'Этот Email уже зарегистрирован.'],
+            ['gender', 'string', 'max' => 255],
+            ['phone', 'match', 'pattern' => '/^\+7 \([0-9]{3}\)\-[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/', 'message' => 'Телефон должен быть в формате +7 (999)-999-99-99.'],
+            ['password', 'match', 'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/', 'message' => 'Только латиница и цифры, Минимум 6 символов, одну цифру, одну строчную и одну заглавную букву'],
         ];
     }
 
@@ -51,13 +57,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'fio' => 'Fio',
+            'id' => 'Идентификатор',
+            'fio' => 'ФИО',
             'email' => 'Email',
-            'gender' => 'Gender',
-            'phone' => 'Phone',
-            'password' => 'Password',
-            'role_id' => 'Role ID',
+            'gender' => 'пол',
+            'phone' => 'Телефон',
+            'password' => 'Пароль',
+            'role_id' => 'Роль',
+            'created_by_id' => 'Кем Зарегистрирован',
         ];
     }
 
@@ -158,4 +165,16 @@ class User extends ActiveRecord implements IdentityInterface
         return self::findOne(['email' => $email]);
     }
 
+    public function getRoleTitle()
+    {
+        $roles = [
+            1 => 'Администратор',
+            2 => 'Пользователь',
+            3 => 'Менеджер',
+            4 => 'Повар',
+            5 => 'Официант',
+        ];
+
+        return $roles[(int) $this->role_id] ?? 'Неизвестная роль';
+    }
 }

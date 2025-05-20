@@ -86,3 +86,84 @@ a.desc:after {
 .form-group {
     margin-bottom: 1rem;
 }
+
+/* Анимация для правильного ввода */
+.is-valid {
+  border-color: var(--navbar-link-active) !important;
+  animation: validAnim 1s ease-out;
+}
+
+@keyframes validAnim {
+  0%, 50%, 100% {
+    box-shadow: 0 0 1px var(--navbar-link-active);
+  }
+  25%, 75% {
+    box-shadow: 0 0 7px var(--navbar-link-active);
+  }
+}
+
+/* Анимация для ошибки ввода */
+.is-invalid {
+  border-color: #dc3545 !important; /* стандартный «Bootstrap-danger» */
+  animation: invalidAnim 1s ease-out;
+}
+
+@keyframes invalidAnim {
+  0%, 50%, 100% {
+    box-shadow: 0 0 1px #dc3545;
+  }
+  25%, 75% {
+    box-shadow: 0 0 7px #dc3545;
+  }
+}
+
+/* Шрифт */
+@font-face {
+  font-family: 'Lora';
+  src: url('../font/Lora-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Roboto (400 - Regular) */
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*  Использование шрифта */
+
+body, .text2 {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, p,i, .title, .text1 {
+    font-family: 'Lora', serif;
+      font-weight: 600;
+}
+
+label, .form-label, .form-control {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+
+
+/* стили для переходов */
+#main {
+  animation: zoomFade 0.5s ease-out both;
+}
+
+@keyframes zoomFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+

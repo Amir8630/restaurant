@@ -32,6 +32,10 @@ class LoginForm extends Model
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+            ['email', 'email'],
+            ['password', 'match', 'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/', 'message' => 'Только латиница и цифры, Минимум 6 символов, одну цифру, одну строчную и одну заглавную букву'],
+
+
         ];
     }
 
@@ -57,7 +61,8 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect email or password.');
+                Yii::$app->session->setFlash('error', 'Неверный Email или Пароль.');
+                $this->addError($attribute, 'Неверный Email или Пароль.');
             }
         }
     }

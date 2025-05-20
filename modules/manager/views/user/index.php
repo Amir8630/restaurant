@@ -14,8 +14,13 @@ use yii\widgets\Pjax;
 /** @var app\modules\account\models\BookingSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Брони';
+$this->title = 'Пользватели';
 $this->params['breadcrumbs'][] = $this->title;
+// $this->registerJsFile('@web/js/1.js', [
+//     'depends' => [\yii\web\JqueryAsset::class],
+// ]);
+?>
+<?php
 // ТОЛЬКО ДЛЯ ТЕСТИРОВАНИЯ были добавлены стили для отображения карточек, стили бета
 $this->registerCss(<<<CSS
 .booking-card {
@@ -105,10 +110,14 @@ CSS);
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Забронировать', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Зарегистрировать пользователя', ['create'], ['class' => 'btn btn-outline-success']) ?>
     </p>
 
-    <?php Pjax::begin(['id' => 'pjax-booking-index', 'enablePushState' => false, 'timeout' => 5000]); ?> 
+    <?php Pjax::begin([
+        'id' => 'pjax-booking-index',
+        // 'enablePushState' => false,
+        'timeout' => 5000
+          ]); ?> 
     
     <?= Alert::widget() ?>
 
@@ -123,15 +132,12 @@ CSS);
 
     ]) ?>
 
-    <?php if (Yii::$app->request->get('sendMailCancel') == 1 && Yii::$app->request->get('id')): ?>
-        <script>
-            fetch('<?= Url::to(['booking/mail-cancel']) ?>?id=<?= Yii::$app->request->get('id') ?>');
-        </script>
-    <?php endif; ?>
+
 
     <?php Pjax::end(); ?>
 
 </div>
 
-<?= $this->render('modal', ['pjax' => '#pjax-booking-index']) ?>
+<?php $this->registerJsFile('js/userFilter.js', ['depends' => YiiAsset::class]) ?>
+
 

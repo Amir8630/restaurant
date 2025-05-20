@@ -11,106 +11,114 @@ use yii\widgets\Pjax;
 
 YiiAsset::register($this);
 $this->registerCss(<<<CSS
-    body {
-      background-color: #f7f7f7;
-          background-color:rgb(130, 133, 136);
+.booking-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
 
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
-    .booking-container {
-      max-width: 1000px;
-      margin: 20px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .booking-container h1 {
-      text-align: center;
-      color: #343a40;
-      margin-bottom: 30px;
-    }
-    /* Стили для формы */
-    .booking-form .form-group label {
-      font-weight: 600;
-    }
-    .booking-form .form-control {
-      border-radius: 5px;
-      border: 1px solid #ced4da;
-    }
-    .booking-form .form-control:focus {
-      border-color: #80bdff;
-      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-    }
-    /* Стили для контейнера схемы зала */
-    #hall-container {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      background: #fafafa;
-    }
-    #hall-container svg {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    /* Кнопка отправки */
-    .btn-outline-success {
-      font-weight: 600;
-      border-radius: 50px;
-      padding: 12px 20px;
-      border: 2px solid #28a745;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .btn-outline-success:hover {
-      background-color: #28a745;
-      color: #fff;
-    }
-    
-    /* Стили для всплывающей подсказки */
-    .tooltip-custom {
-      position: relative;
-      display: inline-block;
-      cursor: pointer;
-    }
+/* Заголовок */
+.booking-container h1 {
+  text-align: center;
+  color: var(--navbar-bg);
+  margin-bottom: 2rem;
+}
 
-    .tooltip-custom i {
-      font-size: 14px;
-    }
+/* ===== Стили формы ===== */
+.booking-form .form-group label,
+.booking-form .form-label {
+  font-weight: 600;
+  color: var(--navbar-bg);
+}
 
-    .tooltip-custom .tooltip-text {
-      visibility: hidden;
-      width: 260px;
-    background-color: #343a40;
-    color: #ffffff;
-    text-align: left;
-    border-radius: 10px;
-    padding: 12px 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    position: absolute;
-    z-index: 10;
-    top: 120%;
-    left: 120%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.4s, visibility 0.4s;
-    font-size: 14px;
-    }
+.booking-form .form-control {
+  border: 1px solid var(--navbar-bg);
+  border-radius: .5rem;
+  transition: border-color .3s, box-shadow .3s;
+}
 
-    .tooltip-custom:hover .tooltip-text {
-    visibility: visible;
-    background-color: #343a40;
-    color: #ffffff;
-    opacity: 1;
-    }
-    
-    .tooltip-custom {
-        margin: 0; /* Убираем внешние отступы */
-        padding: 0; /* Убираем внутренние отступы */
-        display: inline-flex;
-        align-items: flex-start; /* Выравниваем содержимое по верхнему краю */
-    }
+.booking-form .form-control:focus {
+  border-color: var(--navbar-link-active);
+  box-shadow: 0 0 0 .2rem rgba(32, 201, 151, .25);
+}
+
+/* ===== Дата и время ===== */
+.booking-form input[type="date"],
+.booking-form input[type="time"] {
+  background: #fff;
+}
+
+/* ===== Кнопка отправки ===== */
+.btn-outline-success {
+  display: block;
+  width: 100%;
+  font-weight: 600;
+  border: 2px solid var(--navbar-link-active);
+  border-radius: 50px;
+  padding: .75rem;
+  color: var(--navbar-link-active);
+  transition: background-color .4s, color .4s;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--navbar-link-active);
+  color: #fff;
+}
+
+/* ===== Схема зала ===== */
+#hall-container {
+  border: 1px solid var(--navbar-bg);
+  border-radius: .75rem;
+  background: #fafafa;
+  margin-bottom: 2rem;
+}
+
+/* ===== Всплывающая подсказка ===== */
+.tooltip-custom {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: default;
+}
+
+.tooltip-custom .tooltip-text {
+  visibility: hidden;
+  width: 260px;
+  background-color: var(--navbar-bg);
+  color: var(--navbar-link);
+  text-align: left;
+  border-radius: .5rem;
+  padding: .75rem 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, .5rem);
+  opacity: 0;
+  transition: opacity .3s, visibility .3s;
+  font-size: .875rem;
+  z-index: 10;
+}
+
+.tooltip-custom:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.btn-book {
+  padding: 0.5rem 1.5rem;       /* уменьшили вертикальные отступы */
+  font-size: 1rem;             /* чуть меньше шрифт */
+  border-width: 2px;
+  border-radius: 2rem;         /* более обтекаемый вид */
+  display: inline-block;       /* ширина по содержимому */
+}
+.btn-book:hover {
+  background-color: var(--navbar-link-active);
+  color: #fff;
+}
 CSS
 );
 ?>
@@ -200,7 +208,9 @@ CSS
 
         <div class="form-group">
             <!-- , 'data-pjax' => 0 -->
-            <?= Html::submitButton('Забронировать', ['class' => 'btn btn-outline-success mt-2 w-100']) ?>
+<?= Html::submitButton('Забронировать', [
+    'class' => 'btn btn-outline-success btn-book mt-3'
+]) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

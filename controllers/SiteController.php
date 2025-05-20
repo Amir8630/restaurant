@@ -14,6 +14,7 @@ use app\models\ContactForm;
 use app\models\RegisterForm;
 use app\models\User;
 use PhpParser\Node\Stmt\Else_;
+use yii\bootstrap5\ActiveForm;
 use yii\helpers\VarDumper;
 
 class SiteController extends Controller
@@ -155,6 +156,14 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+    public function actionPrivacy()
+    {
+        return $this->render('privacy');
+    }
+    public function actionTerms()
+    {
+        return $this->render('terms');
+    }
 
     public function actionTest()
     {
@@ -165,11 +174,16 @@ class SiteController extends Controller
     {
         $model = new RegisterForm();
 
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->register()) {
                 if (Yii::$app->user->login($user, 60*60)) {
                     Yii::$app->session->setFlash('success', 'Вы успешно вошли в систему');
-                    $this->redirect('/account');
+                    return $this->redirect('/account');
                     // нету авто адресаци от роли 
                 }
             }

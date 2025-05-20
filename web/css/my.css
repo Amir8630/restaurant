@@ -187,3 +187,195 @@
       height: 100%;
     }
 }
+
+
+/* body {
+  background-color: #e0e6ed !important;
+} */
+
+/* body {
+  background-color: #c5d0db !important;
+} */
+
+
+/* body {
+  background-color: #aab8c6 !important;
+} */
+
+
+/* добавьте в свой CSS-файл */
+.booking-card {
+  background-color: #ffffff;        /* чисто белый фон */
+  border-radius: 0.75rem;           /* слегка скруглённые углы */
+  box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.1); /* более плотная тень */
+  padding: 1.5rem;                  /* внутренние отступы */
+  margin-bottom: 1.5rem;            /* отступ снизу между карточками */
+}
+.booking-card-header {
+  border-bottom: 1px solid #e9ecef; /* лёгкая линия под заголовком */
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+.booking-card-footer .btn {
+  min-width: 5rem;
+}
+
+
+
+
+:root {
+  /* Основные цвета */
+  --page-bg: #c5d0db;
+  --navbar-bg: #2c3e50;
+  --navbar-link: #ecf0f1;
+  --navbar-link-hover: #a5d6ff;
+  --navbar-link-active: #20c997;
+  --navbar-hover-bg: rgba(32,201,151,0.1);
+
+  --footer-bg: #1a242f;
+  --footer-text: #bdc3c7;
+  --footer-link-hover: #a5d6ff;
+  --footer-hover-bg: rgba(165,214,255,0.1);
+
+  --transition: all .4s ease-in-out;
+}
+
+body {
+  background-color: var(--page-bg) !important;
+  transition: background-color .6s ease;
+}
+
+/* Navbar */
+.custom-navbar {
+  background-color: var(--navbar-bg) !important;
+  transition: background-color var(--transition);
+}
+
+.custom-navbar .navbar-nav .nav-link {
+  color: var(--navbar-link) !important;
+  position: relative;
+  padding: .5rem 1rem;
+  transition: color var(--transition), background-color var(--transition);
+}
+
+/* Псевдоэлемент — тонкая линия */
+.custom-navbar .navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--navbar-link-active);
+  transform-origin: center bottom;
+  transition: width .4s ease, left .4s ease;
+}
+
+/* Hover и Active */
+.custom-navbar .navbar-nav .nav-link:hover::after,
+.custom-navbar .navbar-nav .nav-link.active::after {
+  left: 0;
+  width: 100%;
+  animation: gentle-flame 3s ease-in-out infinite;
+}
+.custom-navbar .navbar-nav .nav-link:hover {
+  color: var(--navbar-link-hover) !important;
+  background-color: var(--navbar-hover-bg);
+  border-radius: .25rem;
+}
+.custom-navbar .navbar-nav .nav-link.active {
+  color: var(--navbar-link-active) !important;
+}
+
+/* Плавная, медитативная анимация "пламени" */
+@keyframes gentle-flame {
+  0%, 100% {
+    box-shadow:
+      0 -1px 4px rgba(32,201,151,0.5),
+      0 -2px 10px rgba(32,201,151,0.3);
+  }
+  25%, 75% {
+    box-shadow:
+      0 -1px 6px rgba(32,201,151,0.7),
+      0 -2px 12px rgba(32,201,151,0.5);
+  }
+  50% {
+    box-shadow:
+      0 -1px 8px rgba(32,201,151,0.9),
+      0 -2px 16px rgba(32,201,151,0.7);
+  }
+}
+
+.custom-navbar .navbar-toggler {
+  border-color: rgba(255,255,255,0.5);
+  transition: background-color var(--transition);
+}
+.custom-navbar .navbar-toggler:hover {
+  background-color: var(--navbar-hover-bg);
+}
+.custom-navbar .navbar-toggler-icon {
+  filter: invert(100%);
+}
+
+/* Footer */
+.custom-footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  transition: background-color var(--transition);
+}
+.custom-footer .text-link {
+  color: var(--footer-text);
+  text-decoration: none;
+  position: relative;
+  padding: .25rem 0;
+  transition: color var(--transition), background-color var(--transition);
+}
+.custom-footer .text-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--footer-link-hover);
+  transform-origin: center bottom;
+  transition: width .4s ease, left .4s ease;
+}
+
+/* Hover и Active — показываем анимацию искр */
+.custom-footer .text-link:hover::after,
+.custom-footer .text-link.active::after {
+  left: 0;
+  width: 100%;
+  animation: gentle-spark 2.5s ease-in-out infinite;
+}
+.custom-footer .text-link:hover,
+.custom-footer .text-link.active {
+  color: var(--footer-link-hover);
+  background-color: var(--footer-hover-bg);
+  border-radius: .25rem;
+  box-shadow: 0 2px 4px rgba(165,214,255,0.3);
+}
+
+/* Плавная анимация искр для футера */
+@keyframes gentle-spark {
+  0%, 100% {
+    box-shadow: 0 0 2px rgba(165,214,255,0.4);
+  }
+  50% {
+    box-shadow: 0 0 6px rgba(165,214,255,0.8);
+  }
+}
+
+
+/* body {
+  font-family: 'Inter', sans-serif;
+}
+
+
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+}
+p, li, small {
+  font-weight: 400;
+} */

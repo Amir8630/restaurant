@@ -1,19 +1,17 @@
 <?php
-
-use app\models\Status;
 use yii\helpers\Html;
-use yii\helpers\Url;
+// Removed unused 'use yii\helpers\Url;'
 
 /** @var app\models\Booking $model */
 
-$statusColors = [
-    'Ожидает' => 'warning',
-    'Подтверждена' => 'success',
-    'Отменена' => 'danger',
-];
+// $statusColors = [
+//     'Ожидает' => 'warning',
+//     'Подтверждена' => 'success',
+//     'Отменена' => 'danger',
+// ];
 
-$statusName = ucfirst(strtolower($model->status->title ?? 'Ожидает'));
-$color = $statusColors[$statusName] ?? 'secondary';
+// $statusName = ucfirst(strtolower($model->status->title ?? 'Ожидает'));
+// $color = $statusColors[$statusName] ?? 'secondary';
 ?>
 
 
@@ -61,26 +59,21 @@ CSS);
 
 <div class="booking-card shadow-sm">
     <div class="booking-card-header">
-        <div class="booking-id">Бронь №<?= Html::encode($model->id) ?></div>
-        <div class="booking-status badge bg-<?= $color ?>">
-            <?= Html::encode($statusName) ?>
-        </div>
+        <div class="booking-id">Пользователь №<?= Html::encode($model->id) ?></div>
     </div>
     <div class="booking-card-body">
-        <p><i class="bi bi-person-circle"></i> На имя: <?= Html::encode($model->fio_guest) ?></p>
-        <p><i class="bi bi-calendar-check"></i> Дата: <?= Yii::$app->formatter->asDate($model->booking_date) ?></p>
-        <p><i class="bi bi-clock"></i> Время: <?= Html::encode($model->booking_time_start) ?> - <?= Html::encode($model->booking_time_end) ?></p>
-        <p><i class="bi bi-people-fill"></i> Персон: <?= Html::encode($model->count_guest) ?></p>
-        <p><i class="bi bi-telephone"></i> <?= Html::encode($model->phone) ?></p>
-        <p><i class="bi bi-envelope"></i> <?= Html::encode($model->email) ?></p>
-        <p><i class="bi bi-calendar-plus"></i> Создана: <?= Yii::$app->formatter->asDatetime($model->created_at) ?></p>
+        <p><i class="bi bi-person-circle"></i> ФИО: <?= Html::encode($model->fio) ?></p>
+        <p><i class="bi bi-envelope"></i> Email: <?= Html::encode($model->email) ?></p>
+        <p><i class="bi bi-people-fill"></i> Пол: <?= Html::encode($model->gender) ?></p>
+        <p><i class="bi bi-telephone"></i> Телефон: <?= Html::encode($model->phone) ?></p>
+        <p><i class="bi bi-person-badge"></i> Роль: <?= Html::encode($model->getRoleTitle()) ?></p>
     </div>
     <div class="booking-card-footer d-flex justify-content-end gap-2">
         <?= Html::a('<i class="bi bi-eye"></i>', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-primary btn-sm', 'title' => 'Просмотр']) ?>
         <?= Html::a('<i class="bi bi-x-circle"></i>', ['cancel', 'id' => $model->id], [
             'class' => 'btn btn-outline-danger btn-sm btn-cancel-modal',
             'data-number' => $model->id,
-            'title' => 'Отменить'
+            'title' => 'Удалить'
         ]) ?>
     </div>
 </div>
@@ -97,11 +90,11 @@ use yii\bootstrap5\Html;
 
 <div class="card" style="width: 18rem;">
   <div class="card-body">
-    <h5 class="card-title"> <?= Html::encode('Бронь №' . $model->id) ?> </h5>
-    <p class="card-text"> <?= Html::encode('Бронь на ' . $model->booking_date) ?> </p>
-    <p class="card-text"> <?= Html::encode('Бронь с ' . $model->booking_time_start) ?> </p>
-    <p class="card-text"> <?= Html::encode('Бронь до ' . $model->booking_time_end) ?> </p>
-    <p class="card-text"> <?= Html::encode('Email ' . $model->email) ?> </p>
+    <h5 class="card-title"> <= Html::encode('Бронь №' . $model->id) ?> </h5>
+    <p class="card-text"> <= Html::encode('Бронь на ' . $model->booking_date) ?> </p>
+    <p class="card-text"> <= Html::encode('Бронь с ' . $model->booking_time_start) ?> </p>
+    <p class="card-text"> <= Html::encode('Бронь до ' . $model->booking_time_end) ?> </p>
+    <p class="card-text"> <= Html::encode('Email ' . $model->email) ?> </p>
   </div>
   <= Html::a('Просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-info w-100'])?>
   
