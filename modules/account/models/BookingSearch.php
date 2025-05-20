@@ -12,6 +12,9 @@ use Yii;
  */
 class BookingSearch extends Booking
 {
+    public int $id_search = 0;
+    public int $title_search = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -20,6 +23,8 @@ class BookingSearch extends Booking
         return [
             [['id', 'user_id', 'status_id', 'count_guest'], 'integer'],
             [['fio_guest', 'created_at', 'booking_date', 'booking_time_start', 'booking_time_end', 'phone', 'email'], 'safe'],
+            [['title_search', 'id_search'], 'number'],
+
         ];
     }
 

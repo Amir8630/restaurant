@@ -108,7 +108,9 @@ CSS);
         <?= Html::a('Забронировать', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(['id' => 'pjax-booking-index', 'enablePushState' => false, 'timeout' => 5000]); ?> 
+    <?php Pjax::begin(['id' => 'pjax-booking-index',
+    //  'enablePushState' => false,
+      'timeout' => 5000]); ?> 
     
     <?= Alert::widget() ?>
 
@@ -135,3 +137,4 @@ CSS);
 
 <?= $this->render('modal', ['pjax' => '#pjax-booking-index']) ?>
 
+<?php $this->registerJsFile('js/bookibgFilter.js', ['depends' => YiiAsset::class]) ?>

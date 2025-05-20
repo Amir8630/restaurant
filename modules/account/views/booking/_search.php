@@ -1,50 +1,54 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var app\modules\account\models\BookingSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="booking-search">
-
+<div class="booking-search booking-search-form">
+    <style>
+        .booking-search-form .row > div {
+            margin-bottom: 10px; /* уменьшить вертикальные отступы между полями */
+        }
+        .booking-search-form .form-group {
+            margin-top: 0; /* убрать лишний отступ сверху у кнопок */
+        }
+    </style>
     <?php $form = ActiveForm::begin([
+        'id' => 'form_search',
         'action' => ['index'],
         'method' => 'get',
-        'options' => [
-            'data-pjax' => 1
-        ],
+        'options' => ['data-pjax' => 1],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'fio_guest') ?>
-
-    <?= $form->field($model, 'user_id') ?>
-
-    <?= $form->field($model, 'created_at') ?>
-
-    <?= $form->field($model, 'booking_date') ?>
-
-    <?php // echo $form->field($model, 'booking_time_start') ?>
-
-    <?php // echo $form->field($model, 'booking_time_end') ?>
-
-    <?php // echo $form->field($model, 'status_id') ?>
-
-    <?php // echo $form->field($model, 'count_guest') ?>
-
-    <?php // echo $form->field($model, 'phone') ?>
-
-    <?php // echo $form->field($model, 'email') ?>
+    <div class="d-flex flex-wrap justify-content-between">
+        <div class="col-md-2">
+            <?= $form->field($model, 'id')->textInput(['placeholder' => 'ID']) ?>
+        </div>
+        <div class="col-md-2">
+            <?= $form->field($model, 'fio_guest')->textInput(['placeholder' => 'ФИО гостя']) ?>
+        </div>
+        <div class="col-md-2">
+            <?= $form->field($model, 'user_id')->textInput(['placeholder' => 'ID пользователя']) ?>
+        </div>
+        <div class="col-md-2">
+            <?= $form->field($model, 'booking_date')->textInput([
+                'type' => 'date',
+                ]) ?>
+        </div>
+        <div class="col-md-2">
+            <?= $form->field($model, 'booking_time_start')->textInput(['type' => 'time']) ?>
+        </div>
+        <?= $form->field($model, 'title_search')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'id_search')->hiddenInput()->label(false) ?>
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Сбросить',['index'], ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::a('Сбросить', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>
