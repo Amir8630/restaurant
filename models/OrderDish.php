@@ -31,10 +31,13 @@ class OrderDish extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id', 'dish_id', 'count'], 'required'],
-            [['order_id', 'dish_id', 'count'], 'integer'],
-            [['dish_id'], 'exist', 'skipOnError' => true, 'targetClass' => Dish::class, 'targetAttribute' => ['dish_id' => 'id']],
-            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['order_id' => 'id']],
+                      [['dish_id', 'count'], 'required'],
+            [['order_id','dish_id','count'], 'integer'],
+            ['dish_id', 'exist',
+                'skipOnError' => true,
+                'targetClass' => Dish::class,
+                'targetAttribute' => ['dish_id' => 'id']
+            ],
         ];
     }
 

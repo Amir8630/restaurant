@@ -120,17 +120,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 </body>
 </html>
 <?php
-$this->registerJs("
-    setTimeout(function () {
-        document.querySelectorAll('.alert').forEach(function(alert) {
-            // Только если у alert есть класс 'show' и 'fade'
-            if (alert.classList.contains('fade') && alert.classList.contains('show')) {
-                let bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close(); // Bootstrap сам удалит .show → CSS сделает fade
-            }
-        });
-    }, 3000);
-");
+
 ?>
 
 <?php $this->endPage() ?>

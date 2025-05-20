@@ -12,7 +12,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use app\models\OrderForm;
+use Exception;
 use yii\db\Query;
+use yii\helpers\VarDumper;
 use yii\jui\AutoComplete;
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -73,41 +75,85 @@ class OrderController extends Controller
      */
 
 
-    public function actionCreate()
-    {
-        $model = new Order();
-        // сразу одна строка
-        if (empty($model->dishes)) {
-            $model->dishes = [ new OrderDish() ];
-        }
+public function actionCreate()
+{
+    $model = new Order();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $dishesData = Yii::$app->request->post('OrderDishForm', []);
-            $model->dishes = [];
-            foreach ($dishesData as $data) {
-                $dish = new OrderDish();
-                $dish->load($data, '');
-                $model->dishes[] = $dish;
-            }
-            $valid = $model->validate();
-            foreach ($model->dishes as $dish) {
-                $valid = $dish->validate() && $valid;
-            }
-            if ($valid) {
-                $model->save(false);
-                foreach ($model->dishes as $dish) {
-                    $od = new OrderDish();
-                    $od->order_id = $model->id;
-                    $od->dish_id  = $dish->dish_id;
-                    $od->count    = $dish->count;
-                    $od->save(false);
-                }
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        }
-
-        return $this->render('create', ['model' => $model]);
+    // При первом заходе — одна пустая строка блюда
+    if (empty($model->dishes)) {
+        $model->dishes = [new OrderDish()];
     }
+
+    // Если не POST — отрисовываем форму
+    if (!Yii::$app->request->isPost) {
+        return $this->render('create', [
+            'model'  => $model,
+            'dishes' => $model->dishes,
+        ]);
+    }
+
+    // 1) Загружаем данные самого заказа
+    $model->load(Yii::$app->request->post());
+    $model->waiter_id    = Yii::$app->user->id;
+    $model->order_status = Status::getStatusId('Новый');
+
+    // 2) Читаем блюда из POST['OrderDish']
+    $postDishes = Yii::$app->request->post('OrderDish', []);
+    $dishes     = [];
+    foreach ($postDishes as $i => $data) {
+        $dish = new OrderDish();
+        // Присваиваем поля вручную
+        $dish->dish_id = (int)($data['dish_id'] ?? 0);
+        $dish->count   = (int)($data['count']   ?? 0);
+        $dishes[] = $dish;
+    }
+
+    // 3) Валидация: сам Order и все OrderDish
+    $valid = $model->validate();
+    foreach ($dishes as $i => $dish) {
+        if (!$dish->validate()) {
+            Yii::$app->session->setFlash('error', 'Ошибка в строке #'.($i+1).': '.implode(', ', $dish->getFirstErrors()));
+            return $this->render('create', [
+                'model'  => $model,
+                'dishes' => $dishes,
+            ]);
+        }
+        $valid = true;
+    }
+
+    if (!$valid) {
+        Yii::$app->session->setFlash('error', 'Ошибка валидации заказа');
+        return $this->render('create', [
+            'model'  => $model,
+            'dishes' => $dishes,
+        ]);
+    }
+
+    // 4) Сохраняем в транзакции
+    $tx = Yii::$app->db->beginTransaction();
+    try {
+        $model->save(false);
+        foreach ($dishes as $dish) {
+            $dish->order_id = $model->id;
+            $dish->save(false);
+        }
+        $tx->commit();
+        Yii::$app->session->setFlash('success', 'Заказ успешно создан');
+        return $this->redirect(['view', 'id' => $model->id]);
+    } catch (\Throwable $e) {
+        $tx->rollBack();
+        Yii::$app->session->setFlash('error', 'Ошибка сохранения: ' . $e->getMessage());
+    }
+
+    // 5) При неудаче — возвращаемся к форме
+    return $this->render('create', [
+        'model'  => $model,
+        'dishes' => $dishes,
+    ]);
+}
+
+
+
 
     // AJAX-экшен для динамического поиска блюд
 public function actionDishList($q = '')

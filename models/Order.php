@@ -36,7 +36,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['table_id', 'order_type', 'order_status', 'waiter_id'], 'required'],
+            [['order_type', 'order_status', 'waiter_id'], 'required'],
             [['table_id', 'order_type', 'order_status', 'waiter_id'], 'integer'],
             [['created_at'], 'safe'],
             [['table_id'], 'exist', 'skipOnError' => true, 'targetClass' => Table::class, 'targetAttribute' => ['table_id' => 'id']],
@@ -52,7 +52,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             'id' => 'Заказ №',
             'table_id' => 'Стол №',
-            'created_at' => 'Дата и время создания заказа',
+            'created_at' => 'Время создания заказа',
             'order_type' => 'Тип заказа',
             'order_status' => 'Статус',
             'waiter_id' => 'Номер Официанта',
@@ -120,4 +120,10 @@ class Order extends \yii\db\ActiveRecord
             ['count', 'integer', 'min' => 1],
         ];
     }
+
+    public function getStatus()
+    {
+        return $this->hasOne(Status::class, ['id' => 'order_status']);
+    }
+
 }

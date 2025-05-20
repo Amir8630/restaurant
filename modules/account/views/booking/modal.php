@@ -13,7 +13,8 @@ Modal::begin([
     'title' => 'Отмена брони',
     'options' => [
         'data-mail-url' => Url::to(['booking/mail-cancel']), // Вот сюда
-    ]
+    ],
+    
 ]);
 ?>
  <!-- тут будеть текст от джса -->
