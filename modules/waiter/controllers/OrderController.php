@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use app\models\OrderForm;
+use yii\db\Query;
 use yii\jui\AutoComplete;
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -72,61 +73,73 @@ class OrderController extends Controller
      */
 
 
-public function actionDishList($q = null)
-{
-    Yii::$app->response->format = Response::FORMAT_JSON;
-    $out = [];
-
-    if ($q !== null) {
-        $out = \app\models\Dish::find()
-            ->select(['title AS label', 'id'])
-            ->where(['like', 'title', $q])
-            ->limit(20)
-            ->asArray()
-            ->all();
-    }
-
-    return $out;
-}
-
     public function actionCreate()
     {
         $model = new Order();
+        // сразу одна строка
+        if (empty($model->dishes)) {
+            $model->dishes = [ new OrderDish() ];
+        }
 
         if ($model->load(Yii::$app->request->post())) {
-            // загружаем блюда
             $dishesData = Yii::$app->request->post('OrderDishForm', []);
             $model->dishes = [];
-
             foreach ($dishesData as $data) {
                 $dish = new OrderDish();
                 $dish->load($data, '');
                 $model->dishes[] = $dish;
             }
-
-            // валидируем сам заказ и все блюда
             $valid = $model->validate();
             foreach ($model->dishes as $dish) {
                 $valid = $dish->validate() && $valid;
             }
-
             if ($valid) {
-                $model->save(false); // сохранили заказ
+                $model->save(false);
                 foreach ($model->dishes as $dish) {
                     $od = new OrderDish();
                     $od->order_id = $model->id;
-                    $od->dish_id = $dish->dish_id;
-                    $od->count = $dish->count;
+                    $od->dish_id  = $dish->dish_id;
+                    $od->count    = $dish->count;
                     $od->save(false);
                 }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model]);
     }
+
+    // AJAX-экшен для динамического поиска блюд
+public function actionDishList($q = '')
+{
+    $q = trim(mb_strtolower($q));
+    
+    $dishes = \app\models\Dish::find()
+        ->select(['id', 'title'])
+        ->asArray()
+        ->all();
+
+    // фильтрация и сортировка вручную
+    $filtered = array_filter($dishes, function ($dish) use ($q) {
+        return mb_stripos($dish['title'], $q) !== false;
+    });
+
+    // сортировка: сначала те, где вхождение в начале
+    usort($filtered, function ($a, $b) use ($q) {
+        $posA = mb_stripos($a['title'], $q);
+        $posB = mb_stripos($b['title'], $q);
+        return $posA <=> $posB;
+    });
+
+    $result = array_map(fn($dish) => [
+        'id' => $dish['id'],
+        'label' => $dish['title'],
+    ], $filtered);
+
+    return $this->asJson($result);
+}
+
+
 
 
     public function actionCreateOriginal()
