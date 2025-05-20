@@ -76,12 +76,16 @@ CSS);
         <p><i class="bi bi-calendar-plus"></i> Создана: <?= Yii::$app->formatter->asDatetime($model->created_at) ?></p>
     </div>
     <div class="booking-card-footer d-flex justify-content-end gap-2">
-        <?= Html::a('<i class="bi bi-eye"></i>', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-primary btn-sm', 'title' => 'Просмотр']) ?>
-        <?= Html::a('<i class="bi bi-x-circle"></i>', ['cancel', 'id' => $model->id], [
-            'class' => 'btn btn-outline-danger btn-sm btn-cancel-modal',
-            'data-number' => $model->id,
-            'title' => 'Отменить'
-        ]) ?>
+        <div class="btn-group mb-2">
+            <?= Html::a('<i class="bi bi-eye"></i> Просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
+            <?= $model->status_id == Status::getStatusId('Забронировано') 
+            ? Html::a('Отменить', ['cancel', 'id' => $model->id], [
+                'class' => 'btn btn-outline-danger btn-cancel-modal',
+                'data-number' => $model->id,
+                'title' => 'Отменить'
+            ])
+            : ''?>
+        </div>
     </div>
 </div>
 

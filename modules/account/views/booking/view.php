@@ -120,13 +120,13 @@ CSS);
 <div class="booking-view" data-booking-id="<?= $model->id ?>">
 
     <h3><?= Html::encode('Бронь №' . $this->title) ?></h3>
+     <div class="btn-group mb-2">
+            <?= Html::a('<i class="bi bi-arrow-left"></i> Назад', ['index'], ['class' => 'btn btn-outline-primary']) ?>
+            <?= $model->status_id == Status::getStatusId('Забронировано') 
+                ? Html::a('Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal']) 
+                : ''?>
+        </div>
 
-    <p id="booking-view">
-        <?= Html::a('Назад', ['index'], ['class' => 'btn btn-outline-primary']) ?>
-        <?= $model->status_id == Status::getStatusId('Забронировано') 
-        ? Html::a('Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal'])
-        :'' ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
