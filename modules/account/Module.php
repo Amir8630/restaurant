@@ -20,7 +20,7 @@ class Module extends \yii\base\Module
         return [ 
             'access' => [ 
                 'class' => AccessControl::class, 
-                'denyCallback' => fn() => Yii::$app->response->redirect('/'), 
+                'denyCallback' => fn() => Yii::$app->response->redirect('/site/login'), 
                 'rules' => [ 
                     [ 
                         'allow' => true, 

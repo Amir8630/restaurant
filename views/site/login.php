@@ -26,7 +26,7 @@ $this->title = 'Авторизация';
                                   "  {input}\n" .
                                   "</div>\n" .
                                   "{error}",
-                    'labelOptions' => ['class' => 'form-label'], // или любая нужная вам обёртка
+                    'labelOptions' => ['class' => 'form-label'],
                     'errorOptions' => ['class' => 'invalid-feedback'],
                 ],
             ]); ?>
