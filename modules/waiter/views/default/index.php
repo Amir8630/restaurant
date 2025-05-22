@@ -4,14 +4,17 @@ use yii\bootstrap5\Html;
 
 ?>
 
-<h3>Панель управления менеджера</h3>
+<h3>Панель управления официанта</h3>
 
-<div>
+<div class="p-2 d-flex flex-wrap gap-2 justify-content-start" style="max-width:100%;">
     <?= Html::a('Создать заказ', ['/waiter/order'], ['class' => 'btn btn-outline-primary']) ?>
-    <!-- <= Html::a('Пользователи', ['user/index'], ['class' => 'btn btn-outline-info text1 ']) ?> -->
-    <!-- <p>Мы стремимся обеспечивать Пользователи бесперебойную работу сервиса, но не несём ответственность за сбои, вызванные провайдерами связи.
-
-Полная версия условий будет опубликована после юридической проверки.</p>
-<p class="text1">Полная версия условий будет опубликована после юридической проверки.</p>
-<p class="text2">Полная версия условий будет опубликована после юридической проверки.</p> -->
 </div>
+<style>
+@media (max-width: 576px) {
+    .d-flex.flex-wrap.gap-2 > a {
+        flex-basis: 100% !important;
+        min-width: 0 !important;
+    }
+}
+</style>
+
