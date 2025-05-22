@@ -1,12 +1,20 @@
-<div class="cook-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+<?php
+
+use yii\bootstrap5\Html;
+
+?>
+
+<h3>Панель управления Повара</h3>
+
+<div class="p-2 d-flex flex-wrap gap-2 justify-content-start" style="max-width:100%;">
+    <?= Html::a('Работа с заказами', ['/cook/order'], ['class' => 'btn btn-outline-primary']) ?>
 </div>
+<style>
+@media (max-width: 576px) {
+    .d-flex.flex-wrap.gap-2 > a {
+        flex-basis: 100% !important;
+        min-width: 0 !important;
+    }
+}
+</style>
+

@@ -78,7 +78,7 @@ class OrderController extends Controller
 public function actionCreate()
 {
     $model = new Order();
-
+    $dishes = [new OrderDish()];
     // При первом заходе — одна пустая строка блюда
     if (empty($model->dishes)) {
         $model->dishes = [new OrderDish()];
@@ -105,12 +105,14 @@ public function actionCreate()
         // Присваиваем поля вручную
         $dish->dish_id = (int)($data['dish_id'] ?? 0);
         $dish->count   = (int)($data['count']   ?? 0);
+        $dish->status_id   = Status::getStatusId('Новый');
         $dishes[] = $dish;
     }
 
     // 3) Валидация: сам Order и все OrderDish
     $valid = $model->validate();
     foreach ($dishes as $i => $dish) {
+        // VarDumper::dump($dish->attributes, 10, true); die();
         if (!$dish->validate()) {
             Yii::$app->session->setFlash('error', 'Ошибка в строке #'.($i+1).': '.implode(', ', $dish->getFirstErrors()));
             return $this->render('create', [
@@ -212,18 +214,42 @@ public function actionDishList($q = '')
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+public function actionUpdate($id)
+{
+    $model = $this->findModel($id);
+    $dishes = OrderDish::findAll(['order_id' => $model->id]);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+    if (Yii::$app->request->isPost) {
+        $post = Yii::$app->request->post();
+
+        // Загрузка и сохранение основного заказа
+        if ($model->load($post) && $model->save()) {
+
+            // Удалим старые блюда
+            OrderDish::deleteAll(['order_id' => $model->id]);
+
+            // Сохраняем новые блюда
+            if (!empty($post['OrderDish'])) {
+                foreach ($post['OrderDish'] as $dishData) {
+                    $orderDish = new \app\models\OrderDish();
+                    $orderDish->order_id = $model->id;
+                    $orderDish->dish_id = $dishData['dish_id'];
+                    $orderDish->status_id   = Status::getStatusId('Новый');
+                    $orderDish->count = $dishData['count'];
+                    $orderDish->save(false);
+                }
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
+
+    return $this->render('update', [
+        'model' => $model,
+        'dishes' => $dishes,
+    ]);
+}
+
 
     /**
      * Deletes an existing Order model.

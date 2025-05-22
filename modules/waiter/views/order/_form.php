@@ -1,10 +1,10 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
-use yii\bootstrap5\Modal;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Order */
+/** @var yii\web\View          $this */
+/** @var app\models\Order       $model */
+/** @var app\models\OrderDish[] $dishes  */
 
 ?>
 
@@ -16,22 +16,26 @@ use yii\bootstrap5\Modal;
     ) ?>
 
     <?= $form->field($model, 'order_type')->radioList([
-        '10' => 'На месте',
-        '11' => 'С собой',
+        10 => 'На месте',
+        11 => 'С собой',
     ]) ?>
 
+    <hr>
+    <h4>Блюда</h4>
+
     <table id="dishes-table" class="table">
-        <thead><tr><th>Блюдо</th><th>Кол-во</th><th>—</th></tr></thead>
+        <thead>
+          <tr><th>Блюдо</th><th>Кол-во</th><th></th></tr>
+        </thead>
         <tbody>
-        <?php
-        if (empty($model->dishes)) {
-            $model->dishes = [ new \app\models\OrderDish() ];
+        <?php if (empty($dishes)) {
+            $dishes = [new \app\models\OrderDish()];
         }
-        foreach ($model->dishes as $i => $dish): ?>
+        foreach ($dishes as $i => $dish): ?>
             <tr data-index="<?= $i ?>">
                 <td>
                     <?= Html::activeHiddenInput($dish, "[$i]dish_id") ?>
-                    <?= Html::textInput("OrderDishForm[$i][dish_name]",
+                    <?= Html::textInput("OrderDish[$i][dish_name]",
                         $dish->dish->title ?? '',
                         [
                             'class'=>'form-control dish-picker',
@@ -43,7 +47,8 @@ use yii\bootstrap5\Modal;
                 </td>
                 <td>
                     <?= Html::activeTextInput($dish, "[$i]count", [
-                        'type'=>'number','min'=>1,'class'=>'form-control',
+                        'type'=>'number', 'min'=>1,
+                        'class'=>'form-control',
                         'value'=>$dish->count ?: 1
                     ]) ?>
                 </td>
@@ -58,43 +63,36 @@ use yii\bootstrap5\Modal;
     <?= Html::button('Добавить блюдо', ['class'=>'btn btn-success','id'=>'add-row']) ?>
 
     <div class="form-group mt-3">
-        <?= Html::submitButton('Создать заказ', ['class'=>'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Создать заказ' : 'Сохранить заказ',
+            ['class' => 'btn btn-primary']) ?>
     </div>
 
 <?php ActiveForm::end(); ?>
 
-<?php Modal::begin([
+
+<?php
+// Подключаем модалку — она одна на всей странице, её тоже выносим сюда
+use yii\bootstrap5\Modal;
+Modal::begin([
     'id'            => 'dishModal',
     'title'         => 'Выберите блюдо',
     'toggleButton'  => false,
-    'clientOptions' => [
-        'backdrop' => false,
-        'keyboard' => true,
-    ],
-    'dialogOptions' => [
-        'class' => 'modal-dialog modal-dialog-centered modal-lg',
-    ],
+    'dialogOptions' => ['class'=>'modal-dialog modal-dialog-centered modal-lg'],
 ]); ?>
-
-<!-- поле поиска фиксированное -->
-<div class="modal-search-wrapper">
-  <input type="text" id="modalSearch" class="form-control" placeholder="Фильтр по названию...">
-</div>
-
-<!-- прокручиваемый список -->
-<div class="modal-scroll-area">
-  <table class="table table-hover mb-0" id="modalList">
-    <thead><tr><th>Название блюда</th></tr></thead>
-    <tbody></tbody>
-  </table>
-</div>
-
+  <div class="modal-search-wrapper">
+    <input type="text" id="modalSearch" class="form-control" placeholder="Фильтр по названию...">
+  </div>
+  <div class="modal-scroll-area">
+    <table class="table table-hover mb-0" id="modalList">
+      <thead><tr><th>Название блюда</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
 <?php Modal::end(); ?>
 
 
 <?php
+// Подключаем стили и JS, которые ты уже написал (1.css и 1.js)
 $this->registerCssFile('@web/js/1.css');
-$this->registerJsFile('@web/js/1.js', [
-    'depends' => [\yii\web\JqueryAsset::class],
-]);
+$this->registerJsFile('@web/js/1.js', ['depends'=>[\yii\web\JqueryAsset::class]]);
 ?>

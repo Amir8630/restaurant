@@ -18,7 +18,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Центрируем hero-content */
+    justify-content: center;
     background: url('/img/hero-bg.png') center/cover no-repeat;
     color: white;
     overflow: hidden;
@@ -44,7 +44,7 @@ body, html {
     border-radius: 16px;
     backdrop-filter: blur(6px);
     max-width: 600px;
-    margin-bottom: 21vh; /* Чтобы не сдвигался вниз */
+    margin-bottom: 21vh;
     text-align: center;
 }
 
@@ -61,13 +61,14 @@ body, html {
 
 .hero-cards-container {
     position: absolute;
-    bottom: 10rem; /* Прижать к низу с небольшим отступом */
-    left: 50%;
+    bottom: 10rem;
+    left: 50%;  
     transform: translateX(-50%);
     display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
-    max-width: 65vw;
-    width: 100%;
+    max-width: 90vw;
+    width: auto;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     backdrop-filter: blur(6px);
@@ -75,24 +76,23 @@ body, html {
     box-sizing: border-box;
     justify-content: center;
     z-index: 2;
-    flex-wrap: nowrap; /* Можно поменять на wrap, если нужно */
 }
 
 .card-link {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     border-radius: 16px;
-    padding: 1rem 2rem;          /* Меньше по вертикали, больше по горизонтали */
+    padding: 1rem 2rem;
     box-shadow: none;
     transition: all 0.3s ease;
-    flex: 0 1 500px;             /* Больше ширина, фиксируем */
-    min-width: 500px;
+    flex: 1 1 calc(33.333% - 2rem); /* 3 карточки в ряд */
+    min-width: 270px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-sizing: border-box;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    min-height: 180px;           /* Минимальная высота для равномерности */
+    min-height: 180px;
 }
 
 .card-link:hover {
@@ -126,17 +126,25 @@ body, html {
     border-color: white;
 }
 
+/* 2 карточки в ряд для планшетов */
+@media (max-width: 1100px) {
+    .card-link {
+        flex: 1 1 calc(50% - 2rem);
+    }
+}
+
+/* 1 карточка в ряд для телефонов */
 @media (max-width: 768px) {
     .hero-section {
-        height: auto; /* Убираем фиксированную высоту */
-        min-height: 100vh; /* Минимум экран */
+        height: auto;
+        min-height: 100vh;
         padding-top: 3rem;
         padding-bottom: 3rem;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start; /* Контент сверху */
-        overflow-y: auto; /* Если будет больше — прокрутка */
+        justify-content: flex-start;
+        overflow-y: auto;
         background-size: cover;
     }
 
@@ -155,14 +163,15 @@ body, html {
     }
 
     .hero-cards-container {
-        position: relative; /* Чтобы не перекрывалось */
+        position: relative;
         bottom: auto;
         left: auto;
         transform: none;
-        max-width: 90vw;
         width: 100%;
+        min-width: 65vw;
         display: flex;
-        flex-direction: column; /* вертикально */
+        flex-direction: column;
+        align-items: stretch;
         gap: 1rem;
         padding: 1rem;
         box-sizing: border-box;
@@ -185,9 +194,9 @@ body, html {
         justify-content: space-between;
         box-sizing: border-box;
         transition: all 0.3s ease;
-        min-width: 50px;
         margin-left: 0 !important;
         margin-right: 0 !important;
+        min-height: 180px; /* Добавлено для одинаковой высоты */
     }
 
     .card-link:hover {
@@ -221,7 +230,6 @@ body, html {
         border-color: white;
     }
 }
-
 
 CSS);
 ?>

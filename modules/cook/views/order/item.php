@@ -79,8 +79,7 @@ CSS
     <div class="order-card-body">
         <p><i class="bi bi-grid-3x3-gap"></i> Стол: <?= $model->table_id ? Html::encode($model->table_id) : '—' ?></p>
         <p><i class="bi bi-box"></i> Тип: <?= $model->order_type == 10 ? 'На месте' : 'С собой' ?></p>
-        <p><i class="bi bi-clock"></i> Время: <?= Yii::$app->formatter->asTime($model->created_at) ?></p>
-        <p><i class="bi bi-person-circle"></i> Официант: <?= Html::encode($model->waiter->fio ?? '—') ?></p>
+        <p><i class="bi bi-clock"></i> Время создания: <?= Yii::$app->formatter->asTime($model->created_at) ?></p>
         <p><strong>Блюда:</strong></p>
         <ul style="padding-left: 20px; margin: 0;">
         <?php foreach ($model->orderDishes as $dish): ?>

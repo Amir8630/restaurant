@@ -107,6 +107,11 @@ class Order extends \yii\db\ActiveRecord
             $this->dishes[] = $df;
         }
     }
+
+       public function getStatus()
+    {
+        return $this->hasOne(Status::class, ['id' => 'order_status']);
+    }
 }
 
     class OrderDishForm extends Model
@@ -121,9 +126,6 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getStatus()
-    {
-        return $this->hasOne(Status::class, ['id' => 'order_status']);
-    }
+ 
 
 }

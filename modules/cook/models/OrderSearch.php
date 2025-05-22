@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\waiter\models;
+namespace app\modules\cook\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

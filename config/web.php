@@ -88,6 +88,7 @@ $config = [
         ],
         'cook' => [
             'class' => 'app\modules\cook\Module',
+            'defaultRoute' => 'order/index',
         ],
         'manager' => [
             'class' => 'app\modules\manager\Module',

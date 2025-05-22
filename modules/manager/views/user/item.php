@@ -77,6 +77,7 @@ CSS);
                 'class' => 'btn btn-outline-primary btn-sm'
             ]
             ) ?>
+            <?= Html::a('<i class="bi bi-pencil"></i> Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-outline-success btn-sm']) ?>
             <?= Html::a(
             '<i class="bi bi-trash"></i> Удалить',
             ['delete', 'id' => $model->id],

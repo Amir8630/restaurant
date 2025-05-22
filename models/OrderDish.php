@@ -31,8 +31,9 @@ class OrderDish extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-                      [['dish_id', 'count'], 'required'],
-            [['order_id','dish_id','count'], 'integer'],
+
+        [['dish_id', 'count', 'status_id'], 'required'],
+        [['order_id','dish_id','count'], 'integer'],
             ['dish_id', 'exist',
                 'skipOnError' => true,
                 'targetClass' => Dish::class,
@@ -51,6 +52,7 @@ class OrderDish extends \yii\db\ActiveRecord
             'order_id' => 'Заказ №',
             'dish_id' => 'Блюдо №',
             'count' => 'Количество',
+            'status_id' => 'Статус',
         ];
     }
 
@@ -63,6 +65,11 @@ class OrderDish extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Dish::class, ['id' => 'dish_id']);
     }
+
+    public function getStatus() 
+    { 
+        return $this->hasOne(Status::class, ['id' => 'status_id']); 
+    } 
 
     /**
      * Gets query for [[Order]].
