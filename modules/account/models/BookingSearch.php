@@ -21,8 +21,8 @@ class BookingSearch extends Booking
     public function rules()
     {
         return [
-            [['id', 'user_id', 'status_id', 'count_guest'], 'integer'],
-            [['fio_guest', 'created_at', 'booking_date', 'booking_time_start', 'booking_time_end', 'phone', 'email'], 'safe'],
+            [['id', 'user_id', 'count_guest'], 'integer'],
+            [['fio_guest', 'created_at', 'booking_date', 'booking_time_start', 'booking_time_end', 'phone', 'email', 'status_id'], 'safe'],
             [['title_search', 'id_search'], 'number'],
 
         ];

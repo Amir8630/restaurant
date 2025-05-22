@@ -1,54 +1,114 @@
 <?php
 
+use app\models\Status;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 
-/** @var yii\web\View $this */
-/** @var app\modules\account\models\BookingSearch $model */
-/** @var yii\widgets\ActiveForm $form */
+/* @var yii\web\View                            $this */
+/* @var app\modules\account\models\BookingSearch $model */
+
+/* Регистрируем компактные стили и анимацию */
+$this->registerCss(<<<CSS
+
+.booking-search-form {
+    display: flex;
+    justify-content: center;    /* центрируем контейнер */
+    margin-bottom: 1rem;
+}
+
+.booking-search-form .card {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 0.25rem 0.5rem;
+    overflow: hidden;
+    width: auto;                /* авто-ширина по содержимому */
+    max-width: 900px;           /* не больше этого */
+}
+
+.booking-search-form .card-header {
+    background: transparent;
+    border-bottom: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.booking-search-form .card-body {
+    display: flex;
+    align-self: flex-start; 
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 0;
+}
+
+.booking-search-form .form-group {
+    /* margin-bottom: 0 !important; */
+    margin-bottom: 0.5rem !important;
+}
+
+.booking-search-form .btn-reset {
+    align-self: flex-start;
+}
+
+CSS
+);
 ?>
 
 <div class="booking-search booking-search-form">
-    <style>
-        .booking-search-form .row > div {
-            margin-bottom: 10px; /* уменьшить вертикальные отступы между полями */
-        }
-        .booking-search-form .form-group {
-            margin-top: 0; /* убрать лишний отступ сверху у кнопок */
-        }
-    </style>
-    <?php $form = ActiveForm::begin([
-        'id' => 'form_search',
-        'action' => ['index'],
-        'method' => 'get',
-        'options' => ['data-pjax' => 1],
-    ]); ?>
+  <?php $form = ActiveForm::begin([
+      'id'      => 'form_search',
+      'action'  => ['index'],
+      'method'  => 'get',
+      'options' => ['data-pjax' => 1],
+            'fieldConfig' => [
+            'options'   => ['class' => 'form-group'], 
+            'template'  => "{input}\n{error}",
+            'labelOptions' => ['class' => 'd-none'],
+        ],
+  ]); ?>
 
-    <div class="d-flex flex-wrap justify-content-between">
-        <div class="col-md-2">
-            <?= $form->field($model, 'id')->textInput(['placeholder' => 'ID']) ?>
-        </div>
-        <div class="col-md-2">
-            <?= $form->field($model, 'fio_guest')->textInput(['placeholder' => 'ФИО гостя']) ?>
-        </div>
-        <div class="col-md-2">
-            <?= $form->field($model, 'user_id')->textInput(['placeholder' => 'ID пользователя']) ?>
-        </div>
-        <div class="col-md-2">
-            <?= $form->field($model, 'booking_date')->textInput([
-                'type' => 'date',
-                ]) ?>
-        </div>
-        <div class="col-md-2">
-            <?= $form->field($model, 'booking_time_start')->textInput(['type' => 'time']) ?>
-        </div>
+    <div class="card">
+      <div class="card-header">
+        <strong>Фильтры</strong>
+      </div>
+
+      <div class="d-flex g-2 card-body">
+
+      <div class="aa">
+          <?= $form->field($model, 'id')->textInput(['placeholder' => 'Бронь №'])->label(false) ?>
+
+      </div>
+
+        <?= $form->field($model, 'fio_guest')->textInput(['placeholder' => 'На имя'])->label(false) ?>
+        <?= $form->field($model, 'status_id')->dropDownList(
+            [
+                '1' => 'Забронировано',
+                '4' => 'Отменено',
+            ],['prompt' => 'Статус'])->label(false) ?>
+
+        <?= $form->field($model, 'booking_date')->input('date')->label(false) ?>
+
+        <?= $form->field($model, 'booking_time_start')->input('time')->label(false) ?>
+
+        <?= Html::a('Сброс', ['index'], ['class' => 'btn btn-outline-light btn-reset']) ?>
+
         <?= $form->field($model, 'title_search')->hiddenInput()->label(false) ?>
         <?= $form->field($model, 'id_search')->hiddenInput()->label(false) ?>
+
+      </div>
     </div>
 
-    <div class="form-group">
-        <?= Html::a('Сбросить', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+  <?php ActiveForm::end(); ?>
 </div>
+
+<?php
+$this->registerJs(<<<JS
+$('#form_search').on('change', 'input, select', function(){
+    $(this).closest('form').yiiActiveForm('submitForm');
+});
+JS
+);

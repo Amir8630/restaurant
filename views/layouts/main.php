@@ -51,7 +51,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 ? ['label' => 'ЛК официанта', 'url' => ['/waiter/order'],'active' => Yii::$app->controller->module?->id === 'waiter']
                 : '',
             !Yii::$app->user->isGuest && Yii::$app->user->identity->userRole == 'user'
-                ? ['label' => 'Бронирование', 'url' => ['/account/booking'],'active' => Yii::$app->controller->module?->id === 'account']
+                ? ['label' => 'Брони', 'url' => ['/account/booking'],'active' => Yii::$app->controller->module?->id === 'account']
                 : '',
             !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
                 ? ['label' => 'Панель админа', 'url' => ['/admin'],'active' => Yii::$app->controller->module?->id === 'admin' || Yii::$app->controller->module?->id === 'manager']
