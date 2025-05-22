@@ -1,53 +1,97 @@
 <?php
 
-/** @var yii\web\View $this */
+use yii\helpers\Html;
 
-$this->title = 'My Yii Application';
+$this->title = 'Добро пожаловать';
+
+$this->registerCss(<<<CSS
+.hero-section {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/img/hero-bg.png') center/cover no-repeat;
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(3px);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    background: rgba(255,255,255,0.1);
+    padding: 2rem;
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-link {
+    transition: all 0.3s;
+}
+.card-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(255,255,255,0.1);
+}
+CSS);
 ?>
-<div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Congratulations!</h1>
+<div class="hero-section">
+  <div class="hero-content">
+    <h1>Добро пожаловать в наш ресторан</h1>
+    <p>Где вкус сочетается с уютом и современным сервисом</p>
+    <?= Html::a('Посмотреть меню', ['/menu/index3'], ['class' => 'btn btn-outline-light']) ?>
+  </div>
+</div>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+<div class="container py-5">
+  <div class="row g-4 text-center">
+    <div class="col-md-4">
+      <div class="card bg-dark text-white h-100 card-link">
+        <div class="card-body">
+          <h5 class="card-title">Меню</h5>
+          <p class="card-text">Ознакомьтесь с нашими блюдами</p>
+          <?= Html::a('Перейти', ['/menu/index3'], ['class' => 'btn btn-outline-light']) ?>
         </div>
-
+      </div>
     </div>
+
+    <div class="col-md-4">
+      <div class="card bg-dark text-white h-100 card-link">
+        <div class="card-body">
+          <h5 class="card-title">Бронирование</h5>
+          <p class="card-text">Забронируйте столик онлайн</p>
+          <?= Html::a('Бронировать', ['/account/booking'], ['class' => 'btn btn-outline-light']) ?>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card bg-dark text-white h-100 card-link">
+        <div class="card-body">
+          <h5 class="card-title">Контакты</h5>
+          <p class="card-text">Как нас найти и связаться</p>
+          <?= Html::a('Контакты', ['/site/contact'], ['class' => 'btn btn-outline-light']) ?>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
