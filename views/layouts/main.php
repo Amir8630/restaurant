@@ -77,11 +77,15 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 </header>
 
 <main id="main" class="flex-shrink-0" role="main">
-    <div class="container pt-5 mt-4">
-        <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs'] ?? []]) ?>
-        <?= Alert::widget() ?>
+    <?php if (Yii::$app->controller->id !== 'site' || Yii::$app->controller->action->id !== 'index'): ?>
+        <div class="container pt-5 mt-4">
+            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs'] ?? []]) ?>
+            <?= Alert::widget() ?>
+            <?= $content ?>
+        </div>
+    <?php else: ?>
         <?= $content ?>
-    </div>
+    <?php endif; ?>
 </main>
 
 <footer id="footer" class="mt-auto custom-footer py-4">
