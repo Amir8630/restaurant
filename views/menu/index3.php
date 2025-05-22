@@ -20,6 +20,18 @@ $this->title = 'Электронное меню';
   box-sizing: border-box;
 }
 
+.menu-container h1 {
+  /* margin-top: 40px;       отступ сверху */
+  margin-bottom: 30px;    /* отступ снизу */
+  font-size: 2.5rem;      /* размер шрифта */
+  font-weight: 700;       /* жирность */
+  line-height: 1.2;       /* межстрочный интервал */
+  color: #333333;         /* цвет текста */
+  text-align: center;     /* центрирование */
+  /* можно добавить шрифт */
+}
+
+
 button {
   min-width: 130px;
 }
@@ -41,10 +53,7 @@ button {
     <?php $form = ActiveForm::begin([
         'options' => ['enctype' => 'multipart/form-data'],
     ]); ?>
-    <div class="d-flex align-items-center justify-content-center mb-4">
-        <?= $form->field($model, 'file')->fileInput() ?>
-        <?= Html::submitButton('Загрузить PDF', ['class' => 'btn btn-outline-primary ms-3']) ?>
-    </div>
+
     <?php ActiveForm::end(); ?>
 
     <div id="menu-book"></div>
@@ -65,13 +74,11 @@ button {
 <?php
 $this->registerJsFile('@web/js/turn.min.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 
-$pdfUrl       = $pdfFilePath ? Yii::getAlias('@web') . $pdfFilePath : '';
 $flipSoundUrl = Yii::getAlias('@web') . '/sounds/flip2.wav';
-$jsonPdfUrl   = json_encode($pdfUrl);
 $jsonSoundUrl = json_encode($flipSoundUrl);
 
 $js = <<<JS
-let url = '/uploads/menu.pdf';
+let url = '/uploads/menu.pdf';  // жёстко заданный путь
 if (!url) {
     console.warn('PDF не загружен');
     return;
