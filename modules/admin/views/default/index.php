@@ -9,5 +9,6 @@ use yii\bootstrap5\Html;
 <div>
     <?= Html::a('Загрузить схему зала', ['/manager/svg/upload'], ['class' => 'btn btn-outline-primary']) ?>
     <?= Html::a('Диаграмма бронирований', ['/admin/booking/stats'], ['class' => 'btn btn-outline-success']) ?>  
+    <?= Html::a('Работа с пользователями', ['/manager/user'], ['class' => 'btn btn-outline-info']) ?>  
 </div>
 

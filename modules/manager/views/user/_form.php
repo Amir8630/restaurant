@@ -73,11 +73,18 @@ use yii\widgets\MaskedInput;
                   "<span class=\"input-group-text\"><i class=\"bi bi-shield-lock-fill\"></i></span>\n" .
                   "{input}\n</div>\n{error}",
     ])->dropDownList(
-        [
+        Yii::$app->user->identity->role_id == 2
+            ? [
             '5' => 'Официант',
             '4' => 'Повар',
             '3' => 'Менеджер',
-        ],
+            '2' => 'Администратор',
+            ]
+            : [
+            '5' => 'Официант',
+            '4' => 'Повар',
+            '3' => 'Менеджер',
+            ],
         [
             'prompt' => 'Выберите роль',
             'class'  => 'form-select'
@@ -87,7 +94,7 @@ use yii\widgets\MaskedInput;
     <?= $form->field($model, 'created_by_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false) ?>
     <div class="form-group">
         <?= Html::a('Назад',['index'], ['class' => 'btn btn-outline-primary']) ?>
-        <?= Html::submitButton('Зарегистрировать', ['class' => 'btn btn-outline-success']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Зарегистрировать' : 'Сохранить', ['class' => 'btn btn-outline-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

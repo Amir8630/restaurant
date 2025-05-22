@@ -77,10 +77,10 @@ CSS);
     </div>
     <div class="booking-card-footer d-flex justify-content-end gap-2">
         <div class="btn-group mb-2">
-            <?= Html::a('<i class="bi bi-eye"></i> Просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
+            <?= Html::a('<i class="bi bi-eye"></i> Просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-primary btn-sm']) ?>
             <?= $model->status_id == Status::getStatusId('Забронировано') 
             ? Html::a('Отменить', ['cancel', 'id' => $model->id], [
-                'class' => 'btn btn-outline-danger btn-cancel-modal',
+                'class' => 'btn btn-outline-danger btn-cancel-modal btn-sm',
                 'data-number' => $model->id,
                 'title' => 'Отменить'
             ])

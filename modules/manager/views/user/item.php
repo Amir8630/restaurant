@@ -69,12 +69,26 @@ CSS);
         <p><i class="bi bi-person-badge"></i> Роль: <?= Html::encode($model->getRoleTitle()) ?></p>
     </div>
     <div class="booking-card-footer d-flex justify-content-end gap-2">
-        <?= Html::a('<i class="bi bi-eye"></i>', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-primary btn-sm', 'title' => 'Просмотр']) ?>
-        <?= Html::a('<i class="bi bi-x-circle"></i>', ['cancel', 'id' => $model->id], [
-            'class' => 'btn btn-outline-danger btn-sm btn-cancel-modal',
-            'data-number' => $model->id,
-            'title' => 'Удалить'
-        ]) ?>
+        <div class="btn-group mb-2">
+            <?= Html::a(
+            '<i class="bi bi-eye"></i> Просмотр',
+            ['view', 'id' => $model->id],
+            [
+                'class' => 'btn btn-outline-primary btn-sm'
+            ]
+            ) ?>
+            <?= Html::a(
+            '<i class="bi bi-trash"></i> Удалить',
+            ['delete', 'id' => $model->id],
+            [
+                'class' => 'btn btn-outline-danger btn-sm',
+                'data' => [
+                'confirm' => 'Вы уверены, что хотите удалить этого пользователя?',
+                'method'  => 'post',
+                ],
+            ]
+            ) ?>
+        </div>
     </div>
 </div>
 

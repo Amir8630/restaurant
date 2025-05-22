@@ -16,11 +16,6 @@ use yii\widgets\Pjax;
 
 $this->title = 'Пользватели';
 $this->params['breadcrumbs'][] = $this->title;
-// $this->registerJsFile('@web/js/1.js', [
-//     'depends' => [\yii\web\JqueryAsset::class],
-// ]);
-?>
-<?php
 // ТОЛЬКО ДЛЯ ТЕСТИРОВАНИЯ были добавлены стили для отображения карточек, стили бета
 $this->registerCss(<<<CSS
 .booking-card {
@@ -113,11 +108,9 @@ CSS);
         <?= Html::a('Зарегистрировать пользователя', ['create'], ['class' => 'btn btn-outline-success']) ?>
     </p>
 
-    <?php Pjax::begin([
-        'id' => 'pjax-booking-index',
-        // 'enablePushState' => false,
-        'timeout' => 5000
-          ]); ?> 
+    <?php Pjax::begin(['id' => 'pjax-booking-index',
+    //  'enablePushState' => false,
+      'timeout' => 5000]); ?> 
     
     <?= Alert::widget() ?>
 
@@ -132,12 +125,15 @@ CSS);
 
     ]) ?>
 
-
+    <?php if (Yii::$app->request->get('sendMailCancel') == 1 && Yii::$app->request->get('id')): ?>
+        <script>
+            fetch('<?= Url::to(['booking/mail-cancel']) ?>?id=<?= Yii::$app->request->get('id') ?>');
+        </script>
+    <?php endif; ?>
 
     <?php Pjax::end(); ?>
 
 </div>
 
+
 <?php $this->registerJsFile('js/userFilter.js', ['depends' => YiiAsset::class]) ?>
-
-

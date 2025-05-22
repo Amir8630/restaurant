@@ -111,8 +111,23 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        // Не показываем хэш пароля в форме
+        $model->password = '';
+
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            // Если пользователь ввёл новый пароль, хэшируем его
+            if (!empty($model->password)) {
+                $model->password = Yii::$app->security->generatePasswordHash($model->password);
+            } else {
+                // Не обновляем пароль, если поле пустое
+                unset($model->password);
+                $model->password = $model->getOldAttribute('password');
+            }
+
+            if ($model->save(false)) {
+                Yii::$app->session->setFlash('success', "{$model->getRoleTitle()} успешно обновлён");
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -129,8 +144,10 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
+        $model = $this->findModel($id);
+        $role = $model->getRoleTitle();
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success', "{$role} успешно удалён");
         return $this->redirect(['index']);
     }
 

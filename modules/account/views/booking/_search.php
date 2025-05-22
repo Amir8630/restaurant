@@ -25,7 +25,7 @@ $this->registerCss(<<<CSS
     padding: 0.25rem 0.5rem;
     overflow: hidden;
     width: auto;                /* авто-ширина по содержимому */
-    max-width: 960px;           /* не больше этого */
+    max-width: 970px;           /* не больше этого */
 }
 
 .booking-search-form .card-header {
@@ -103,10 +103,9 @@ CSS
 
       <div class="d-flex g-2 card-body">
 
-      <div class="aa">
+     
           <?= $form->field($model, 'id')->textInput(['placeholder' => 'Бронь №'])->label(false) ?>
 
-      </div>
 
         <?= $form->field($model, 'fio_guest')->textInput(['placeholder' => 'На имя'])->label(false) ?>
         <?= $form->field($model, 'status_id')->dropDownList(

@@ -25,8 +25,8 @@ class Module extends \yii\base\Module
                 'rules' => [ 
                     [ 
                         'allow' => true, 
-                        'controllers' => ['manager/svg'],
-                        'actions' => ['upload'], 
+                        'controllers' => ['manager/svg', 'manager/user'],
+                        'actions' => ['upload', 'index', 'create', 'update', 'delete', 'view'], 
                         'matchCallback' => fn() => Yii::$app->user->identity->userRole == 'manager' || Yii::$app->user->identity->userRole == 'admin', 
                     ],
                     [ 
