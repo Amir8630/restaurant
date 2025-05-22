@@ -121,8 +121,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 </html>
 <?php
 
+$this->registerJs("
+    setTimeout(function () {
+        $('.alert').fadeOut('slow');
+    }, 3000);
+");
 ?>
-
 <?php $this->endPage() ?>
 
 

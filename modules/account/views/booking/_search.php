@@ -25,7 +25,7 @@ $this->registerCss(<<<CSS
     padding: 0.25rem 0.5rem;
     overflow: hidden;
     width: auto;                /* авто-ширина по содержимому */
-    max-width: 900px;           /* не больше этого */
+    max-width: 960px;           /* не больше этого */
 }
 
 .booking-search-form .card-header {
@@ -52,6 +52,31 @@ $this->registerCss(<<<CSS
 
 .booking-search-form .btn-reset {
     align-self: flex-start;
+}
+.booking-search-form .card-body {
+    display: flex;
+    flex-wrap: wrap;              /* разрешаем перенос строк */
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0;
+}
+
+/* Чтобы поля занимали всю ширину на телефоне */
+.booking-search-form .form-group {
+    flex: 1 1 150px;               /* минимальная ширина 150px, адаптируется */
+    min-width: 120px;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 576px) {
+    .booking-search-form .form-group {
+        flex: 1 1 100%;
+    }
+
+    .booking-search-form .btn-reset {
+        width: 100%;
+    }
 }
 
 CSS
