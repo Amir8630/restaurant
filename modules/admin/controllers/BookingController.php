@@ -60,15 +60,20 @@ class BookingController extends Controller
 
     public function actionStats()
     {
-        // 1. Параметры ресторана
-        $hoursOpen   = 23 - 7; // 16
-        $slotLen     = 2;
-        $slotsPerDay = $hoursOpen / $slotLen; //8
-        $tablesCount = 15;
-        $maxCapacity = $slotsPerDay * $tablesCount; //120
+        $request = Yii::$app->request;
+        $daysBack = (int)$request->get('days', 15); // по умолчанию 15, если не передано
 
-        // 2. Дата начала истории
-        $dateFrom = (new DateTime())->modify('-15 days')->format('Y-m-d');
+        // Ограничим диапазон, например, 7–60 дней
+        if ($daysBack < 7) $daysBack = 7;
+        if ($daysBack > 60) $daysBack = 60;
+
+        $hoursOpen   = 23 - 7;
+        $slotLen     = 2;
+        $slotsPerDay = $hoursOpen / $slotLen;
+        $tablesCount = 15;
+        $maxCapacity = $slotsPerDay * $tablesCount;
+
+        $dateFrom = (new DateTime())->modify("-{$daysBack} days")->format('Y-m-d');
 
         // 3. Загружаем брони по дням
         $rows = (new Query())
@@ -105,8 +110,10 @@ class BookingController extends Controller
         // 7. Holt–Winters
         $hw = $this->hwAdditive($loadHist, 7, 7, 0.3, 0.1, 0.1);
         // денормируем и округляем
-        $fittedCnt   = array_map(fn($v)=> min($maxCapacity,(int)round($v*$maxCapacity)), $hw['fitted']);
-        $forecastCnt = array_map(fn($v)=> min($maxCapacity,(int)round($v*$maxCapacity)), $hw['forecast']);
+        $fittedCnt   = array_map(fn($v) => max(0, min($maxCapacity, (int)round($v * $maxCapacity))), $hw['fitted']);
+        $forecastCnt = array_map(fn($v) => max(0, min($maxCapacity, (int)round($v * $maxCapacity))), $hw['forecast']);
+
+
 
         // 8. Собираем все метки (30 дней + сегодня + 7 дней вперед)
         $weekDays = [1=>'Пн',2=>'Вт',3=>'Ср',4=>'Чт',5=>'Пт',6=>'Сб',7=>'Вс'];
@@ -148,6 +155,7 @@ $allDates = $historicalDates;
             'fittedFull'    => $fittedFull,
             'forecastFull'  => $forecastFull,
             'maxCapacity'   => $maxCapacity,
+            'daysBack'      => $daysBack, // передаём в представление
         ]);
     }
 }
