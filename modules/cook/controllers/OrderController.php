@@ -3,10 +3,15 @@
 namespace app\modules\cook\controllers;
 
 use app\models\Order;
+use app\models\OrderDish;
+use app\models\Status;
 use app\modules\cook\models\OrderSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
+use yii\web\Response;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -131,4 +136,60 @@ class OrderController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+public function actionUpdateStatus(int $id, int $status)
+{
+    Yii::$app->response->format = Response::FORMAT_JSON;
+
+    if (!Yii::$app->request->isAjax) {
+        throw new BadRequestHttpException("Ожидался AJAX-запрос");
+    }
+
+    $order = $this->findModel($id);
+    $order->order_status = $status;
+    $order->save(false);
+
+    OrderDish::updateAll(['status_id' => $status], ['order_id' => $order->id]);
+
+    return ['success' => true];
+}
+
+public function actionUpdateDishStatus(int $id, int $status)
+{
+    Yii::$app->response->format = Response::FORMAT_JSON;
+
+    if (!Yii::$app->request->isAjax) {
+        throw new BadRequestHttpException("Ожидался AJAX-запрос");
+    }
+
+    $dish = OrderDish::findOne($id);
+    if (!$dish) {
+        throw new NotFoundHttpException("Блюдо не найдено");
+    }
+
+    $dish->status_id = $status;
+    $dish->save(false);
+
+    $order = $dish->order;
+    $all = OrderDish::find()
+        ->select('status_id')
+        ->where(['order_id' => $order->id])
+        ->column();
+
+    $cookingId = Status::getStatusId('готовится');
+    $readyId   = Status::getStatusId('готова к выдаче');
+
+    if (in_array($cookingId, $all, true)) {
+        $order->order_status = $cookingId;
+    } elseif (!in_array($cookingId, $all, true)
+        && count(array_unique($all)) === 1
+        && current($all) === $readyId
+    ) {
+        $order->order_status = $readyId;
+    }
+
+    $order->save(false);
+
+    return ['success' => true];
+}
 }

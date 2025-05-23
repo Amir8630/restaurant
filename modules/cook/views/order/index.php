@@ -109,7 +109,7 @@ CSS);
     </p>
 
     <?php Pjax::begin(['id' => 'pjax-booking-index',
-    //  'enablePushState' => false,
+     'enablePushState' => false,
       'timeout' => 5000]); ?> 
     
     <?= Alert::widget() ?>
@@ -120,7 +120,7 @@ CSS);
         'dataProvider' => $dataProvider,
         'itemOptions' => ['class' => 'item'],
         'itemView' => 'item',
-        'layout' => "{pager}\n{summary}\n<div class = 'd-flex flex-wrap justify-content-center gap-3'>{items}</div>\n<div class = 'mt-2'></div>{pager}",
+        'layout' => "{pager}\n{summary}\n<div class = ''>{items}</div>\n<div class = 'mt-2'></div>{pager}",
         'pager' => ['class' => LinkPager::class],
 
     ]) ?>
@@ -135,5 +135,6 @@ CSS);
 
 </div>
 
-
-<?php $this->registerJsFile('js/userFilter.js', ['depends' => YiiAsset::class]) ?>
+<!-- нужно будеть свои подключит -->
+<!-- <php $this->registerJsFile('js/userFilter.js', ['depends' => YiiAsset::class]) ?> -->
+<?php $this->registerJsFile('js/changeStatusOrder&dish.js', ['depends' => YiiAsset::class]) ?>

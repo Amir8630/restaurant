@@ -43,12 +43,40 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->order_type == 10 ? 'На месте' : 'С собой';
                 },
             ],
-            [
-                'attribute' => 'order_status',
-                'value' => function ($model) {
-                    return $model->status->title ?? '—';
-                },
-            ],
+[
+    'label' => 'Статус заказа',
+    'format' => 'raw',
+    'value' => function ($model) {
+        $current = $model->order_status;
+        $options = [];
+
+        // Логика смены статусов
+        if ($current === 'new') {
+            $options = [
+                'cooking' => 'Готовится',
+                'ready' => 'Готово к выдаче',
+                'canceled' => 'Отменено',
+            ];
+        } elseif ($current === 'cooking') {
+            $options = [
+                'ready' => 'Готово к выдаче',
+                'canceled' => 'Отменено',
+            ];
+        }
+
+        if (empty($options)) {
+            return isset($model->status) && isset($model->status->title) ? $model->status->title : '—';
+        }
+
+        $form = \yii\helpers\Html::beginForm(['order/update-status', 'id' => $model->id], 'post', ['style' => 'display:inline']) .
+            \yii\helpers\Html::dropDownList('status', null, $options, ['prompt' => 'Выбрать', 'class' => 'form-control d-inline', 'style' => 'width:auto; display:inline-block;']) .
+            \yii\helpers\Html::submitButton('Сменить', ['class' => 'btn btn-sm btn-success ml-2']) .
+            \yii\helpers\Html::endForm();
+
+        return $form;
+    },
+],
+
             [
                 'attribute' => 'waiter_id',
                 'value' => $model->waiter->fio ?? '—',

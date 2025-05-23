@@ -1,115 +1,125 @@
 <?php
 use yii\helpers\Html;
+use app\models\Status;
 
-/** @var app\models\Order $model */
-
-$this->registerCss(<<<CSS
-.order-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 16px;
-    padding: 20px;
-    width: 340px;
-    max-width: 100%;
-    transition: box-shadow 0.2s ease;
-    margin-bottom: 20px;
+$this->registerCss(<<<'CSS'
+.order-card { display:flex; width:100%; background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,.08); margin-bottom:1.5rem; }
+.order-card-section { padding:1.5rem; box-sizing:border-box; }
+.order-card-section:first-child { flex:1 1 30%; border-right:2px solid #ddd; }
+.order-card-section:last-child  { flex:1 1 70%; }
+.order-card-header { font-size:1.3rem; font-weight:700; margin-bottom:1rem; position:relative; padding-bottom:.5rem; }
+.order-card-section:first-child .order-card-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:#20c997; }
+.order-card-section:last-child  .order-card-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:#ff6b6b; }
+.order-status-badge { padding:.3rem .8rem; border-radius:10px; font-size:.85rem; font-weight:600; color:#fff; text-transform:uppercase; margin-left:.5rem; }
+.status-new          { background:#17a2b8; }
+.status-in-progress  { background:#ffc107; color:#212529; }
+.status-completed    { background:#28a745; }
+.status-canceled     { background:#dc3545; }
+.order-card-body p   { margin:.6rem 0; font-size:.95rem; color:#4a4a4a; }
+.order-card-body ul  { list-style:none; padding:0; margin:0; }
+.order-card-body li  { display:flex; justify-content:space-between; align-items:center; padding:1rem; border-bottom:2px solid #bbb; border-radius:8px; margin-bottom:.5rem; }
+.order-card-body li:nth-child(odd)  { background:#f0f0f0; }
+.order-card-body li:nth-child(even) { background:#d0d0d0; }
+.dish-count          { font-weight:700; font-size:1.1rem; color:#e74c3c; margin-left:1rem; }
+.order-card-footer   { margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap; }
+.order-card-footer .btn { font-size:.9rem; padding:.45rem .9rem; }
+@media(max-width:768px){
+  .order-card{flex-direction:column}
+  .order-card-section:first-child{border-right:none;border-bottom:2px solid #ddd}
 }
-
-.order-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.order-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    font-weight: 600;
-    font-size: 16px;
-    color: #2c3e50;
-}
-
-.order-card-body p {
-    margin: 6px 0;
-    font-size: 14px;
-    color: #555;
-}
-
-.order-card-footer {
-    margin-top: 15px;
-    text-align: right;
-}
-
-.order-status-badge {
-    font-weight: 500;
-    font-size: 13px;
-    border-radius: 12px;
-    padding: 4px 10px;
-    display: inline-block;
-    color: #fff;
-    background-color: #6c757d;
-}
-.status-new { background-color: #17a2b8; }
-.status-in-progress { background-color: #ffc107; color: #212529; }
-.status-completed { background-color: #28a745; }
-.status-canceled { background-color: #dc3545; }
 CSS
 );
 ?>
 
-<div class="order-card shadow-sm">
+<div class="order-card">
+  <!-- Левый блок — данные заказа -->
+  <div class="order-card-section">
     <div class="order-card-header">
-        <div>Заказ №<?= Html::encode($model->id) ?></div>
-        <?php
-        $statusClassMap = [
-            9 => 'status-new',
-            5 => 'status-in-progress',
-            6 => 'status-in-progress',
-            3 => 'status-completed',
-            4 => 'status-canceled',
+      Заказ №<?= Html::encode($model->id) ?>
+      <?php
+        $map = [
+          Status::getStatusId('Новый')           => 'status-new',
+          Status::getStatusId('готовится')       => 'status-in-progress',
+          Status::getStatusId('готова к выдаче') => 'status-in-progress',
+          Status::getStatusId('Завершено')       => 'status-completed',
+          Status::getStatusId('Отменено')        => 'status-canceled',
         ];
-        $statusId = $model->order_status;
-        $statusTitle = $model->status->title ?? '—';
-        $statusClass = $statusClassMap[$statusId] ?? '';
-        ?>
-        <div>
-            <span class="order-status-badge <?= $statusClass ?>"><?= Html::encode($statusTitle) ?></span>
-        </div>
+        $oCls = $map[$model->order_status] ?? '';
+      ?>
+      <span class="order-status-badge <?= $oCls ?>">
+        <?= Html::encode($model->status->title) ?>
+      </span>
     </div>
     <div class="order-card-body">
-        <p><i class="bi bi-grid-3x3-gap"></i> Стол: <?= $model->table_id ? Html::encode($model->table_id) : '—' ?></p>
-        <p><i class="bi bi-box"></i> Тип: <?= $model->order_type == 10 ? 'На месте' : 'С собой' ?></p>
-        <p><i class="bi bi-clock"></i> Время создания: <?= Yii::$app->formatter->asTime($model->created_at) ?></p>
-        <p><strong>Блюда:</strong></p>
-        <ul style="padding-left: 20px; margin: 0;">
-        <?php foreach ($model->orderDishes as $dish): ?>
-            <li>
-                <?= Html::encode($dish->dish->title ?? '(неизвестно)') ?> — 
-                <?= Html::encode($dish->count) ?> шт.
-                <span class="order-status-badge <?= $statusClass ?>"><?= Html::encode($dish->status->title ?? '—') ?></span>
-            </li>
-        <?php endforeach; ?>
-        </ul>
+      <p><strong>Стол:</strong> <?= $model->table_id ?: '—' ?></p>
+      <p><strong>Тип:</strong> <?= $model->order_type == 10 ? 'На месте' : 'С собой' ?></p>
+      <p><strong>Создан:</strong> <?= Yii::$app->formatter->asDatetime($model->created_at) ?></p>
     </div>
-        <div class="btn-group mb-2 mt-1">
-            <?= Html::a(
-            '<i class="bi bi-eye"></i> Просмотр',
-            ['view', 'id' => $model->id],
-            [
-                'class' => 'btn btn-outline-primary btn-sm'
-            ]
-            ) ?>
-            <?= Html::a('<i class="bi bi-pencil"></i> Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-outline-success btn-sm']) ?>
-            <?= Html::a(
-            '<i class="bi bi-trash"></i> Удалить',
-            ['delete', 'id' => $model->id],
-            [
-                'class' => 'btn btn-outline-danger btn-sm',
-                'data' => [
-                'confirm' => 'Вы уверены, что хотите удалить этого пользователя?',
-                'method'  => 'post',
-                ],
-            ]
-            ) ?>
-        </div>
+    <div class="order-card-footer">
+      <?php
+        $cur  = $model->order_status;
+        $opts = [];
+        if ($cur == Status::getStatusId('Новый')) {
+          $opts = [
+            Status::getStatusId('готовится')       => 'Готовится',
+            Status::getStatusId('готова к выдаче') => 'К выдаче',
+            Status::getStatusId('Отменено')        => 'Отменено',
+          ];
+        } elseif ($cur == Status::getStatusId('готовится')) {
+          $opts = [
+            Status::getStatusId('готова к выдаче') => 'К выдаче',
+            Status::getStatusId('Отменено')        => 'Отменено',
+          ];
+        }
+        foreach ($opts as $stId => $stTitle) {
+            echo Html::button($stTitle, [
+            'class' => 'btn btn-outline-primary btn-sm change-order-status-btn',
+            'data-id' => $model->id,
+            'data-status' => $stId,
+            ]);}; ?>
+    </div>
+  </div>
+
+  <!-- Правый блок — список блюд -->
+  <div class="order-card-section">
+    <div class="order-card-header">Блюда</div>
+    <div class="order-card-body">
+      <ul>
+      <?php foreach ($model->orderDishes as $dish):
+        $dCls  = $map[$dish->status_id] ?? '';
+        $curD  = $dish->status_id;
+        $dOpts = [];
+        if ($curD == Status::getStatusId('Новый')) {
+          $dOpts = [
+            Status::getStatusId('готовится')       => 'Готовится',
+            Status::getStatusId('готова к выдаче') => 'К выдаче',
+          ];
+        } elseif ($curD == Status::getStatusId('готовится')) {
+          $dOpts = [
+            Status::getStatusId('готова к выдаче') => 'К выдаче',
+          ];
+        }
+      ?>
+        <li>
+          <div>
+            <?= Html::encode($dish->dish->title) ?>
+            <span class="dish-count">× <?= Html::encode($dish->count) ?></span>
+            <span class="order-status-badge <?= $dCls ?>">
+              <?= Html::encode($dish->status->title) ?>
+            </span>
+          </div>
+          <div>
+            <?php foreach ($dOpts as $stId => $stTitle): ?>
+                <?= Html::button($stTitle, [
+                'class' => 'btn btn-outline-secondary btn-sm change-dish-status-btn',
+                'data-id' => $dish->id,
+                'data-status' => $stId,
+            ]) ?>
+            <?php endforeach; ?>
+          </div>
+        </li>
+      <?php endforeach; ?>
+      </ul>
+    </div>
+  </div>
 </div>
