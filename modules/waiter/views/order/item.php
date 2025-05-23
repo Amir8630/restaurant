@@ -64,7 +64,7 @@ CSS
         $statusClassMap = [
             9 => 'status-new',
             5 => 'status-in-progress',
-            6 => 'status-in-progress',
+            6 => 'status-completed',
             3 => 'status-completed',
             4 => 'status-canceled',
         ];

@@ -5,6 +5,7 @@ namespace app\modules\cook\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Order;
+use app\models\Status;
 
 /**
  * OrderSearch represents the model behind the search form of `app\models\Order`.
@@ -44,10 +45,18 @@ class OrderSearch extends Order
 
         // add conditions that should always apply here
 
+        $query->andWhere([
+            'not in',
+            'order_status',
+            [
+            Status::getStatusId('Готов к выдаче'),
+            Status::getStatusId('Отменено')
+            ]
+        ]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 6], 
-
         ]);
 
         $this->load($params);

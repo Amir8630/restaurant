@@ -137,3 +137,9 @@ CSS);
 
 
 <?php $this->registerJsFile('js/userFilter.js', ['depends' => YiiAsset::class]) ?>
+
+<script>
+    setInterval(function(){
+        $.pjax.reload({container:'#pjax-booking-index'});
+    }, 5000);
+</script>

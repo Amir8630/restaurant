@@ -51,9 +51,21 @@ CSS
       </span>
     </div>
     <div class="order-card-body">
-      <p><strong>Стол:</strong> <?= $model->table_id ?: '—' ?></p>
-      <p><strong>Тип:</strong> <?= $model->order_type == 10 ? 'На месте' : 'С собой' ?></p>
-      <p><strong>Создан:</strong> <?= Yii::$app->formatter->asDatetime($model->created_at) ?></p>
+            <!-- <p><strong>Стол:</strong> <= $model->order_type == 11 ? '—' : ($model->table_id ?: '—') ?></p>
+      <p><strong>Тип:</strong> <= $model->order_type == 10 ? 'На месте' : 'С собой' ?></p> -->
+    <p>
+      <strong>Стол:</strong>
+      <span style="display:inline-block; padding:0.2em 0.8em; border-radius:8px; background:<?= $model->order_type == 11 ? '#adb5bd' : '#20c997' ?>; color:#fff; font-weight:bold;">
+        <?= $model->order_type == 11 ? '—' : ($model->table_id ?: '—') ?>
+      </span>
+    </p>
+    <p>
+      <strong>Тип:</strong>
+      <span style="display:inline-block; padding:0.2em 0.8em; border-radius:8px; background:<?= $model->order_type == 10 ? '#007bff' : '#fd7e14' ?>; color:#fff; font-weight:bold;">
+        <?= $model->order_type == 10 ? 'На месте' : 'С собой' ?>
+      </span>
+    </p>
+    <p><strong>Создан:</strong> <?= Yii::$app->formatter->asTime($model->created_at) ?></p>
     </div>
     <div class="order-card-footer">
       <?php
