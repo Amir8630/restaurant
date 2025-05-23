@@ -59,24 +59,27 @@ CSS
       <?php
         $cur  = $model->order_status;
         $opts = [];
-        if ($cur == Status::getStatusId('Новый')) {
+        
           $opts = [
             Status::getStatusId('готовится')       => 'Готовится',
             Status::getStatusId('готов к выдаче') => 'К выдаче',
             Status::getStatusId('Отменено')        => 'Отменено',
           ];
-        } elseif ($cur == Status::getStatusId('готовится')) {
-          $opts = [
-            Status::getStatusId('готов к выдаче') => 'К выдаче',
-            Status::getStatusId('Отменено')        => 'Отменено',
-          ];
-        }
-        foreach ($opts as $stId => $stTitle) {
+       
+       foreach ($opts as $stId => $stTitle) {
+            $colorMap = [
+                Status::getStatusId('готовится')       => '#ffc107', // жёлтый
+                Status::getStatusId('готов к выдаче') => '#28a745', // зелёный
+                Status::getStatusId('Отменено')        => '#dc3545', // красный
+            ];
             echo Html::button($stTitle, [
-            'class' => 'btn btn-outline-primary btn-sm change-order-status-btn',
-            'data-id' => $model->id,
-            'data-status' => $stId,
-            ]);}; ?>
+                'class' => 'btn btn-sm change-order-status-btn',
+                'data-id' => $model->id,
+                'data-status' => $stId,
+                'style' => 'background-color: ' . ($colorMap[$stId] ?? '#007bff') . '; color: white;',
+            ]);
+        }
+        ?>
     </div>
   </div>
 
@@ -103,19 +106,30 @@ CSS
         <li>
           <div>
             <?= Html::encode($dish->dish->title) ?>
-            <span class="dish-count">× <?= Html::encode($dish->count) ?></span>
+            <span class="dish-count" style="color:<?= 
+                $dish->status_id == Status::getStatusId('готовится') ? '#b8860b' : (
+                $dish->status_id == Status::getStatusId('готов к выдаче') ? '#28a745' : (
+                $dish->status_id == Status::getStatusId('Новый') ? '#17a2b8' : (
+                $dish->status_id == Status::getStatusId('Отменено') ? '#dc3545' : '#e74c3c'
+            ))) ?>;">× <?= Html::encode($dish->count) ?></span>
             <span class="order-status-badge <?= $dCls ?>">
               <?= Html::encode($dish->status->title) ?>
             </span>
           </div>
           <div>
-            <?php foreach ($dOpts as $stId => $stTitle): ?>
-                <?= Html::button($stTitle, [
-                'class' => 'btn btn-outline-secondary btn-sm change-dish-status-btn',
-                'data-id' => $dish->id,
-                'data-status' => $stId,
-            ]) ?>
-            <?php endforeach; ?>
+<?php foreach ($dOpts as $stId => $stTitle): 
+        $colorMap = [
+            Status::getStatusId('готовится')       => '#ffc107',
+            Status::getStatusId('готов к выдаче') => '#28a745',
+        ];
+        echo Html::button($stTitle, [
+            'class' => 'btn btn-sm change-dish-status-btn',
+            'data-id' => $dish->id,
+            'data-status' => $stId,
+            'style' => 'background-color: ' . ($colorMap[$stId] ?? '#6c757d') . '; color: white;',
+        ]);
+    ?>
+<?php endforeach; ?>
           </div>
         </li>
       <?php endforeach; ?>

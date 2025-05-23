@@ -109,7 +109,7 @@ CSS);
     </p>
 
     <?php Pjax::begin(['id' => 'pjax-booking-index',
-     'enablePushState' => false,
+    //  'enablePushState' => false,
       'timeout' => 5000]); ?> 
     
     <?= Alert::widget() ?>
