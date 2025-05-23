@@ -7,10 +7,10 @@ $this->registerCss(<<<'CSS'
 .order-card-section { padding:1.5rem; box-sizing:border-box; }
 .order-card-section:first-child { flex:1 1 30%; border-right:2px solid #ddd; }
 .order-card-section:last-child  { flex:1 1 70%; }
-.order-card-header { font-size:1.3rem; font-weight:700; margin-bottom:1rem; position:relative; padding-bottom:.5rem; }
+.order-card-header { font-size:1.3rem; margin-bottom:1rem; position:relative; padding-bottom:.5rem; }
 .order-card-section:first-child .order-card-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:#20c997; }
 .order-card-section:last-child  .order-card-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:#ff6b6b; }
-.order-status-badge { padding:.3rem .8rem; border-radius:10px; font-size:.85rem; font-weight:600; color:#fff; text-transform:uppercase; margin-left:.5rem; }
+.order-status-badge { padding:.3rem .8rem; border-radius:10px; font-size:.85rem;  color:#fff; text-transform:uppercase; margin-left:.5rem; }
 .status-new          { background:#17a2b8; }
 .status-in-progress  { background:#ffc107; color:#212529; }
 .status-completed    { background:#28a745; }
@@ -20,7 +20,7 @@ $this->registerCss(<<<'CSS'
 .order-card-body li  { display:flex; justify-content:space-between; align-items:center; padding:1rem; border-bottom:2px solid #bbb; border-radius:8px; margin-bottom:.5rem; }
 .order-card-body li:nth-child(odd)  { background:#f0f0f0; }
 .order-card-body li:nth-child(even) { background:#d0d0d0; }
-.dish-count          { font-weight:700; font-size:1.1rem; color:#e74c3c; margin-left:1rem; }
+.dish-count          { ; font-size:1.1rem; color:#e74c3c; margin-left:1rem; }
 .order-card-footer   { margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap; }
 .order-card-footer .btn { font-size:.9rem; padding:.45rem .9rem; }
 @media(max-width:768px){
@@ -40,7 +40,7 @@ CSS
         $map = [
           Status::getStatusId('Новый')           => 'status-new',
           Status::getStatusId('готовится')       => 'status-in-progress',
-          Status::getStatusId('готова к выдаче') => 'status-in-progress',
+          Status::getStatusId('готов к выдаче') => 'status-completed',
           Status::getStatusId('Завершено')       => 'status-completed',
           Status::getStatusId('Отменено')        => 'status-canceled',
         ];
@@ -62,12 +62,12 @@ CSS
         if ($cur == Status::getStatusId('Новый')) {
           $opts = [
             Status::getStatusId('готовится')       => 'Готовится',
-            Status::getStatusId('готова к выдаче') => 'К выдаче',
+            Status::getStatusId('готов к выдаче') => 'К выдаче',
             Status::getStatusId('Отменено')        => 'Отменено',
           ];
         } elseif ($cur == Status::getStatusId('готовится')) {
           $opts = [
-            Status::getStatusId('готова к выдаче') => 'К выдаче',
+            Status::getStatusId('готов к выдаче') => 'К выдаче',
             Status::getStatusId('Отменено')        => 'Отменено',
           ];
         }
@@ -92,11 +92,11 @@ CSS
         if ($curD == Status::getStatusId('Новый')) {
           $dOpts = [
             Status::getStatusId('готовится')       => 'Готовится',
-            Status::getStatusId('готова к выдаче') => 'К выдаче',
+            Status::getStatusId('готов к выдаче') => 'К выдаче',
           ];
         } elseif ($curD == Status::getStatusId('готовится')) {
           $dOpts = [
-            Status::getStatusId('готова к выдаче') => 'К выдаче',
+            Status::getStatusId('готов к выдаче') => 'К выдаче',
           ];
         }
       ?>

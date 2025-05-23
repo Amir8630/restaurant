@@ -177,7 +177,7 @@ public function actionUpdateDishStatus(int $id, int $status)
         ->column();
 
     $cookingId = Status::getStatusId('готовится');
-    $readyId   = Status::getStatusId('готова к выдаче');
+    $readyId   = Status::getStatusId('готов к выдаче');
 
     if (in_array($cookingId, $all, true)) {
         $order->order_status = $cookingId;
