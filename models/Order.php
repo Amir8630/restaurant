@@ -39,8 +39,16 @@ class Order extends \yii\db\ActiveRecord
             [['order_type', 'order_status', 'waiter_id'], 'required'],
             [['table_id', 'order_type', 'order_status', 'waiter_id'], 'integer'],
             [['created_at'], 'safe'],
-            [['table_id'], 'exist', 'skipOnError' => true, 'targetClass' => Table::class, 'targetAttribute' => ['table_id' => 'id']],
-            [['waiter_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['waiter_id' => 'id']],
+            ['table_id', 'required',
+                'when' => function($model) {
+                    return $model->order_type == 10;
+                },
+                'whenClient' => "function (attribute, value) {
+                    return $('#order-type input:checked').val() == '10';
+                }",
+                'message' => 'Пожалуйста, выберите стол, если заказ “На месте”'
+            ],
+                    [['waiter_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['waiter_id' => 'id']],
         ];
     }
 

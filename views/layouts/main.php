@@ -45,7 +45,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             // ['label' => 'книга2', 'url' => ['/menu/index2']],
             // ['label' => 'книга',  'url' => ['/menu/index']],
             !Yii::$app->user->isGuest && Yii::$app->user->identity->userRole == 'cook'
-                ? ['label'  => 'Панель Повара','url' => ['/cook/default/index'],'active' => Yii::$app->controller->module?->id === 'cook']
+                ? ['label'  => 'Панель Повара','url' => ['/cook/order'],'active' => Yii::$app->controller->module?->id === 'cook']
                 : '',
             !Yii::$app->user->isGuest && Yii::$app->user->identity->userRole == 'manager'
                 ? ['label'  => 'Панель менеджера','url' => ['/manager/default/index'],'active' => Yii::$app->controller->module?->id === 'manager']

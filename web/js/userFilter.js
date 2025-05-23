@@ -7,9 +7,6 @@ $(() => {
         $('#form_search').submit();
     })
 
-
-
-
     $('#pjax-booking-index').on('input', '#usersearch-id', function() {
         $('#usersearch-user_id').val(1);
         $('#form_search').submit();
@@ -28,8 +25,6 @@ $(() => {
     })
 
 
-
-
     $('#pjax-booking-index').on('input', '#usersearch-created_by_id', function() {
         $('#usersearch-id_created_by').val(1);
         $('#form_search').submit();
@@ -46,8 +41,6 @@ $(() => {
                 )
         }
     })
-
-
 
 
     $('#pjax-booking-index').on('input', '#usersearch-fio', function() {

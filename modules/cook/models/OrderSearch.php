@@ -50,7 +50,8 @@ class OrderSearch extends Order
             'order_status',
             [
             Status::getStatusId('Готов к выдаче'),
-            Status::getStatusId('Отменён')
+            Status::getStatusId('Отменён'),
+            Status::getStatusId('Выдано'),
             ]
         ]);
 

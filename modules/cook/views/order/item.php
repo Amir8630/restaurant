@@ -134,6 +134,8 @@ $this->registerCss(<<<'CSS'
 .btn-outline-action.status-in-progress { color: #fffa65; border-color: #fffa65; }
 .btn-outline-action.status-new      { color: #70a1ff; border-color: #70a1ff; }
 .btn-outline-action.status-canceled    { color: #ff6b81; border-color: #ff6b81; }
+.status-issued      { color: #9b59b6; } /* статус «Выдано» */
+
 /* .order-status-badge {
   font-size: .85rem;
   text-transform: uppercase;
@@ -159,6 +161,8 @@ CSS
           Status::getStatusId('готов к выдаче')  => 'status-completed',
           Status::getStatusId('Завершено')       => 'status-completed',
           Status::getStatusId('Отменён')        => 'status-canceled',
+          Status::getStatusId('Выдано')          => 'status-issued',
+
         ];
         $oCls = $map[$model->order_status] ?? '';
       ?>

@@ -178,14 +178,25 @@ public function actionUpdateDishStatus(int $id, int $status)
 
     $cookingId = Status::getStatusId('готовится');
     $readyId   = Status::getStatusId('готов к выдаче');
+    $issuedId  = Status::getStatusId('Выдано');
 
+    // Если есть хоть одно блюдо в статусе "готовится", то и заказ готовится
     if (in_array($cookingId, $all, true)) {
         $order->order_status = $cookingId;
-    } elseif (!in_array($cookingId, $all, true)
-        && count(array_unique($all)) === 1
-        && current($all) === $readyId
+    }
+    // Если ВСЕ блюда "Готов к выдаче" ИЛИ "Выдано", и хотя бы одно "Готов к выдаче", то заказ — "Готов к выдаче"
+    elseif (
+        count(array_diff($all, [$readyId, $issuedId])) === 0 &&
+        in_array($readyId, $all, true)
     ) {
         $order->order_status = $readyId;
+    }
+    // Если все блюда "Выданы", то и заказ — "Выдан"
+    elseif (
+        count(array_unique($all)) === 1 &&
+        current($all) === $issuedId
+    ) {
+        $order->order_status = $issuedId;
     }
 
     $order->save(false);

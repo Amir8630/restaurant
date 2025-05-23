@@ -134,3 +134,8 @@ CSS);
 <!-- нужно будеть свои подключит -->
 <!-- <php $this->registerJsFile('js/userFilter.js', ['depends' => YiiAsset::class]) ?> -->
 <?php $this->registerJsFile('js/changeStatusOrder&dish.js', ['depends' => YiiAsset::class]) ?>
+<script>
+    setInterval(function(){
+        $.pjax.reload({container:'#pjax-booking-index'});
+    }, 2000);
+</script>

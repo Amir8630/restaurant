@@ -114,13 +114,13 @@ CSS);
     
     <?= Alert::widget() ?>
 
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <!-- <php  $this->render('_search', ['model' => $searchModel]); ?> -->
 
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemOptions' => ['class' => 'item'],
         'itemView' => 'item',
-        'layout' => "{pager}\n{summary}\n<div class = 'd-flex flex-wrap justify-content-center gap-3'>{items}</div>\n<div class = 'mt-2'></div>{pager}",
+        'layout' => "{pager}\n{summary}\n<div class = ''>{items}</div>\n<div class = 'mt-2'></div>{pager}",
         'pager' => ['class' => LinkPager::class],
 
     ]) ?>
@@ -137,9 +137,12 @@ CSS);
 
 
 <?php $this->registerJsFile('js/userFilter.js', ['depends' => YiiAsset::class]) ?>
+<?php $this->registerJsFile('js/changeStatusOrder&dishW.js', ['depends' => YiiAsset::class]) ?>
 
 <script>
     setInterval(function(){
         $.pjax.reload({container:'#pjax-booking-index'});
-    }, 5000);
+    }, 2000);
 </script>
+
+

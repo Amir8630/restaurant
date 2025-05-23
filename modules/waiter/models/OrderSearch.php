@@ -5,6 +5,7 @@ namespace app\modules\waiter\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Order;
+use app\models\Status;
 
 /**
  * OrderSearch represents the model behind the search form of `app\models\Order`.
@@ -41,7 +42,15 @@ class OrderSearch extends Order
     public function search($params)
     {
         $query = Order::find();
-
+        
+        $query->andWhere([
+            'not in',
+            'order_status',
+            [
+            Status::getStatusId('Отменён'),
+            Status::getStatusId('Выдано'),
+            ]
+        ]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -49,6 +58,8 @@ class OrderSearch extends Order
             'pagination' => ['pageSize' => 6], 
 
         ]);
+
+        
 
         $this->load($params);
 

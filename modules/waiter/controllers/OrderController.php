@@ -16,6 +16,8 @@ use Exception;
 use yii\db\Query;
 use yii\helpers\VarDumper;
 use yii\jui\AutoComplete;
+use yii\web\BadRequestHttpException;
+
 /**
  * OrderController implements the CRUD actions for Order model.
  */
@@ -141,7 +143,7 @@ public function actionCreate()
         }
         $tx->commit();
         Yii::$app->session->setFlash('success', 'Заказ успешно создан');
-        return $this->redirect(['view', 'id' => $model->id]);
+        return $this->redirect(['index']);
     } catch (\Throwable $e) {
         $tx->rollBack();
         Yii::$app->session->setFlash('error', 'Ошибка сохранения: ' . $e->getMessage());
@@ -280,4 +282,64 @@ public function actionUpdate($id)
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    
+public function actionUpdateStatus(int $id, int $status)
+{
+    Yii::$app->response->format = Response::FORMAT_JSON;
+
+    if (!Yii::$app->request->isAjax) {
+        throw new BadRequestHttpException("Ожидался AJAX-запрос");
+    }
+
+    $order = $this->findModel($id);
+    $order->order_status = $status;
+    $order->save(false);
+
+    OrderDish::updateAll(['status_id' => $status], ['order_id' => $order->id]);
+
+    return ['success' => true];
+}
+
+public function actionUpdateDishStatus(int $id, int $status)
+{
+    Yii::$app->response->format = Response::FORMAT_JSON;
+
+    if (!Yii::$app->request->isAjax) {
+        throw new BadRequestHttpException("Ожидался AJAX-запрос");
+    }
+
+    $dish = OrderDish::findOne($id);
+    if (!$dish) {
+        throw new NotFoundHttpException("Блюдо не найдено");
+    }
+
+    $dish->status_id = $status;
+    $dish->save(false);
+
+    $order = $dish->order;
+    $all = OrderDish::find()
+        ->select('status_id')
+        ->where(['order_id' => $order->id])
+        ->column();
+
+    $cookingId = Status::getStatusId('готовится');
+    $readyId   = Status::getStatusId('готов к выдаче');
+    $issuedId = Status::getStatusId('Выдано');
+
+    if (in_array($cookingId, $all, true)) {
+        $order->order_status = $cookingId;
+    } elseif (!in_array($cookingId, $all, true)
+        && count(array_unique($all)) === 1
+        && current($all) === $readyId
+    ) {
+        $order->order_status = $readyId;
+    } elseif (count(array_unique($all)) === 1 && current($all) === $issuedId) {
+        $order->order_status = $issuedId; // или другой статус, например "Завершён"
+    }
+
+    $order->save(false);
+
+    return ['success' => true];
+}
 }
