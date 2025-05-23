@@ -158,7 +158,7 @@ CSS
           Status::getStatusId('готовится')       => 'status-in-progress',
           Status::getStatusId('готов к выдаче')  => 'status-completed',
           Status::getStatusId('Завершено')       => 'status-completed',
-          Status::getStatusId('Отменено')        => 'status-canceled',
+          Status::getStatusId('Отменён')        => 'status-canceled',
         ];
         $oCls = $map[$model->order_status] ?? '';
       ?>
@@ -176,7 +176,7 @@ CSS
         $opts = [
           Status::getStatusId('готовится')       => 'Готовится',
           Status::getStatusId('готов к выдаче')  => 'Готов к выдаче',
-          Status::getStatusId('Отменено')        => 'Отменить',
+          Status::getStatusId('Отменён')        => 'Отменить',
         ];
         foreach ($opts as $stId => $stTitle):
           $cls = $map[$stId] ?? '';

@@ -104,17 +104,13 @@ CSS);
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Создать заказ', ['create'], ['class' => 'btn btn-outline-success']) ?>
-    </p>
-
     <?php Pjax::begin(['id' => 'pjax-booking-index',
     //  'enablePushState' => false,
       'timeout' => 5000]); ?> 
     
     <?= Alert::widget() ?>
 
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <!-- <php  $this->render('_search', ['model' => $searchModel]); ?> -->
 
     <?= ListView::widget([
         'dataProvider' => $dataProvider,

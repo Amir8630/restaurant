@@ -165,7 +165,7 @@ CSS);
         $status = $model->status->title;
         $class = match ($status) {
             'Забронировано' => 'status-booked',
-            'Отменено' => 'status-cancelled',
+            'Отменён' => 'status-cancelled',
             'Завершено' => 'status-completed',
             default => '',
         };

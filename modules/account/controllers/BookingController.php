@@ -263,7 +263,7 @@ class BookingController extends Controller
     public function actionCancel($id)
     {
         if($model = $this->findModel($id)) {
-            $model->status_id = Status::getStatusId('Отменено');
+            $model->status_id = Status::getStatusId('Отменён');
             if(!$model->save(false)) {
                 VarDumper::dump($model->errors, 10, true); die;
             }
@@ -287,7 +287,7 @@ class BookingController extends Controller
     public function actionCancelModal($id)
     {
         if($model = $this->findModel($id)) {
-            $model->status_id = Status::getStatusId('Отменено');
+            $model->status_id = Status::getStatusId('Отменён');
             if(!$model->save(false)) {
                 VarDumper::dump($model->errors, 10, true); die;
             }

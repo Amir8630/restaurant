@@ -111,7 +111,7 @@ CSS
         <?= $form->field($model, 'status_id')->dropDownList(
             [
                 '1' => 'Забронировано',
-                '4' => 'Отменено',
+                '4' => 'Отменён',
             ],['prompt' => 'Статус'])->label(false) ?>
 
         <?= $form->field($model, 'booking_date')->input('date')->label(false) ?>

@@ -55,12 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
             $options = [
                 'cooking' => 'Готовится',
                 'ready' => 'Готово к выдаче',
-                'canceled' => 'Отменено',
+                'canceled' => 'Отменён',
             ];
         } elseif ($current === 'cooking') {
             $options = [
                 'ready' => 'Готово к выдаче',
-                'canceled' => 'Отменено',
+                'canceled' => 'Отменён',
             ];
         }
 
