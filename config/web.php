@@ -85,6 +85,8 @@ $config = [
         ],
         'waiter' => [
             'class' => 'app\modules\waiter\Module',
+            'defaultRoute' => 'order/index',
+
         ],
         'cook' => [
             'class' => 'app\modules\cook\Module',

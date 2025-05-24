@@ -58,7 +58,7 @@ function showToast(message, bgColor = '#28a745', duration = 3000) {
     toast.textContent = message;
     toast.style.cssText = `
         background: ${bgColor};
-        color: white;
+        color: black;
         padding: 10px 20px;
         margin-top: 10px;
         border-radius: 5px;

@@ -70,10 +70,16 @@ $this->registerCss(<<<CSS
 
 /* ===== Схема зала ===== */
 #hall-container {
-  border: 1px solid var(--navbar-bg);
-  border-radius: .75rem;
-  background: #fafafa;
-  margin-bottom: 2rem;
+  width: 100%;          /* контейнер растягивается во всю ширину */
+  max-width: 1000px;    /* при больших экранах остаётся прежнего размера */
+  margin: 0 auto;       /* центровка */
+  overflow-x: auto;     /* если SVG слишком широкий — появится скролл */
+}
+
+#hall-container svg {
+  width: 100% !important; /* SVG растягивается по ширине контейнера */
+  height: auto !important;
+  display: block;         /* убирает возможные пробелы вокруг */
 }
 
 /* ===== Всплывающая подсказка ===== */
