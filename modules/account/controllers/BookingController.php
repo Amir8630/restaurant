@@ -45,8 +45,22 @@ class BookingController extends Controller
      */
     public function actionIndex()
     {
+        // Вычисляем дату и время "сейчас минус 1 час" или другое нужное смещение
+        $expiredTimestamp = time() - 60*60; // например 1 час назад
+        $expiredDatetime = date('Y-m-d H:i:s', $expiredTimestamp);
+
+        // Обновляем бронь: если статус = 2 (активен), и дата создания меньше, чем $expiredDatetime
+        \app\models\Booking::updateAll(
+            ['status_id' => 15], 
+            ['and',
+                ['status_id' => 1],
+                ['<', 'created_at', $expiredDatetime]
+            ]
+        );
+
+        // Далее идёт стандартная логика index для рендеринга списка броней
         $searchModel = new BookingSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -90,9 +104,9 @@ class BookingController extends Controller
         $tableIds = implode(',', array_map(fn($table) => $table->table_id, $BookingTable));
 
         // вроде можно использовать url to для создания ссылки, надо будеть попробовать
-        // $restaurant_link = Yii::$app->urlManager->createAbsoluteUrl(['account/booking/mail-view', 'token' => $token]);
+        $restaurant_link = Yii::$app->urlManager->createAbsoluteUrl(['account/booking/mail-view', 'token' => $Booking->token]);
         // для localhost
-        $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $Booking->token;
+        // $restaurant_link = 'http://localhost/account/booking/mail-view?token=' . $Booking->token;
 
         // для сервера
         // $restaurant_link = 'http://avcsvty-m2.wsr.ru/account/booking/mail-view?token=' . $Booking->token

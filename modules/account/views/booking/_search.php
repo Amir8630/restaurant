@@ -112,6 +112,7 @@ CSS
             [
                 '1' => 'Забронировано',
                 '4' => 'Отменён',
+                '15' => 'Завершена',
             ],['prompt' => 'Статус'])->label(false) ?>
 
         <?= $form->field($model, 'booking_date')->input('date')->label(false) ?>

@@ -52,10 +52,16 @@ class BookingSearch extends Booking
 
         // add conditions that should always apply here
 
+        // Сначала сортируем по статусу "забронировано", затем по дате создания
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize' => 6], 
-            'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]]
+            'pagination' => ['pageSize' => 6],
+            'sort' => [
+            'defaultOrder' => [
+                'status_id' => SORT_ASC, // предполагается, что "забронировано" имеет наименьший id
+                'created_at' => SORT_DESC
+            ]
+            ]
         ]);
 
         $this->load($params);

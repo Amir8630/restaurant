@@ -2,39 +2,33 @@
 
 use app\models\Status;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /** @var app\models\Booking $model */
 
-$statusColors = [
-    'Ожидает' => 'warning',
-    'Подтверждена' => 'success',
-    'Отменена' => 'danger',
-];
-
-$statusName = ucfirst(strtolower($model->status->title ?? 'Ожидает'));
-$color = $statusColors[$statusName] ?? 'secondary';
 ?>
 
-
 <?php
-$this->registerCss(<<<CSS
+$this->registerCss(<<<'CSS'
 body {
-    background-color: #f1f3f6;
+    background-color: #1e2227;
 }
 
 .booking-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
+    background-color: #2d363f;
+    border: 1px solid #3e4a55;
     border-radius: 16px;
     padding: 20px;
-    width: 340px;
+    width: 320px;
     max-width: 100%;
     transition: box-shadow 0.2s ease;
+    color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .booking-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .booking-card-header {
@@ -44,27 +38,50 @@ body {
     margin-bottom: 15px;
     font-weight: 600;
     font-size: 16px;
-    color: #2c3e50;
+    color: #ffffff;
 }
+
+/* Простой цветной текст статуса без обводки */
+.status-new         { color: #9b59b6; }
+.status-in-progress { color: #fffa65; }
+.status-completed   { color: #7bed9f; }
+.status-canceled    { color: #ff6b81; }
 
 .booking-card-body p {
     margin: 6px 0;
     font-size: 14px;
-    color: #555;
+    color: #d3d3d3;
 }
 
 .booking-card-footer {
     margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
 }
-CSS);
+
+.btn-sm { font-size: .85rem; padding: .4rem .8rem; }
+.btn-outline-light { border-color: #70a1ff; color: #70a1ff; }
+.btn-outline-light:hover { background: #70a1ff; color: #2d363f; }
+.btn-outline-danger { border-color: #ff6b81; color: #ff6b81; }
+CSS
+);
 ?>
 
-<div class="booking-card shadow-sm">
+<div class="booking-card">
     <div class="booking-card-header">
         <div class="booking-id">Бронь №<?= Html::encode($model->id) ?></div>
-        <div class="booking-status badge bg-<?= $color ?>">
-            <?= Html::encode($statusName) ?>
-        </div>
+        <?php
+            // отображаем простой цветной текст статуса
+            $map = [
+
+                Status::getStatusId('Отменён')         => 'status-canceled',
+
+                Status::getStatusId('Забронировано')    => 'status-completed',
+            ];
+            $cls = $map[$model->status_id] ?? 'status-new';
+        ?>
+        <span class="<?= $cls ?>"><?= Html::encode($model->status->title) ?></span>
     </div>
     <div class="booking-card-body">
         <p><i class="bi bi-person-circle"></i> На имя: <?= Html::encode($model->fio_guest) ?></p>
@@ -75,45 +92,16 @@ CSS);
         <p><i class="bi bi-envelope"></i> <?= Html::encode($model->email) ?></p>
         <p><i class="bi bi-calendar-plus"></i> Создана: <?= Yii::$app->formatter->asDatetime($model->created_at) ?></p>
     </div>
-    <div class="booking-card-footer d-flex justify-content-end gap-2">
-        <div class="btn-group mb-2">
+    <div class="booking-card-footer">
+        <div class="btn-group">
             <?= Html::a('<i class="bi bi-eye"></i> Просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-primary btn-sm']) ?>
             <?= $model->status_id == Status::getStatusId('Забронировано') 
-            ? Html::a('<i class="bi bi-x-circle"></i> Отменить', ['cancel', 'id' => $model->id], [
-                'class' => 'btn btn-outline-danger btn-cancel-modal btn-sm',
-                'data-number' => $model->id,
-                'title' => 'Отменить'
-            ])
-            : '' ?>
-           
+                ? Html::a('<i class="bi bi-x-circle"></i> Отменить', ['cancel', 'id' => $model->id], [
+                    'class' => 'btn btn-outline-danger btn-sm btn-cancel-modal',
+                    'data-number' => $model->id,
+                    'title' => 'Отменить'
+                ])
+                : '' ?>
         </div>
     </div>
 </div>
-
-
-<!-- старый вариант, сверху стили бета -->
-<!-- <php
-
-use app\models\Status;
-use yii\bootstrap5\Html;
-
-?>
-
-
-<div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title"> <?= Html::encode('Бронь №' . $model->id) ?> </h5>
-    <p class="card-text"> <?= Html::encode('Бронь на ' . $model->booking_date) ?> </p>
-    <p class="card-text"> <?= Html::encode('Бронь с ' . $model->booking_time_start) ?> </p>
-    <p class="card-text"> <?= Html::encode('Бронь до ' . $model->booking_time_end) ?> </p>
-    <p class="card-text"> <?= Html::encode('Email ' . $model->email) ?> </p>
-  </div>
-  <= Html::a('Просмотр', ['view', 'id' => $model->id], ['class' => 'btn btn-outline-info w-100'])?>
-  
-  <= $model->status_id == Status::getStatusId('Забронировано') 
-  ? Html::a('Отменить', ['cancel-modal', 'id' => $model->id], ['class' => 'btn btn-outline-warning mt-2 w-100 btn-cancel-modal', 'data-number' => $model->id]) 
-  : ''?>
-
-</div> -->
-
-<!-- проблема в том что я убрал модели из передачи и теперь я прочто renfer делаю без передачи  -->
