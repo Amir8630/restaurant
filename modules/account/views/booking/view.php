@@ -24,7 +24,7 @@ body {
 }
 
 .booking-card {
-    background-color: #2d363f;
+    background-color: #232b38;
     border: 1px solid #3e4a55;
     border-radius: 16px;
     padding: 25px;
@@ -89,7 +89,7 @@ body {
     pointer-events: none;
 }
 .table.table-darks th ,td{
-    background-color: #2d363f !important;
+    background-color: #232b38 !important;
     color: #d3d3d3;
     border-color: #3e4a55 !important; /* можно оставить или убрать */
 }
@@ -117,7 +117,7 @@ td {
 
 .btn-outline-light:hover {
     background: #70a1ff;
-    color: #2d363f;
+    color: #232b38;
 }
 
 
@@ -156,7 +156,7 @@ CSS
                 <?= Html::a('<i class="bi bi-arrow-left"></i> Назад', ['index'], ['class' => 'btn btn-outline-primary btn-sm']) ?>  
     
                 <?= $model->status_id == Status::getStatusId('Забронировано') 
-                ? Html::a('Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal btn-sm'])
+                ? Html::a('Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal btn-sm', 'data-number' => $model->id,])
                 :'' ?>
          
         </div>

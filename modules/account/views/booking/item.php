@@ -14,7 +14,7 @@ body {
 }
 
 .booking-card {
-    background-color: #2d363f;
+    background-color: #232b38;
     border: 1px solid #3e4a55;
     border-radius: 16px;
     padding: 20px;
@@ -50,7 +50,7 @@ body {
 .booking-card-body p {
     margin: 6px 0;
     font-size: 14px;
-    color: #d3d3d3;
+    color: white;
 }
 
 .booking-card-footer {
