@@ -133,6 +133,10 @@ CSS
             ]
         ) ?>
     <?php endif; ?>
+          <?php if ($model->order_status == Status::getStatusId('Новый')): ?>
+      <?= Html::a('<i class="bi bi-pencil"></i> Редактировать', ['update','id'=>$model->id], [
+           'class'=>'btn-light-action']) ?>
+      <?php endif; ?>
     <?php if ($model->order_status == Status::getStatusId('Новый')): ?>
         <?= Html::button(
             '<i class="bi bi-trash"></i> Удалить',
