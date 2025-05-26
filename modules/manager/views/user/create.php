@@ -5,7 +5,7 @@ use yii\bootstrap5\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
-$this->title = 'Регистрация пользвателя';
+$this->title = 'Регистрация пользователя';
 $this->params['breadcrumbs'][] = ['label' => 'Пользватели', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -18,3 +18,4 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+a
