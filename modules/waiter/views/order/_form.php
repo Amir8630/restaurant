@@ -7,7 +7,7 @@ use yii\bootstrap5\Modal;
 /* @var app\models\Order $model */
 /* @var app\models\OrderDish[] $dishes */
 
-$this->title = $model->isNewRecord ? 'Создание заказа' : 'Редактирование заказа #' . $model->id;
+$this->title = $model->isNewRecord ? 'Создание заказа' : 'Редактирование заказа №' . $model->id;
 
 // Общие стили для формы
 $this->registerCss(<<<'CSS'
