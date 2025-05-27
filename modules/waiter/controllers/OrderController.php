@@ -242,7 +242,7 @@ public function actionUpdate($id)
                 }
             }
 
-            return $this->redirect(['view', 'id' => $model->id]);
+        return $this->redirect(['index']);
         }
     }
 
