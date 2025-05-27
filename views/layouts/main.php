@@ -38,7 +38,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options'    => ['class' => 'navbar navbar-expand-md navbar-dark custom-navbar fixed-top'],
     ]);
     echo Nav::widget([
-        'options'         => ['class' => 'navbar-nav'],
+        'options'         => ['class' => 'navbar-nav title'],
         'activateItems'   => true,
         'items'           => [
             ['label' => 'Меню', 'url' => ['/menu/index3']],
@@ -91,7 +91,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php endif; ?>
 </main>
 
-<footer id="footer" class="mt-auto custom-footer py-4">
+<footer id="footer" class="mt-auto custom-footer py-4 title">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
         <div class="mb-3 mb-md-0 text-center text-md-start">
             &copy; <?= date('Y') ?> Diplom. Все права защищены.
