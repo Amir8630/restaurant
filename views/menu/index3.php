@@ -68,8 +68,11 @@ button {
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js"></script>
+<script src="/js/pdf.min.js"></script>
+<script src="/js/pdf.worker.min"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
+</script>
 
 <?php
 $this->registerJsFile('@web/js/turn.min.js', ['depends' => [\yii\web\JqueryAsset::class]]);
@@ -85,11 +88,7 @@ if (!url) {
 }
 
 let viewportWidth, viewportHeight, bookInitialized = false;
-
 let flipSound = new Audio($jsonSoundUrl);
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = 
-  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
 
 // Фиксированные размеры для ПК
 const desktopWidth = 1850.42;
