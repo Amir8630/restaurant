@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: restaurant-yii2
+    env: php
+    buildCommand: "composer install"
+    startCommand: "php -S 0.0.0.0:10000 -t web"
+    plan: free
+    region: frankfurt
