@@ -44,7 +44,7 @@ body, html {
     border-radius: 16px;
     backdrop-filter: blur(6px);
     max-width: 600px;
-    margin-bottom: 21vh;
+    margin-bottom: 10vh;
     text-align: center;
 }
 
@@ -60,10 +60,8 @@ body, html {
 }
 
 .hero-cards-container {
-    position: absolute;
-    bottom: 10rem;
-    left: 50%;  
-    transform: translateX(-50%);
+    position: relative; /* было: absolute */
+    margin-top: 2rem; /* добавим отступ после .hero-content */
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
@@ -77,6 +75,7 @@ body, html {
     justify-content: center;
     z-index: 2;
 }
+
 
 .card-link {
     background: rgba(255, 255, 255, 0.1);
@@ -93,8 +92,15 @@ body, html {
     box-sizing: border-box;
     border: 1px solid rgba(255, 255, 255, 0.3);
     min-height: 180px;
+    height: 100%; добавим
 }
 
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
 .card-link:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-5px);
@@ -230,7 +236,6 @@ body, html {
         border-color: white;
     }
 }
-
 CSS);
 ?>
 

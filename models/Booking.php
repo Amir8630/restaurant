@@ -53,6 +53,7 @@ class Booking extends \yii\db\ActiveRecord
             [['selected_tables', 'count_guest'], 'validateCountGuest'],
             ['booking_date', 'validateBookingDate'],
             [['booking_time_start', 'booking_time_end', 'booking_date'], 'validateTimeStart'],
+            [['booking_time_start', 'booking_time_end', 'booking_date'], 'validateTimeEnd'],
             // нез насколько это плохо что всё отдаю
             // [['booking_date', 'booking_time_start', 'booking_time_end', 'count_guest', 'selected_tables'], 'validateBookingDate'],
             // [['booking_date', 'booking_time_start', 'booking_time_end', 'count_guest', 'selected_tables'], 'validateTimeStart'],
@@ -75,7 +76,7 @@ class Booking extends \yii\db\ActiveRecord
     public function validateTimeStart()
     {             
         if ($this->booking_time_start > '22:00') {
-            return $this->addError('booking_time_start', 'Мы работаем ежедневно с 7:00 до 23:00. ');
+            return $this->addError('booking_time_start', 'Время начала бронирования не может быть позже 22:00.');
         }
 
         if ($this->booking_time_start < '07:00') {
@@ -93,11 +94,9 @@ class Booking extends \yii\db\ActiveRecord
     
     public function validateTimeEnd()
     {
-        // if($this->booking_time_start >= $this->booking_time_end) {
-        //     if(! $this->booking_time_start == '22:00') {
-        //         return $this->addError('booking_time_end', 'минимальный интеравал 2 часа или 1 час'); // плохо работате 12:12 12:12 нет ошибок чо не правильно 
-        //     }
-        // }
+        if (strtotime($this->booking_time_end) - strtotime($this->booking_time_start) < 3600) {
+            return $this->addError('booking_time_end', 'Минимальный интервал бронирования — 1 час.');
+        }
     }
 
 

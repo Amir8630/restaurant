@@ -45,16 +45,28 @@ class BookingController extends Controller
      */
     public function actionIndex()
     {
-        // Вычисляем дату и время "сейчас минус 1 час" или другое нужное смещение
-        $expiredTimestamp = time() - 60*60; // например 1 час назад
-        $expiredDatetime = date('Y-m-d H:i:s', $expiredTimestamp);
+        // Получаем текущую дату и время
+        $today = date('Y-m-d');
+        $now = date('H:i:s');
 
-        // Обновляем бронь: если статус = 2 (активен), и дата создания меньше, чем $expiredDatetime
+        // 1. Все брони, где дата меньше сегодня, переводим в статус 15
         \app\models\Booking::updateAll(
-            ['status_id' => 15], 
-            ['and',
-                ['status_id' => 1],
-                ['<', 'created_at', $expiredDatetime]
+            ['status_id' => 15],
+            [
+            'and',
+            ['status_id' => 1],
+            ['<', 'booking_date', $today]
+            ]
+        );
+
+        // 2. Все брони на сегодня, где время окончания меньше или равно текущему времени, переводим в статус 15
+        \app\models\Booking::updateAll(
+            ['status_id' => 15],
+            [
+            'and',
+            ['status_id' => 1],
+            ['booking_date' => $today],
+            ['<=', 'booking_time_end', $now]
             ]
         );
 
