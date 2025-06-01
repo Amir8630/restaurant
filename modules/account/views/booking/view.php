@@ -216,7 +216,7 @@ CSS
                 <?= Html::a('<i class="bi bi-arrow-left"></i> Назад', ['index'], ['class' => 'btn btn-outline-primary btn-sm']) ?>  
     
                 <?= $model->status_id == Status::getStatusId('Забронировано') 
-                ? Html::a('Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal btn-sm', 'data-number' => $model->id,])
+                ? Html::a('<i class="bi bi-x-circle"></i> Отменить', ['cancel', 'id' => $model->id], ['class' => 'btn btn-outline-danger btn-cancel-modal btn-sm ','data-number' => $model->id])
                 :'' ?>
          
         </div>
