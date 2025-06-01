@@ -192,7 +192,7 @@ CSS
 
 <div class="booking-view booking-card" data-booking-id="<?= $model->id ?>">
     <div class="booking-card-header">
-        <span><?= Html::encode($this->title) ?></span>
+        <span class="text2"><?= Html::encode($this->title) ?></span>
 <span>
     <?php
     // Сопоставляем id статуса к классам с простым цветом текста, как во втором примере
@@ -209,7 +209,7 @@ CSS
 </span>
     </div>
 
-    <div class="booking-card-body">
+    <div class="booking-card-body text1">
 
         <div class="btn-group mb-3" id="booking-view">  
            
