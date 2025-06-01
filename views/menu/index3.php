@@ -15,10 +15,11 @@ $this->title = 'Электронное меню';
   flex-direction: column;
   justify-content: center; /* вертикальное центрирование */
   align-items: center;     /* горизонтальное центрирование */
-  min-height: 100vh;       /* занимает всю высоту окна */
   padding: 20px;
   box-sizing: border-box;
+  justify-content: flex-start;
 }
+
 
 .menu-container h1 {
   /* margin-top: 40px;       отступ сверху */
@@ -99,13 +100,19 @@ const mobileWidth = 360;
 const mobileHeight = 640;
 
 function getContainerSize() {
+    const aspectRatio = 1850.42 / 1151.82; // соотношение сторон PDF (примерно 1.6)
+
     if (window.innerWidth <= 600) {
-        // Телефон — фиксированный размер
-        return { width: mobileWidth, height: mobileHeight };
-    } else {
-        // ПК — фиксированный размер
-        return { width: desktopWidth, height: desktopHeight };
+        return { width: 360, height: 640 };
     }
+    if (window.innerWidth <= 1980) {
+        return { width: 1207.94, height: 752 };
+    }
+
+    const maxWidth = Math.min(window.innerWidth * 0.85, 1600); // ограничим максимум
+    const height = maxWidth / aspectRatio;
+
+    return { width: maxWidth, height };
 }
 
 function initBook(w, h, numPages) {
