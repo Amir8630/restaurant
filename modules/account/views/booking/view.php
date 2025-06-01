@@ -74,15 +74,21 @@ body {
 }
 
 .divTable {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    padding: 0 10px;
+    position: relative;
+    width: 38%;
+    height: 60px;
+    text-align: center;
     border: 1px solid #70a1ff;
     border-radius: 10px;
     background-color: #1e1e1e;
-    position: relative;
     color: #a8ffb2;
 }
+
 
 .divTable.disabledTable {
     opacity: 0.5;
@@ -126,6 +132,60 @@ td {
     font-size: 1.2rem;
     display: inline-block;
 }
+
+
+@media (max-width: 768px) {
+    .divTable {
+        width: 100% !important;
+        height: auto;
+        min-height: 60px;
+        font-size: 16px;
+        padding: 15px;
+    }
+}
+
+/* Сжимаем первую колонку и разрешаем перенос */
+.table-darks th {
+    width: 40%;
+    white-space: normal !important;
+    word-break: break-word;
+    text-align: left;
+    vertical-align: top;
+    padding-right: 10px;
+}
+
+/* Общая таблица адаптивно */
+.table-darks td, .table-darks th {
+    display: table-cell;
+    padding: 10px 8px;
+}
+
+/* Упаковка всего блока */
+.booking-card {
+    padding: 20px;
+    margin: 15px auto;
+    max-width: 800px;
+    width: 95%;
+}
+
+@media (max-width: 768px) {
+    .table-darks {
+        width: 100%;
+    }
+
+    .table-darks th {
+        width: 40%;
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    .table-darks td {
+        word-break: break-word;
+        white-space: normal;
+    }
+}
+
+
 CSS
 );
 ?>
