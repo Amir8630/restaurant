@@ -52,19 +52,17 @@ $this->registerCss(<<<CSS
 }
 
 /* ===== Кнопка отправки ===== */
-.btn-outline-success {
+.btn-outline-primary2 {
   display: block;
   width: 100%;
   font-weight: 600;
-  border: 2px solid var(--navbar-link-active);
+  
   border-radius: 50px;
   padding: .75rem;
-  color: var(--navbar-link-active);
   transition: background-color .4s, color .4s;
 }
 
-.btn-outline-success:hover {
-  background-color: var(--navbar-link-active);
+.btn-outline-primary2:hover {
   color: #fff;
 }
 
@@ -122,8 +120,6 @@ $this->registerCss(<<<CSS
   display: inline-block;       /* ширина по содержимому */
 }
 .btn-book:hover {
-  background-color: var(--navbar-link-active);
-  color: #fff;
 }
 CSS
 );
@@ -215,7 +211,7 @@ CSS
         <div class="form-group">
             <!-- , 'data-pjax' => 0 -->
 <?= Html::submitButton('Забронировать', [
-    'class' => 'btn btn-outline-success btn-book mt-3'
+    'class' => 'btn btn-outline-primary2 btn-book mt-3'
 ]) ?>
         </div>
 

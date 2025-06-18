@@ -119,7 +119,7 @@ CSS
 
         <?= $form->field($model, 'booking_time_start')->input('time')->label(false) ?>
 
-        <?= Html::a('Сброс', ['index'], ['class' => 'btn btn-outline-light btn-reset']) ?>
+        <?= Html::a('Сброс', ['index'], ['class' => 'btn btn-outline-primary2 btn-reset']) ?>
 
         <?= $form->field($model, 'title_search')->hiddenInput()->label(false) ?>
         <?= $form->field($model, 'id_search')->hiddenInput()->label(false) ?>

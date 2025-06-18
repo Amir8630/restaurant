@@ -100,8 +100,7 @@ use yii\widgets\MaskedInput;
         ]) ?>
 
         <div class="form-group d-flex gap-2">
-            <?= Html::a('Назад', ['site/index'], ['class' => 'btn btn-outline-primary']) ?>
-            <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-outline-success']) ?>
+            <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-outline-primary2']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

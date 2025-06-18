@@ -379,3 +379,28 @@ h1, h2, h3, h4, h5 {
 p, li, small {
   font-weight: 400;
 } */
+
+.btn-outline-primary2 {
+    border-color: rgb(44, 62, 80);
+    color:rgb(44, 62, 80);
+}
+.btn-outline-primary2:hover {
+    background: rgb(44, 62, 80);
+    border-color: rgb(44, 62, 80);
+    color: white;
+}
+
+.page-item.active a {
+    background: rgb(44, 62, 80);
+    border-color: rgb(44, 62, 80);
+    color: white;
+}
+.page-item a {
+    color: rgb(44, 62, 80);
+    transition: 0.4s ease;
+}
+.page-item:hover a {
+    color: white;
+    border-color: rgb(44, 62, 80);
+    background: rgb(44, 62, 80);
+}
