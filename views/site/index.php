@@ -11,6 +11,10 @@ body, html {
     height: 100%;
 }
 
+body{
+     overflow-x: hidden;
+}
+
 .hero-section {
     position: relative;
     width: 100vw;
