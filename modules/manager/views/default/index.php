@@ -1,21 +1,63 @@
 <?php
-
 use yii\bootstrap5\Html;
-
 ?>
 
-<h3>Панель управления менеджера</h3>
+<div class="container py-4">
+    <h3 class="mb-4">Панель управления менеджера</h3>
+    <div class="row gy-3">
 
-<div class="p-2 d-flex flex-wrap gap-2 justify-content-start" style="max-width:100%;">
-    <?= Html::a('Загрузить схему зала', ['/manager/svg/upload'], ['class' => 'btn btn-outline-primary flex-fill', 'style' => 'min-width:180px;']) ?>
-    <?= Html::a('Работа с пользователями', ['/manager/user'], ['class' => 'btn btn-outline-info flex-fill', 'style' => 'min-width:180px;']) ?>  
+        <!-- Карточка загрузки схемы зала -->
+        <div class="col-12 col-sm-6 col-md-4">
+            <?= Html::a(
+                '<div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-upload display-4 mb-3"></i>
+                    <h5 class="card-title">Загрузить схему зала</h5>
+                </div>',
+                ['/manager/svg/upload'],
+                [
+                    'class' => 'card h-100 text-decoration-none text-center text-light border-0 shadow-sm p-3',
+                    'style' => 'transition: transform .2s;',
+                    'encode' => false,
+                ]
+            ) ?>
+        </div>
+
+        <!-- Карточка управления пользователями -->
+        <div class="col-12 col-sm-6 col-md-4">
+            <?= Html::a(
+                '<div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-people display-4 mb-3"></i>
+                    <h5 class="card-title">Работа с пользователями</h5>
+                </div>',
+                ['/manager/user'],
+                [
+                    'class' => 'card h-100 text-decoration-none text-center text-light border-0 shadow-sm p-3',
+                    'style' => 'transition: transform .2s;',
+                    'encode' => false,
+                ]
+            ) ?>
+        </div>
+
+    </div>
 </div>
-<style>
-@media (max-width: 576px) {
-    .d-flex.flex-wrap.gap-2 > a {
-        flex-basis: 100% !important;
-        min-width: 0 !important;
-    }
-}
-</style>
 
+<style>
+    /* Hover-эффект: чуть увеличиваем карточку */
+    .card:hover {
+        transform: translateY(-4px) scale(1.02);
+    }
+
+    /* Фон и текст */
+    body {
+        background: rgb(44, 62, 80);
+    }
+
+    .card {
+        background: rgb(44, 62, 80);
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+</style>

@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Html;
 use app\models\Status;
+use yii\bootstrap5\Modal;
+use yii\helpers\Url;
 
 /** @var app\models\Order $model */
 
@@ -138,13 +140,34 @@ CSS
            'class'=>'btn-light-action']) ?>
       <?php endif; ?>
     <?php if ($model->order_status == Status::getStatusId('Новый')): ?>
-        <?= Html::button(
-            '<i class="bi bi-trash"></i> Удалить',
-            [
-                'class' => 'btn-light-action',
-                'onclick' => "if(confirm('Вы уверены?')) window.location.href='".\yii\helpers\Url::to(['delete','id'=>$model->id])."?_method=post';",
-            ]
-        ) ?>
+<?php if ($model->order_status == Status::getStatusId('Новый')): ?>
+<?= Html::button('<i class="bi bi-trash"></i> Удалить', [
+    'class' => 'btn-light-action',
+    'data-bs-toggle' => 'modal',
+    'data-bs-target' => '#delete-confirm-modal-' . $model->id,
+]) ?>
+
+<?php endif; ?>
+
+
     <?php endif; ?>
 </div>
 </div>
+<?php
+
+Modal::begin([
+    'id' => 'delete-confirm-modal-' . $model->id,
+    'title' => '<h5 class="modal-title">Подтверждение удаления</h5>',
+    'footer' => '
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        ' . Html::beginForm(['delete', 'id' => $model->id], 'post', ['style' => 'display:inline;', 'id' => 'delete-form-' . $model->id]) .
+            Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()) .
+            Html::submitButton('Удалить', ['class' => 'btn btn-danger']) .
+        Html::endForm() . '
+    ',
+]);
+
+echo "<p>Вы действительно хотите удалить заказ №{$model->id}?</p>";
+
+Modal::end();
+?>

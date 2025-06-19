@@ -105,7 +105,7 @@ CSS);
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Создать заказ', ['create'], ['class' => 'btn btn-outline-success']) ?>
+        <?= Html::a('Создать заказ', ['create'], ['class' => 'btn btn-outline-primary2']) ?>
     </p>
 
     <?php Pjax::begin(['id' => 'pjax-booking-index',
@@ -139,10 +139,31 @@ CSS);
 <?php $this->registerJsFile('js/userFilter.js', ['depends' => YiiAsset::class]) ?>
 <?php $this->registerJsFile('js/changeStatusOrder&dishW.js', ['depends' => YiiAsset::class]) ?>
 
-<script>
+<!-- <script>
     setInterval(function(){
         $.pjax.reload({container:'#pjax-booking-index'});
-    }, 2000);
+    }, 5000);
+</script> -->
+<script>
+setInterval(function () {
+    // Проверяем, есть ли открытая модалка
+    if ($('.modal.show').length === 0) {
+        $.pjax.reload({container: '#pjax-booking-index'});
+    }
+}, 5000);
 </script>
 
+<?php
 
+$this->registerJs(<<<JS
+document.addEventListener('DOMContentLoaded', function () {
+    var modal = document.getElementById('delete-confirm-modal');
+    modal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var url = button.getAttribute('data-url');
+        var form = modal.querySelector('#delete-form');
+        form.setAttribute('action', url);
+    });
+});
+JS);
+?>

@@ -148,11 +148,19 @@ CSS
       </table>
     </div>
 
-    <?= Html::button('Добавить блюдо', ['class'=>'btn btn-outline-primary','id'=>'add-row']) ?>
+        <?= Html::button(
+        '<i class="bi bi-plus" style="font-size: 1rem;"></i> Добавить блюдо',
+        [
+            'class' => 'btn btn-outline-success btn-sm',
+            'id' => 'add-row',
+            'type' => 'button',
+            'style' => 'padding: 0.2rem 0.5rem;'
+        ]
+        ) ?>
 
     <div class="form-group text-center mt-4">
       <?= Html::submitButton($model->isNewRecord ? 'Создать заказ' : 'Сохранить заказ',
-          ['class' => 'btn btn-outline-success btn-lg']) ?>
+          ['class' => 'btn btn-outline-primary2 btn-lg']) ?>
     </div>
 
   <?php ActiveForm::end(); ?>

@@ -105,7 +105,7 @@ CSS);
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Зарегистрировать пользователя', ['create'], ['class' => 'btn btn-outline-success']) ?>
+        <?= Html::a('Зарегистрировать пользователя', ['create'], ['class' => 'btn btn-outline-primary2']) ?>
     </p>
 
     <?php Pjax::begin(['id' => 'pjax-booking-index',

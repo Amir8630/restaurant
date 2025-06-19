@@ -142,7 +142,7 @@ public function actionCreate()
             $dish->save(false);
         }
         $tx->commit();
-        Yii::$app->session->setFlash('success', 'Заказ успешно создан');
+        Yii::$app->session->setFlash('success', 'Заказ №' . $model->id . ' успешно создан');
         return $this->redirect(['index']);
     } catch (\Throwable $e) {
         $tx->rollBack();
@@ -263,7 +263,7 @@ public function actionUpdate($id)
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('info', 'Заказ №' . $id . ' успешно удалён');
         return $this->redirect(['index']);
     }
 
