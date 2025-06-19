@@ -48,22 +48,47 @@ button {
 }
 </style>
 
+
 <div class="menu-container">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php $form = ActiveForm::begin([
-        'options' => ['enctype' => 'multipart/form-data'],
-    ]); ?>
+<?php if (!Yii::$app->user->isGuest && (Yii::$app->user->identity->isAdmin || Yii::$app->user->identity->getRoleTitle() == 'Менеджер')): ?>
+    <div class="mb-4 w-100" style="max-width: 500px;">
 
-    <?php ActiveForm::end(); ?>
+        <?php $form = ActiveForm::begin([
+            'options' => ['enctype' => 'multipart/form-data', 'id' => 'upload-form', 'class' => 'd-flex justify-content-center'],
+        ]); ?>
+
+        <?= $form->field($model, 'file')->fileInput([
+            'accept' => 'application/pdf',
+            'class' => 'd-none',
+            'id' => 'pdfUploadInput',
+            'onchange' => 'document.getElementById("upload-form").submit();',
+        ])->label(false) ?>
+
+        <button type="button" id="custom-upload-button" class="btn btn-outline-primary2" style="min-width: 150px;">
+            <i class="bi bi-cloud-upload me-2"></i> Загрузить PDF-файл
+        </button>
+
+        <?php ActiveForm::end(); ?>
+
+    </div>
+
+    <script>
+        document.getElementById('custom-upload-button').addEventListener('click', function() {
+            document.getElementById('pdfUploadInput').click();
+        });
+    </script>
+<?php endif; ?>
+
 
     <div id="menu-book"></div>
 
     <div class="mt-3 text-center">
-        <button id="prev-page" class="btn btn-outline-primary me-3">
+        <button id="prev-page" class="btn btn-outline-primary2 me-3">
             <i class="bi bi-arrow-left"></i> Назад
         </button>
-        <button id="next-page" class="btn btn-outline-primary">
+        <button id="next-page" class="btn btn-outline-primary2">
             Вперед <i class="bi bi-arrow-right"></i>
         </button>
     </div>
@@ -82,7 +107,7 @@ $flipSoundUrl = Yii::getAlias('@web') . '/sounds/flip2.wav';
 $jsonSoundUrl = json_encode($flipSoundUrl);
 
 $js = <<<JS
-let url = '/uploads/menu.pdf';  // жёстко заданный путь
+let url = '/uploads/menu.pdf?v=' + new Date().getTime();
 if (!url) {
     console.warn('PDF не загружен');
     return;

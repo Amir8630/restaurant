@@ -17,7 +17,7 @@ class Module extends \yii\base\Module
 
 
     public function behaviors() 
-    { 
+    {
         return [ 
             'access' => [ 
                 'class' => AccessControl::class, 

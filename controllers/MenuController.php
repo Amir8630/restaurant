@@ -12,12 +12,15 @@ class MenuController extends Controller
     public function actionIndex3()
     {
         $model = new PdfUploadForm();
-        $pdfFilePath = null;
+        $pdfFilePath = '/uploads/menu.pdf';  // всегда один и тот же путь
 
         if (Yii::$app->request->isPost) {
-            $model->file = UploadedFile::getInstance($model, 'file');
-            if ($filePath = $model->upload()) {
-                $pdfFilePath = '/uploads/' . $model->file->name;
+            if ($model->load(Yii::$app->request->post())) {
+                $model->file = UploadedFile::getInstance($model, 'file');
+                if ($model->upload()) {
+                    Yii::$app->session->setFlash('success', 'Меню успешно обновлено.');
+                    return $this->redirect(['index3']);  // чтобы обновилось отображение
+                }
             }
         }
 
@@ -26,4 +29,5 @@ class MenuController extends Controller
             'pdfFilePath' => $pdfFilePath,
         ]);
     }
+
 }

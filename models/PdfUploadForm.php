@@ -1,6 +1,7 @@
 <?php
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
@@ -17,12 +18,20 @@ class PdfUploadForm extends Model
 
     public function upload()
     {
-        if ($this->validate()) {
-            $filePath = \Yii::getAlias('@webroot/uploads/') . $this->file->name;
-            $this->file->saveAs($filePath);
-            return $filePath;
+        if ($this->validate() && $this->file !== null) {
+            $uploadPath = Yii::getAlias('@webroot/uploads/menu.pdf');  // всегда одно имя
+            if ($this->file->saveAs($uploadPath)) {
+                return '/uploads/menu.pdf';  // путь, который можно передать во view
+            }
         }
         return false;
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'file' => 'Загрузить меню',
+        ];
     }
 }
 
