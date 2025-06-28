@@ -93,8 +93,8 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'created_by_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false) ?>
     <div class="form-group">
-        <?= Html::a('Назад',['index'], ['class' => 'btn btn-outline-primary']) ?>
-        <?= Html::submitButton($model->isNewRecord ? 'Зарегистрировать' : 'Сохранить', ['class' => 'btn btn-outline-success']) ?>
+        <?= Html::a('Назад',['index'], ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Зарегистрировать' : 'Сохранить', ['class' => 'btn btn-outline-primary2']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
